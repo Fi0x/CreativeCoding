@@ -17,9 +17,12 @@ public class Startup
         switch(input)
         {
             case "1":
+                System.out.println("Starting exercise 1-1");
                 PApplet.main("com.fi0x.cc.week1.Exercise1");
                 break;
             case "2":
+                System.out.println("Starting exercise 1-3");
+                PApplet.main("com.fi0x.cc.week1.Exercise3");
                 break;
             case "3":
                 break;
