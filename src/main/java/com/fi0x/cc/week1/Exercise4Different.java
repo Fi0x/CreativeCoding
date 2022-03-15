@@ -7,15 +7,17 @@ public class Exercise4Different extends PApplet
 {
     private int sizeX = 800;
     private int sizeY = 800;
+    private boolean isGrey = false;
 
     private PImage img;
 
     @Override
     public void setup()
     {
-        frameRate(5);
+        frameRate(20);
         background(0);
-        stroke(0, 0);
+        invertedImage();
+        noStroke();
     }
     @Override
     public void settings()
@@ -30,24 +32,38 @@ public class Exercise4Different extends PApplet
     public void keyPressed()
     {
         if(key == ' ')
-            background(0);
+        {
+            if(isGrey)
+                invertedImage();
+            else
+                greyImage();
+        }
     }
 
     @Override
     public void draw()
     {
-        tint(150, 130, 200, 255);
+        fill(255);
+        ellipse(sizeX / 2, sizeY / 2, 10, 10);
 
-        img.loadPixels();
-        for(int i = 0; i < img.pixels.length; i++)
+        if(frameCount % 400 == 0)
         {
-            float r = red(img.pixels[i]);
-            float g = green(img.pixels[i]);
-            float b = blue(img.pixels[i]);
-
-            img.pixels[i] = color((r+g+b) / 3);
+            if(isGrey)
+                invertedImage();
+            else
+                greyImage();
         }
-
+    }
+    private void greyImage()
+    {
         image(img, 0, 0, sizeX, sizeY);
+        filter(GRAY);
+        isGrey = true;
+    }
+    private void invertedImage()
+    {
+        image(img, 0, 0, sizeX, sizeY);
+        filter(INVERT);
+        isGrey = false;
     }
 }
