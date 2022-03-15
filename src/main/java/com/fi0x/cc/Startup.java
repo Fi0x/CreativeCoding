@@ -25,6 +25,8 @@ public class Startup
                 PApplet.main("com.fi0x.cc.week1.Exercise3");
                 break;
             case "3":
+                System.out.println("Starting exercise 1-3 variant");
+                PApplet.main("com.fi0x.cc.week1.Exercise3Different");
                 break;
             case "4":
                 break;
