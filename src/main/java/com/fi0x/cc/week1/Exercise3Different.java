@@ -41,14 +41,20 @@ public class Exercise3Different extends PApplet
     @Override
     public void draw()
     {
-        int x = getRandAxisPos(sizeX, 10);
-        int y = getRandAxisPos(sizeY, 10);
+        int x = getRandAxisPos(sizeX, 5);
+        int y = getRandAxisPos(sizeY, 5);
         int rad = (int) (Math.random() * sizeRandomness) + 10;
 
         Color c = getThemedColor();
         fill(c.getRed(), c.getGreen(), c.getBlue(), 255);
 
         ellipse(x, y, rad, rad);
+
+        if(frameCount % 2500 == 0)
+        {
+            saveFrame("frames/exercise3/exercise3-####.png");
+            System.out.println("Frame saved");
+        }
     }
 
     private static int getRandAxisPos(int axisSize, int variationChance)
