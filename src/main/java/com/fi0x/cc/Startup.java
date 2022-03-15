@@ -29,10 +29,16 @@ public class Startup
                 PApplet.main("com.fi0x.cc.week1.Exercise3Different");
                 break;
             case "4":
+                System.out.println("Starting exercise 1-4");
+                PApplet.main("com.fi0x.cc.week1.Exercise4");
                 break;
             case "5":
+                System.out.println("Starting exercise 1-4 variant");
+                PApplet.main("com.fi0x.cc.week1.Exercise4Different");
                 break;
             case "6":
+                System.out.println("Starting exercise 1-4 variant");
+                PApplet.main("com.fi0x.cc.week1.Exercise4Pointillism");
                 break;
             case "7":
                 break;
