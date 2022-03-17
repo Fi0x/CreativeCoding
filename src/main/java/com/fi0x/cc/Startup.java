@@ -1,6 +1,6 @@
 package com.fi0x.cc;
 
-import com.fi0x.cc.week1.Exercise1;
+import com.fi0x.cc.project.synth.SynthPlayer;
 import processing.core.PApplet;
 
 import java.util.Scanner;
@@ -11,6 +11,11 @@ public class Startup
     {
         Scanner sc = new Scanner(System.in);
         System.out.println("Welcome to my Creative Coding Lecture Project!");
+        showMainMenu(sc);
+    }
+
+    private static void showMainMenu(Scanner sc)
+    {
         System.out.print("Please type in the number of the exercise you would like to see(1-8): ");
         String input = sc.next();
 
@@ -41,11 +46,14 @@ public class Startup
                 PApplet.main("com.fi0x.cc.week1.Exercise4Pointillism");
                 break;
             case "7":
+                System.out.println("Starting Synthesizer");
+                SynthPlayer.getInstance().startListening();
                 break;
             case "8":
                 break;
             default:
-                System.out.println("No valid input, ending the program...");
+                System.out.println("No valid input, please try a valid number(1-8): ");
+                showMainMenu(sc);
                 break;
         }
     }
