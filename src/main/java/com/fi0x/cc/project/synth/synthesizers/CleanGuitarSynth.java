@@ -30,8 +30,6 @@ public class CleanGuitarSynth implements ISynthesizer
         } catch (MidiUnavailableException ignored)
         {
         }
-
-        System.out.println("Clean Guitar loaded on channel " + mappedChannel);
     }
 
     @Override
@@ -45,5 +43,11 @@ public class CleanGuitarSynth implements ISynthesizer
         {
         }
         channel.noteOff(note);
+    }
+
+    @Override
+    public String getInstrumentName()
+    {
+        return "Clean Guitar";
     }
 }

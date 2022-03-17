@@ -30,8 +30,6 @@ public class BassSynth implements ISynthesizer
         } catch (MidiUnavailableException ignored)
         {
         }
-
-        System.out.println("Synth Bass loaded on channel " + mappedChannel);
     }
 
     @Override
@@ -45,5 +43,11 @@ public class BassSynth implements ISynthesizer
         {
         }
         channel.noteOff(note);
+    }
+
+    @Override
+    public String getInstrumentName()
+    {
+        return "Bass";
     }
 }

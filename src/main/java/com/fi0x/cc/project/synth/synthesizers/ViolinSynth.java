@@ -30,8 +30,6 @@ public class ViolinSynth implements ISynthesizer
         } catch (MidiUnavailableException ignored)
         {
         }
-
-        System.out.println("Violin loaded on channel " + mappedChannel);
     }
 
     @Override
@@ -45,5 +43,11 @@ public class ViolinSynth implements ISynthesizer
         {
         }
         channel.noteOff(note);
+    }
+
+    @Override
+    public String getInstrumentName()
+    {
+        return "Violin";
     }
 }

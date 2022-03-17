@@ -1,5 +1,7 @@
 package com.fi0x.cc.project.synth.synthesizers;
 
+import com.fi0x.cc.logging.Logger;
+
 import javax.sound.midi.*;
 import java.util.Scanner;
 
@@ -25,8 +27,6 @@ public class TestSynth implements ISynthesizer
         } catch (MidiUnavailableException ignored)
         {
         }
-
-        System.out.println("Electric Synthesizer loaded on channel " + mappedChannel);
     }
 
     public void waitForInstrumentChange()
@@ -48,7 +48,7 @@ public class TestSynth implements ISynthesizer
         if(currentInstrument >= instruments.length)
             currentInstrument = 0;
 
-        System.out.println("Switching to new instrument " + currentInstrument + ": " + instruments[currentInstrument]);
+        Logger.INFO("Switching to new instrument " + currentInstrument + ": " + instruments[currentInstrument]);
         channel.programChange(currentInstrument);
     }
     private void previousInstrument()
@@ -58,7 +58,7 @@ public class TestSynth implements ISynthesizer
         if(currentInstrument < 0)
             currentInstrument = instruments.length - 1;
 
-        System.out.println("Switching to new instrument " + currentInstrument + ": " + instruments[currentInstrument]);
+        Logger.INFO("Switching to new instrument " + currentInstrument + ": " + instruments[currentInstrument]);
         channel.programChange(currentInstrument);
     }
 
@@ -73,5 +73,11 @@ public class TestSynth implements ISynthesizer
         {
         }
         channel.noteOff(note);
+    }
+
+    @Override
+    public String getInstrumentName()
+    {
+        return "Testing";
     }
 }

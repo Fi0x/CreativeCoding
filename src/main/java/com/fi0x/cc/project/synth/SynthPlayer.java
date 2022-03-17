@@ -1,6 +1,8 @@
 package com.fi0x.cc.project.synth;
 
+import com.fi0x.cc.logging.Logger;
 import com.fi0x.cc.project.synth.UDP.UDPProcessor;
+import com.fi0x.cc.project.synth.midi.MidiHandler;
 import com.fi0x.cc.project.synth.synthesizers.*;
 
 import java.util.ArrayList;
@@ -24,6 +26,7 @@ public class SynthPlayer
 
     public void startListening()
     {
+        new MidiHandler();
         new Thread(() -> UDPProcessor.getInstance().run()).start();
         ((TestSynth) synthesizers.get(8)).waitForInstrumentChange();
     }
@@ -42,6 +45,8 @@ public class SynthPlayer
         synthesizers.add(new TremoloSynth(synthesizers.size()));
         synthesizers.add(new VibraphoneSynth(synthesizers.size()));
         synthesizers.add(new ViolinSynth(synthesizers.size()));
+
+        Logger.INFO("Loaded midi devices on channels 0-" + (synthesizers.size() - 1));
     }
 
     public void playSynth(int deviceChannel, int octave, char note, int volume, int length)

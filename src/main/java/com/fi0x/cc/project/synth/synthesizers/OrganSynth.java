@@ -30,8 +30,6 @@ public class OrganSynth implements ISynthesizer
         } catch (MidiUnavailableException ignored)
         {
         }
-
-        System.out.println("Organ loaded on channel " + mappedChannel);
     }
 
     @Override
@@ -45,5 +43,11 @@ public class OrganSynth implements ISynthesizer
         {
         }
         channel.noteOff(note);
+    }
+
+    @Override
+    public String getInstrumentName()
+    {
+        return "Organ";
     }
 }

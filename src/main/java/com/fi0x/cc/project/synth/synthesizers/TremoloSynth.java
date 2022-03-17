@@ -30,8 +30,6 @@ public class TremoloSynth implements ISynthesizer
         } catch (MidiUnavailableException ignored)
         {
         }
-
-        System.out.println("Tremolo loaded on channel " + mappedChannel);
     }
 
     @Override
@@ -45,5 +43,11 @@ public class TremoloSynth implements ISynthesizer
         {
         }
         channel.noteOff(note);
+    }
+
+    @Override
+    public String getInstrumentName()
+    {
+        return "Tremolo";
     }
 }

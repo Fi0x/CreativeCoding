@@ -30,8 +30,6 @@ public class PianoSynth implements ISynthesizer
         } catch (MidiUnavailableException ignored)
         {
         }
-
-        System.out.println("Piano loaded on channel " + mappedChannel);
     }
 
     @Override
@@ -45,5 +43,11 @@ public class PianoSynth implements ISynthesizer
         {
         }
         channel.noteOff(note);
+    }
+
+    @Override
+    public String getInstrumentName()
+    {
+        return "Piano";
     }
 }

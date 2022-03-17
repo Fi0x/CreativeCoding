@@ -30,8 +30,6 @@ public class HarpSynth implements ISynthesizer
         } catch (MidiUnavailableException ignored)
         {
         }
-
-        System.out.println("Harp loaded on channel " + mappedChannel);
     }
 
     @Override
@@ -45,5 +43,11 @@ public class HarpSynth implements ISynthesizer
         {
         }
         channel.noteOff(note);
+    }
+
+    @Override
+    public String getInstrumentName()
+    {
+        return "Harp";
     }
 }

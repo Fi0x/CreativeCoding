@@ -30,8 +30,6 @@ public class JazzGuitarSynth implements ISynthesizer
         } catch (MidiUnavailableException ignored)
         {
         }
-
-        System.out.println("Jazz Guitar loaded on channel " + mappedChannel);
     }
 
     @Override
@@ -45,5 +43,11 @@ public class JazzGuitarSynth implements ISynthesizer
         {
         }
         channel.noteOff(note);
+    }
+
+    @Override
+    public String getInstrumentName()
+    {
+        return "Jazz-Guitar";
     }
 }

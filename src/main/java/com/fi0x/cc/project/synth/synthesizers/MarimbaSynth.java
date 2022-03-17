@@ -30,8 +30,6 @@ public class MarimbaSynth implements ISynthesizer
         } catch (MidiUnavailableException ignored)
         {
         }
-
-        System.out.println("Marimba loaded on channel " + mappedChannel);
     }
 
     @Override
@@ -45,5 +43,11 @@ public class MarimbaSynth implements ISynthesizer
         {
         }
         channel.noteOff(note);
+    }
+
+    @Override
+    public String getInstrumentName()
+    {
+        return "Marimba";
     }
 }

@@ -30,8 +30,6 @@ public class EPianoSynth implements ISynthesizer
         } catch (MidiUnavailableException ignored)
         {
         }
-
-        System.out.println("E Piano loaded on channel " + mappedChannel);
     }
 
     @Override
@@ -45,5 +43,11 @@ public class EPianoSynth implements ISynthesizer
         {
         }
         channel.noteOff(note);
+    }
+
+    @Override
+    public String getInstrumentName()
+    {
+        return "E-Piano";
     }
 }

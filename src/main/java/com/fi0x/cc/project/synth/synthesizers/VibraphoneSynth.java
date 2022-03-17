@@ -30,8 +30,6 @@ public class VibraphoneSynth implements ISynthesizer
         } catch (MidiUnavailableException ignored)
         {
         }
-
-        System.out.println("Vibraphone loaded on channel " + mappedChannel);
     }
 
     @Override
@@ -45,5 +43,11 @@ public class VibraphoneSynth implements ISynthesizer
         {
         }
         channel.noteOff(note);
+    }
+
+    @Override
+    public String getInstrumentName()
+    {
+        return "Vibraphone";
     }
 }
