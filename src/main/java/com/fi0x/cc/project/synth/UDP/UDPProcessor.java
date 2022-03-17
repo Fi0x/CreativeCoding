@@ -6,7 +6,7 @@ import java.net.DatagramPacket;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-public class UDPProcessor implements UDPPacketProcessor
+public class UDPProcessor
 {
     private static UDPProcessor instance = null;
 
@@ -33,7 +33,6 @@ public class UDPProcessor implements UDPPacketProcessor
         return instance;
     }
 
-    @Override
     public void onPacketReceived(DatagramPacket receivedPacket, int localPort)
     {
         ByteBuffer buffer = ByteBuffer.allocate(receivedPacket.getLength());

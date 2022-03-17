@@ -2,11 +2,11 @@ package com.fi0x.cc.project.synth.synthesizers;
 
 import javax.sound.midi.*;
 
-public class PianoSynth implements ISynthesizer
+public class VibraphoneSynth implements ISynthesizer
 {
     private MidiChannel channel;
 
-    public PianoSynth(int mappedChannel)
+    public VibraphoneSynth(int mappedChannel)
     {
         try
         {
@@ -20,7 +20,7 @@ public class PianoSynth implements ISynthesizer
             Instrument[] insts = synth.getLoadedInstruments();
             for (int i = 0; i < insts.length; i++)
             {
-                if (insts[i].toString().startsWith("Instrument: Piano 1"))
+                if (insts[i].toString().startsWith("Instrument: Vibraphone"))
                 {
                     assert channel != null;
                     channel.programChange(i);
@@ -31,7 +31,7 @@ public class PianoSynth implements ISynthesizer
         {
         }
 
-        System.out.println("Piano loaded on channel " + mappedChannel);
+        System.out.println("Vibraphone loaded on channel " + mappedChannel);
     }
 
     @Override

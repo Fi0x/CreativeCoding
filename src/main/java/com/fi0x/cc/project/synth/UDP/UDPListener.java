@@ -10,8 +10,8 @@ public class UDPListener implements Runnable
     int port;
     byte[] receiveData;
     DatagramSocket udpListeningSocket;
-    UDPPacketProcessor processor;
-    public UDPListener(UDPPacketProcessor listener,int localPort)
+    UDPProcessor processor;
+    public UDPListener(UDPProcessor listener,int localPort)
     {
         port = localPort;
         this.processor = listener;
