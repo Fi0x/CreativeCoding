@@ -1,6 +1,7 @@
 package com.fi0x.cc.project.synth.synthesizers;
 
-import com.fi0x.cc.logging.Logger;
+import com.fi0x.cc.Startup;
+import io.fi0x.javalogger.LogSettings;
 
 import javax.sound.midi.*;
 import java.util.Scanner;
@@ -48,7 +49,7 @@ public class TestSynth implements ISynthesizer
         if(currentInstrument >= instruments.length)
             currentInstrument = 0;
 
-        Logger.INFO("Switching to new instrument " + currentInstrument + ": " + instruments[currentInstrument]);
+        LogSettings.getLOGFromTemplate("Switching to new instrument " + currentInstrument + ": " + instruments[currentInstrument], String.valueOf(Startup.LogTemplate.DEBUG_INFO));
         channel.programChange(currentInstrument);
     }
     private void previousInstrument()
@@ -58,7 +59,7 @@ public class TestSynth implements ISynthesizer
         if(currentInstrument < 0)
             currentInstrument = instruments.length - 1;
 
-        Logger.INFO("Switching to new instrument " + currentInstrument + ": " + instruments[currentInstrument]);
+        LogSettings.getLOGFromTemplate("Switching to new instrument " + currentInstrument + ": " + instruments[currentInstrument], String.valueOf(Startup.LogTemplate.DEBUG_INFO));
         channel.programChange(currentInstrument);
     }
 

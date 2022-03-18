@@ -1,7 +1,8 @@
 package com.fi0x.cc.week1;
 
 import com.fi0x.cc.CustomMath;
-import com.fi0x.cc.logging.Logger;
+import com.fi0x.cc.Startup;
+import io.fi0x.javalogger.LogSettings;
 import processing.core.PApplet;
 
 import java.awt.*;
@@ -54,7 +55,7 @@ public class Exercise3Different extends PApplet
         if(frameCount % 2500 == 0)
         {
             saveFrame("frames/exercise3/exercise3-####.png");
-            Logger.INFO("Frame saved");
+            LogSettings.getLOGFromTemplate("Frame saved", String.valueOf(Startup.LogTemplate.INFO_WHITE));
         }
     }
 

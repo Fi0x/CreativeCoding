@@ -45,6 +45,6 @@ public class Exercise4Pointillism extends PApplet
         noStroke();
 
         fill(r,g,b,100);
-        ellipse(x / 2,y / 2,10,10);
+        ellipse((float) x / 2,(float) y / 2,10,10);
     }
 }

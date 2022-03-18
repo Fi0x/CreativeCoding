@@ -44,7 +44,7 @@ public class Exercise4Different extends PApplet
     public void draw()
     {
         fill(255);
-        ellipse(sizeX / 2, sizeY / 2, 10, 10);
+        ellipse((float) sizeX / 2, (float) sizeY / 2, 10, 10);
 
         if(frameCount % 400 == 0)
         {

@@ -1,9 +1,9 @@
 package com.fi0x.cc.project.synth.midi;
 
-import com.fi0x.cc.logging.Logger;
+import com.fi0x.cc.Startup;
+import io.fi0x.javalogger.LogSettings;
 
 import javax.sound.midi.*;
-import java.util.Arrays;
 import java.util.List;
 
 public class MidiHandler
@@ -13,15 +13,15 @@ public class MidiHandler
         int openDevices = 0;
         MidiDevice device;
         MidiDevice.Info[] infos = MidiSystem.getMidiDeviceInfo();
-        for(int i = 0; i < infos.length; i++)
+        for(MidiDevice.Info info : infos)
         {
             try
             {
-                device = MidiSystem.getMidiDevice(infos[i]);
+                device = MidiSystem.getMidiDevice(info);
                 List<Transmitter> transmitters = device.getTransmitters();
 
-                for(int j = 0; j < transmitters.size(); j++)
-                    transmitters.get(j).setReceiver(new MidiInputReceiver(device.getDeviceInfo().toString()));
+                for(Transmitter transmitter : transmitters)
+                    transmitter.setReceiver(new MidiInputReceiver(device.getDeviceInfo().toString()));
 
                 Transmitter trans = device.getTransmitter();
                 trans.setReceiver(new MidiInputReceiver(device.getDeviceInfo().toString()));
@@ -32,7 +32,7 @@ public class MidiHandler
             {
             }
         }
-        Logger.INFO("Opened " + openDevices + " MIDI-devices");
+        LogSettings.getLOGFromTemplate("Opened " + openDevices + " MIDI-devices", String.valueOf(Startup.LogTemplate.INFO_GREEN));
     }
 
     public static class MidiInputReceiver implements Receiver
@@ -48,7 +48,7 @@ public class MidiHandler
             int channel = msg.getMessage()[0];
             int note = msg.getMessage()[1];
             int volume = msg.getMessage()[2];
-            Logger.INFO("midi received: " + msg.getStatus());
+            LogSettings.getLOGFromTemplate("midi received: " + msg.getStatus(), String.valueOf(Startup.LogTemplate.DEBUG_INFO));
         }
 
         public void close()

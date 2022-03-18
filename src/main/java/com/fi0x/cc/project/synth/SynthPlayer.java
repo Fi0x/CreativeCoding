@@ -1,9 +1,10 @@
 package com.fi0x.cc.project.synth;
 
-import com.fi0x.cc.logging.Logger;
+import com.fi0x.cc.Startup;
 import com.fi0x.cc.project.synth.UDP.UDPProcessor;
 import com.fi0x.cc.project.synth.midi.MidiHandler;
 import com.fi0x.cc.project.synth.synthesizers.*;
+import io.fi0x.javalogger.LogSettings;
 
 import java.util.ArrayList;
 
@@ -46,7 +47,7 @@ public class SynthPlayer
         synthesizers.add(new VibraphoneSynth(synthesizers.size()));
         synthesizers.add(new ViolinSynth(synthesizers.size()));
 
-        Logger.INFO("Loaded midi devices on channels 0-" + (synthesizers.size() - 1));
+        LogSettings.getLOGFromTemplate("Loaded midi devices on channels 0-" + (synthesizers.size() - 1), String.valueOf(Startup.LogTemplate.INFO_GREEN));
     }
 
     public void playSynth(int deviceChannel, int octave, char note, int volume, int length)
