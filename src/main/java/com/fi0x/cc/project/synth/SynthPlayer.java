@@ -50,16 +50,17 @@ public class SynthPlayer
         synthesizers.add(new MarimbaSynth(synthesizers.size()));        //5
         synthesizers.add(new OrganSynth(synthesizers.size()));          //6
         synthesizers.add(new PianoSynth(synthesizers.size()));          //7
-        //8
-        synthesizers.add(new TremoloSynth(synthesizers.size()));        //9
-        synthesizers.add(new VibraphoneSynth(synthesizers.size()));     //a
-        synthesizers.add(new ViolinSynth(synthesizers.size()));         //b
-        synthesizers.add(new ChoirSynth(synthesizers.size()));          //c
-        synthesizers.add(new Drum1Synth(synthesizers.size()));          //d
-        synthesizers.add(new Drum2Synth(synthesizers.size()));          //e
-        // f
+        synthesizers.add(new TremoloSynth(synthesizers.size()));        //8
+        synthesizers.add(new VibraphoneSynth(synthesizers.size()));     //9
+        synthesizers.add(new ViolinSynth(synthesizers.size()));         //a
+        synthesizers.add(new ChoirSynth(synthesizers.size()));          //b
+        synthesizers.add(new Drum1Synth(synthesizers.size()));          //c
+        synthesizers.add(new Drum2Synth(synthesizers.size()));          //d
+        //e
+        //f
 
         Logger.getInstance().log("Loaded midi devices on channels 0-" + (synthesizers.size() - 1), String.valueOf(Startup.LogTemplate.INFO_GREEN));
+        printSynthList();
     }
 
     public void playSynth(int deviceChannel, int octave, char note, int volume, int length)
@@ -77,5 +78,11 @@ public class SynthPlayer
             return null;
 
         return synthesizers.get(channel);
+    }
+
+    private void printSynthList()
+    {
+        for(int i = 0; i < synthesizers.size(); i++)
+            Logger.getInstance().log("\t" + Integer.toHexString(i) + "\t" + synthesizers.get(i).getInstrumentName(), String.valueOf(Startup.LogTemplate.INFO_PURPLE));
     }
 }

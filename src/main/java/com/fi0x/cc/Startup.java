@@ -21,6 +21,7 @@ public class Startup
         Logger.createNewTemplate(String.valueOf(LogTemplate.INFO_YELLOW), Logger.YELLOW, "INF", false, false, false, true);
         Logger.createNewTemplate(String.valueOf(LogTemplate.INFO_RED), Logger.RED, "INF", false, false, false, true);
         Logger.createNewTemplate(String.valueOf(LogTemplate.INFO_BLUE), Logger.BLUE, "INF", false, false, false, true);
+        Logger.createNewTemplate(String.valueOf(LogTemplate.INFO_PURPLE), Logger.PURPLE, "INF", false, false, false, true);
         Logger.createNewTemplate(String.valueOf(LogTemplate.DEBUG_INFO), Logger.CYAN, "INF", false, false, true, false);
         Logger.createNewTemplate(String.valueOf(LogTemplate.DEBUG_WARNING), Logger.YELLOW, "WRN", false, false, true, false);
         Logger.createNewTemplate(String.valueOf(LogTemplate.DEBUG_ERROR), Logger.RED, "ERR", false, false, true, false);
@@ -82,6 +83,7 @@ public class Startup
         INFO_YELLOW,
         INFO_RED,
         INFO_BLUE,
+        INFO_PURPLE,
         DEBUG_INFO,
         DEBUG_WARNING,
         DEBUG_ERROR
