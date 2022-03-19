@@ -2,11 +2,11 @@ package com.fi0x.cc.project.synth.synthesizers;
 
 import javax.sound.midi.*;
 
-public class BassSynth implements ISynthesizer
+public class Drum2Synth implements ISynthesizer
 {
     private MidiChannel channel;
 
-    public BassSynth(int mappedChannel)
+    public Drum2Synth(int mappedChannel)
     {
         try
         {
@@ -20,7 +20,7 @@ public class BassSynth implements ISynthesizer
             Instrument[] insts = synth.getLoadedInstruments();
             for (int i = 0; i < insts.length; i++)
             {
-                if (insts[i].toString().startsWith("Instrument: Synth Bass 1"))
+                if (insts[i].toString().startsWith("Instrument: Trombone 2"))
                 {
                     assert channel != null;
                     channel.programChange(i);
@@ -48,7 +48,7 @@ public class BassSynth implements ISynthesizer
     @Override
     public String getInstrumentName()
     {
-        return "Bass";
+        return "Drum 2";
     }
 
     @Override

@@ -50,4 +50,10 @@ public class MarimbaSynth implements ISynthesizer
     {
         return "Marimba";
     }
+
+    @Override
+    public void mute(boolean state)
+    {
+        channel.setMute(state);
+    }
 }

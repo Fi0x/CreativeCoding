@@ -50,4 +50,10 @@ public class VibraphoneSynth implements ISynthesizer
     {
         return "Vibraphone";
     }
+
+    @Override
+    public void mute(boolean state)
+    {
+        channel.setMute(state);
+    }
 }

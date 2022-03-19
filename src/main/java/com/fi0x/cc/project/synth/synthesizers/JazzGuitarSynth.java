@@ -50,4 +50,10 @@ public class JazzGuitarSynth implements ISynthesizer
     {
         return "Jazz-Guitar";
     }
+
+    @Override
+    public void mute(boolean state)
+    {
+        channel.setMute(state);
+    }
 }

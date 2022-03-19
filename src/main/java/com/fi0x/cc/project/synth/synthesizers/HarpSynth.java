@@ -50,4 +50,10 @@ public class HarpSynth implements ISynthesizer
     {
         return "Harp";
     }
+
+    @Override
+    public void mute(boolean state)
+    {
+        channel.setMute(state);
+    }
 }

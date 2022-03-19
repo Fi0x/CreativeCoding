@@ -50,4 +50,10 @@ public class PianoSynth implements ISynthesizer
     {
         return "Piano";
     }
+
+    @Override
+    public void mute(boolean state)
+    {
+        channel.setMute(state);
+    }
 }

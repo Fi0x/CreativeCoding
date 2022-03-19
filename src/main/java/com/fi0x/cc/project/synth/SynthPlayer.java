@@ -4,9 +4,10 @@ import com.fi0x.cc.Startup;
 import com.fi0x.cc.project.synth.UDP.UDPProcessor;
 import com.fi0x.cc.project.synth.midi.MidiHandler;
 import com.fi0x.cc.project.synth.synthesizers.*;
-import io.fi0x.javalogger.LogSettings;
+import io.fi0x.javalogger.logging.Logger;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class SynthPlayer
 {
@@ -29,25 +30,36 @@ public class SynthPlayer
     {
         new MidiHandler();
         new Thread(() -> UDPProcessor.getInstance().run()).start();
-        ((TestSynth) synthesizers.get(8)).waitForInstrumentChange();
+        while(true)
+        {
+            Scanner sc = new Scanner(System.in);
+            String input = sc.next();
+            boolean state = input.equals("0");
+            for(ISynthesizer synth : synthesizers)
+                synth.mute(state);
+        }
     }
 
     public void registerAllSynths()
     {
-        synthesizers.add(new BassSynth(synthesizers.size()));
-        synthesizers.add(new CleanGuitarSynth(synthesizers.size()));
-        synthesizers.add(new EPianoSynth(synthesizers.size()));
-        synthesizers.add(new HarpSynth(synthesizers.size()));
-        synthesizers.add(new JazzGuitarSynth(synthesizers.size()));
-        synthesizers.add(new MarimbaSynth(synthesizers.size()));
-        synthesizers.add(new OrganSynth(synthesizers.size()));
-        synthesizers.add(new PianoSynth(synthesizers.size()));
-        synthesizers.add(new TestSynth(synthesizers.size()));
-        synthesizers.add(new TremoloSynth(synthesizers.size()));
-        synthesizers.add(new VibraphoneSynth(synthesizers.size()));
-        synthesizers.add(new ViolinSynth(synthesizers.size()));
+        synthesizers.add(new BassSynth(synthesizers.size()));           //0
+        synthesizers.add(new CleanGuitarSynth(synthesizers.size()));    //1
+        synthesizers.add(new EPianoSynth(synthesizers.size()));         //2
+        synthesizers.add(new HarpSynth(synthesizers.size()));           //3
+        synthesizers.add(new JazzGuitarSynth(synthesizers.size()));     //4
+        synthesizers.add(new MarimbaSynth(synthesizers.size()));        //5
+        synthesizers.add(new OrganSynth(synthesizers.size()));          //6
+        synthesizers.add(new PianoSynth(synthesizers.size()));          //7
+        //8
+        synthesizers.add(new TremoloSynth(synthesizers.size()));        //9
+        synthesizers.add(new VibraphoneSynth(synthesizers.size()));     //a
+        synthesizers.add(new ViolinSynth(synthesizers.size()));         //b
+        synthesizers.add(new ChoirSynth(synthesizers.size()));          //c
+        synthesizers.add(new Drum1Synth(synthesizers.size()));          //d
+        synthesizers.add(new Drum2Synth(synthesizers.size()));          //e
+        // f
 
-        LogSettings.getLOGFromTemplate("Loaded midi devices on channels 0-" + (synthesizers.size() - 1), String.valueOf(Startup.LogTemplate.INFO_GREEN));
+        Logger.getInstance().log("Loaded midi devices on channels 0-" + (synthesizers.size() - 1), String.valueOf(Startup.LogTemplate.INFO_GREEN));
     }
 
     public void playSynth(int deviceChannel, int octave, char note, int volume, int length)

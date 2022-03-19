@@ -50,4 +50,10 @@ public class CleanGuitarSynth implements ISynthesizer
     {
         return "Clean Guitar";
     }
+
+    @Override
+    public void mute(boolean state)
+    {
+        channel.setMute(state);
+    }
 }

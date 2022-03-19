@@ -1,7 +1,7 @@
 package com.fi0x.cc.project.synth.midi;
 
 import com.fi0x.cc.Startup;
-import io.fi0x.javalogger.LogSettings;
+import io.fi0x.javalogger.logging.Logger;
 
 import javax.sound.midi.*;
 import java.util.List;
@@ -32,7 +32,7 @@ public class MidiHandler
             {
             }
         }
-        LogSettings.getLOGFromTemplate("Opened " + openDevices + " MIDI-devices", String.valueOf(Startup.LogTemplate.INFO_GREEN));
+        Logger.getInstance().log("Opened " + openDevices + " MIDI-devices", String.valueOf(Startup.LogTemplate.INFO_GREEN));
     }
 
     public static class MidiInputReceiver implements Receiver
@@ -48,7 +48,7 @@ public class MidiHandler
             int channel = msg.getMessage()[0];
             int note = msg.getMessage()[1];
             int volume = msg.getMessage()[2];
-            LogSettings.getLOGFromTemplate("midi received: " + msg.getStatus(), String.valueOf(Startup.LogTemplate.DEBUG_INFO));
+            Logger.getInstance().log("midi received: " + msg.getStatus(), String.valueOf(Startup.LogTemplate.DEBUG_INFO));
         }
 
         public void close()

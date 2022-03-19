@@ -50,4 +50,10 @@ public class EPianoSynth implements ISynthesizer
     {
         return "E-Piano";
     }
+
+    @Override
+    public void mute(boolean state)
+    {
+        channel.setMute(state);
+    }
 }

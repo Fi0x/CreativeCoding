@@ -50,4 +50,10 @@ public class OrganSynth implements ISynthesizer
     {
         return "Organ";
     }
+
+    @Override
+    public void mute(boolean state)
+    {
+        channel.setMute(state);
+    }
 }

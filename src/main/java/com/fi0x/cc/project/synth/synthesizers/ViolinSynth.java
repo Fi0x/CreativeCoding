@@ -50,4 +50,10 @@ public class ViolinSynth implements ISynthesizer
     {
         return "Violin";
     }
+
+    @Override
+    public void mute(boolean state)
+    {
+        channel.setMute(state);
+    }
 }

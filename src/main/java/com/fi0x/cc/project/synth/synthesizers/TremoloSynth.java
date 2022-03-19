@@ -50,4 +50,10 @@ public class TremoloSynth implements ISynthesizer
     {
         return "Tremolo";
     }
+
+    @Override
+    public void mute(boolean state)
+    {
+        channel.setMute(state);
+    }
 }
