@@ -1,6 +1,7 @@
 package com.fi0x.cc.project.synth.midi;
 
 import com.fi0x.cc.exercises.Startup;
+import com.fi0x.cc.project.LoggerManager;
 import com.fi0x.cc.project.synth.SynthManager;
 import io.fi0x.javalogger.logging.Logger;
 
@@ -33,7 +34,7 @@ public class MidiHandler
             {
             }
         }
-        Logger.log("Opened " + openDevices + " MIDI-devices", String.valueOf(Startup.LogTemplate.INFO_GREEN));
+        Logger.log("Opened " + openDevices + " MIDI-devices", String.valueOf(LoggerManager.Template.DEBUG_INFO));
     }
 
     public static class MidiInputReceiver implements Receiver

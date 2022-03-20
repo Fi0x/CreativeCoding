@@ -35,15 +35,15 @@ public class SynthManager
         synths.add(new HarpSynth(synths.size()));
         synths.add(new JazzGuitarSynth(synths.size()));
         synths.add(new MarimbaSynth(synths.size()));
+        synths.add(new EmptySynth(synths.size()));
         synths.add(new OrganSynth(synths.size()));
         synths.add(new PianoSynth(synths.size()));
         synths.add(new TremoloSynth(synths.size()));
         synths.add(new VibraphoneSynth(synths.size()));
         synths.add(new ViolinSynth(synths.size()));
+        synths.add(new PlaceholderSynth(synths.size()));
 
-        Logger.log("Loaded midi devices", String.valueOf(LoggerManager.Template.DEBUG_INFO));
-        for(int i = 0; i < synths.size(); i++)
-            Logger.log("\t" + Integer.toHexString(i) + "\t" + synths.get(i).getInstrumentName(), String.valueOf(LoggerManager.Template.INFO_PURPLE));
+        Logger.log("Loaded synths", String.valueOf(LoggerManager.Template.DEBUG_INFO));
     }
 
     public static ISynthesizer getNextSynth()
@@ -91,6 +91,14 @@ public class SynthManager
     public static String getInstrumentName(int programNumber)
     {
         return instruments[programNumber].toString().split("bank")[0];
+    }
+    public static String[] getAllInstrumentNames()
+    {
+        ArrayList<String> list = new ArrayList<>();
+        for(Instrument i : instruments)
+            list.add(i.toString().split("bank")[0]);
+
+        return list.toArray(new String[0]);
     }
     public static MidiChannel getChannel(int channelNumber)
     {

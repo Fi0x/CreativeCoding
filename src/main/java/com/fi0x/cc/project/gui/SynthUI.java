@@ -1,11 +1,17 @@
 package com.fi0x.cc.project.gui;
 
+import com.fi0x.cc.project.LoggerManager;
 import com.fi0x.cc.project.synth.SynthManager;
 import com.fi0x.cc.project.synth.synthesizers.AbstractSynth;
 import com.fi0x.cc.project.synth.synthesizers.ISynthesizer;
+import controlP5.CColor;
 import controlP5.ControlEvent;
 import controlP5.ControlP5;
+import controlP5.DropdownList;
+import io.fi0x.javalogger.logging.Logger;
 import processing.core.PApplet;
+
+import java.io.IOException;
 
 public class SynthUI
 {
@@ -64,6 +70,18 @@ public class SynthUI
             linkedSynth.previousInstrument();
         if(event.getController() == control.getController("Next Synth"))
             linkedSynth.nextInstrument();
+        if(event.getController() == control.getController("DDL"))
+            linkedSynth.setInstrument(SynthManager.getInstrumentName((int) event.getValue()));
+        if(event.getController() == control.getController("Open Orca"))
+        {
+            try
+            {
+                new ProcessBuilder("E:\\Users\\Fi0x\\Documents\\Programmieren\\ORCA\\Orca Tool\\Orca.exe").start();
+            } catch(IOException ignored)
+            {
+                Logger.log("Could not open ORCA", String.valueOf(LoggerManager.Template.DEBUG_WARNING));
+            }
+        }
     }
 
     private void addButtons()
@@ -74,6 +92,19 @@ public class SynthUI
         control.addButton("Next Synth")
                 .setSize(100, 30)
                 .setValue(0);
+        control.addDropdownList("DDL")
+                .setSize(200, ySize - 10 - 10 - 35)
+                .setValue(0)
+                .setItemHeight(30)
+                .setBarHeight(30)
+                .setCaptionLabel("Select an instrument")
+                .addItems(SynthManager.getAllInstrumentNames());
+
+        if(x + y == 0)
+            control.addButton("Open Orca")
+                    .setSize(100, 30)
+                    .setValue(0)
+                    .setColorBackground(parentScreen.color(200, 0, 0));
 
         updateButtonPositions();
     }
@@ -83,5 +114,15 @@ public class SynthUI
                 .setPosition(x + 10, y + 10);
         control.getController("Next Synth")
                 .setPosition(x + xSize - 100 - 10, y + 10);
+        DropdownList ddl = (DropdownList) control.getController("DDL")
+                .setPosition(x + (float) xSize / 2 - 100, y + 10 + 35);
+        ddl.setSize(200, ySize - 10 - 10 - 35);
+        try
+        {
+            control.getController("Open Orca")
+                    .setPosition(x + 10, y + ySize - 30 - 10);
+        } catch(Exception ignored)
+        {
+        }
     }
 }

@@ -64,6 +64,8 @@ public abstract class AbstractSynth implements ISynthesizer
     @Override
     public String getInstrumentName()
     {
+        if(channelNumber == 9)
+            return "Drumkit";
         return SynthManager.getInstrumentName(channel.getProgram()).replace("Instrument: ", "");
     }
 
@@ -85,13 +87,25 @@ public abstract class AbstractSynth implements ISynthesizer
         channel.programChange(programNumber);
         Logger.log("Changed synth to " + SynthManager.getInstrumentName(channel.getProgram()), String.valueOf(LoggerManager.Template.DEBUG_INFO));
     }
-
     @Override
     public void previousInstrument()
     {
         int programNumber = channel.getProgram() - 1;
         if(programNumber < 0)
             programNumber = 127;
+
+        channel.programChange(programNumber);
+        Logger.log("Changed synth to " + SynthManager.getInstrumentName(channel.getProgram()), String.valueOf(LoggerManager.Template.DEBUG_INFO));
+    }
+    @Override
+    public void setInstrument(String instrumentName)
+    {
+        int programNumber = SynthManager.getProgramNumber(instrumentName);
+        if(programNumber < 0)
+        {
+            Logger.log("Could not load a new instrument", String.valueOf(LoggerManager.Template.DEBUG_WARNING));
+            return;
+        }
 
         channel.programChange(programNumber);
         Logger.log("Changed synth to " + SynthManager.getInstrumentName(channel.getProgram()), String.valueOf(LoggerManager.Template.DEBUG_INFO));

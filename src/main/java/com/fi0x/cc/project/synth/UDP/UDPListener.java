@@ -1,6 +1,7 @@
 package com.fi0x.cc.project.synth.UDP;
 
 import com.fi0x.cc.exercises.Startup;
+import com.fi0x.cc.project.LoggerManager;
 import io.fi0x.javalogger.logging.Logger;
 
 import java.io.IOException;
@@ -30,7 +31,7 @@ public class UDPListener implements Runnable
     @Override
     public void run()
     {
-        Logger.getInstance().log("Listening for UDP Packets on port " + UDPDefinitions.UDP_PORT, String.valueOf(Startup.LogTemplate.INFO_GREEN));
+        Logger.log("Listening for UDP Packets on port " + UDPDefinitions.UDP_PORT, String.valueOf(LoggerManager.Template.DEBUG_INFO));
         while(true)
         {
             DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);

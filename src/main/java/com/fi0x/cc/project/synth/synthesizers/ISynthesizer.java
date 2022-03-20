@@ -10,4 +10,5 @@ public interface ISynthesizer
     void mute(boolean state);
     void nextInstrument();
     void previousInstrument();
+    void setInstrument(String instrumentName);
 }

@@ -8,6 +8,7 @@ import io.fi0x.javalogger.logging.Logger;
 import processing.awt.PSurfaceAWT;
 import processing.core.PApplet;
 import processing.core.PImage;
+import processing.core.PSurface;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,7 +17,9 @@ public class MainWindow extends PApplet
 {
     private PImage icon;
 
-    private final SynthUI[] synths = new SynthUI[4];
+    private final int xSynths = 4;
+    private final int ySynths = 4;
+    private final SynthUI[] synths = new SynthUI[xSynths * ySynths];
 
     @Override
     public void setup()
@@ -48,13 +51,26 @@ public class MainWindow extends PApplet
     @Override
     public void draw()
     {
-        for(int i = 0; i < synths.length; i++)
+        for(int x = 0; x < xSynths; x++)
         {
-            synths[i].updateSize(i / 2 * width / 2, i % 2 * height / 2, width / 2, height / 2);
-            synths[i].display();
+            for(int y = 0; y < ySynths; y++)
+            {
+                synths[x * ySynths + y].updateSize(x * width / xSynths, y * height / ySynths, width / xSynths, height / ySynths);
+                synths[x * ySynths + y].display();
+            }
         }
     }
 
+    @Override
+    protected PSurface initSurface()
+    {
+        PSurface sur = super.initSurface();
+        PSurfaceAWT awt = (PSurfaceAWT) surface;
+        PSurfaceAWT.SmoothCanvas can = (PSurfaceAWT.SmoothCanvas) awt.getNative();
+        Frame f = can.getFrame();
+        f.setUndecorated(true);
+        return sur;
+    }
     public void controlEvent(ControlEvent event)
     {
         if(!event.isController())
@@ -70,15 +86,18 @@ public class MainWindow extends PApplet
 
     private void initializeSynths()
     {
-        for(int i = 0; i < synths.length; i++)
+        for(int x = 0; x < xSynths; x++)
         {
-            try
+            for(int y = 0; y < ySynths; y++)
             {
-                synths[i] = new SynthUI(this, i / 2 * width / 2, i % 2 * height / 2, width / 2, height / 2);
-            } catch(IllegalStateException ignored)
-            {
-                Logger.log("Could not initialize synth-UI for synth " + i, String.valueOf(LoggerManager.Template.DEBUG_WARNING));
-                return;
+                try
+                {
+                    synths[x * ySynths + y] = new SynthUI(this, x * width / xSynths, y * height / ySynths, width / xSynths, height / ySynths);
+                } catch(IllegalStateException ignored)
+                {
+                    Logger.log("Could not initialize synth-UI for synth " + x + ", " + y, String.valueOf(LoggerManager.Template.DEBUG_WARNING));
+                    return;
+                }
             }
         }
     }
