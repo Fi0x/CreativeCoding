@@ -1,32 +1,21 @@
 package com.fi0x.cc.project.synth.synthesizers;
 
-import com.fi0x.cc.Startup;
+import com.fi0x.cc.project.LoggerManager;
+import com.fi0x.cc.project.synth.SynthManager;
 import io.fi0x.javalogger.logging.Logger;
 
 import javax.sound.midi.*;
 
 public abstract class AbstractSynth implements ISynthesizer
 {
-    protected MidiChannel channel;
-    Instrument[] instruments;
+    protected final MidiChannel channel;
 
     public AbstractSynth(int mappedChannel)
     {
-        try
-        {
-            Synthesizer synth = MidiSystem.getSynthesizer();
-            synth.open();
-
-            synth.loadAllInstruments(synth.getDefaultSoundbank());
-            MidiChannel[] channels = synth.getChannels();
-            channel = channels[Math.min(mappedChannel, channels.length - 1)];
-            instruments = synth.getLoadedInstruments();
-        } catch(MidiUnavailableException ignored)
-        {
-            Logger.getInstance().log("Could not assign channel " + mappedChannel + " for " + getInstrumentName(), String.valueOf(Startup.LogTemplate.INFO_YELLOW));
-        }
-
+        channel = SynthManager.getChannel(mappedChannel);
     }
+
+    @Override
     public void playNote(int octave, char note, int volume, int length)
     {
         channel.noteOn(MusicConverter.getNoteValue(note, octave), volume);
@@ -38,14 +27,38 @@ public abstract class AbstractSynth implements ISynthesizer
         }
         channel.noteOff(note);
     }
+
+    @Override
     public String getInstrumentName()
     {
-        return instruments[channel.getProgram()].toString().split("bank")[0];
+        return SynthManager.getInstrumentName(channel.getProgram());
     }
 
     @Override
     public void mute(boolean state)
     {
         channel.setMute(state);
+    }
+
+    @Override
+    public void nextInstrument()
+    {
+        int programNumber = channel.getProgram() + 1;
+        if(programNumber > 127)
+            programNumber = 0;
+
+        channel.programChange(programNumber);
+        Logger.log("Changed synth to " + SynthManager.getInstrumentName(channel.getProgram()), String.valueOf(LoggerManager.Template.DEBUG_INFO));
+    }
+
+    @Override
+    public void previousInstrument()
+    {
+        int programNumber = channel.getProgram() - 1;
+        if(programNumber < 0)
+            programNumber = 127;
+
+        channel.programChange(programNumber);
+        Logger.log("Changed synth to " + SynthManager.getInstrumentName(channel.getProgram()), String.valueOf(LoggerManager.Template.DEBUG_INFO));
     }
 }
