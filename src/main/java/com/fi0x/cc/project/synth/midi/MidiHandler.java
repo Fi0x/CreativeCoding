@@ -45,14 +45,24 @@ public class MidiHandler
 
         public void send(MidiMessage msg, long timeStamp)
         {
-            int channel = msg.getMessage()[0];
+            String status = Integer.toBinaryString(msg.getStatus());
+            if(!status.startsWith("1001") && !status.startsWith("1000"))
+                return;
+
+            int channel = Integer.parseInt(status.substring(4), 2);
             int note = msg.getMessage()[1];
             int volume = msg.getMessage()[2];
-            Logger.getInstance().log("midi received: " + msg.getStatus(), String.valueOf(Startup.LogTemplate.DEBUG_INFO));
+
+            midiCommand(status.startsWith("1001"), channel, note, volume);
         }
 
         public void close()
         {
         }
+    }
+
+    private static void midiCommand(boolean turnOn, int channel, int note, int volume)
+    {
+        System.out.println((turnOn ? "Turn on: C=" : "Turn off: C=") + channel + ", Note=" + note + ", Volume=" + volume);
     }
 }
