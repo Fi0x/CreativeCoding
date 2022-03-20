@@ -1,6 +1,6 @@
 package com.fi0x.cc.project.synth.UDP;
 
-import com.fi0x.cc.Startup;
+import com.fi0x.cc.exercises.Startup;
 import io.fi0x.javalogger.logging.Logger;
 
 import java.io.IOException;

@@ -1,6 +1,6 @@
 package com.fi0x.cc.project.synth;
 
-import com.fi0x.cc.Startup;
+import com.fi0x.cc.exercises.Startup;
 import com.fi0x.cc.project.synth.UDP.UDPProcessor;
 import com.fi0x.cc.project.synth.midi.MidiHandler;
 import com.fi0x.cc.project.synth.synthesizers.*;

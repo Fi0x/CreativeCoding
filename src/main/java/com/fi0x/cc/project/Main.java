@@ -1,6 +1,5 @@
-package com.fi0x.cc;
+package com.fi0x.cc.project;
 
-import com.fi0x.cc.project.LoggerManager;
 import io.fi0x.javalogger.logging.Logger;
 import processing.core.PApplet;
 

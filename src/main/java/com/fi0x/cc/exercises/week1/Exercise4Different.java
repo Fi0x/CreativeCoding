@@ -1,4 +1,4 @@
-package com.fi0x.cc.week1;
+package com.fi0x.cc.exercises.week1;
 
 import processing.core.PApplet;
 import processing.core.PImage;

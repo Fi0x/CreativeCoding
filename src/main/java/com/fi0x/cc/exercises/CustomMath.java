@@ -1,4 +1,4 @@
-package com.fi0x.cc;
+package com.fi0x.cc.exercises;
 
 public class CustomMath
 {

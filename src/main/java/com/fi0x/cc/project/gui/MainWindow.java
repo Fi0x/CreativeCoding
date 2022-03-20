@@ -18,8 +18,8 @@ public class MainWindow extends PApplet
         surface.setResizable(true);
         surface.setIcon(icon);
         surface.setTitle("Computer-Grafik-Projekt");
-        surface.setSize(displayWidth / 2, displayHeight / 2);
-        surface.setLocation(displayWidth / 4, displayHeight / 4);
+        surface.setSize(displayWidth, displayHeight);
+        surface.setLocation(0, 0);
         frameRate(60);
         background(0);
         noStroke();
@@ -35,8 +35,11 @@ public class MainWindow extends PApplet
     @Override
     public void draw()
     {
-        for(SynthUI s : synths)
-            s.display();
+        for(int i = 0; i < synths.length; i++)
+        {
+            synths[i].updateSize(i / 2 * width / 2, i % 2 * height / 2, width / 2, height / 2);
+            synths[i].display();
+        }
     }
 
     public void controlEvent(ControlEvent event)

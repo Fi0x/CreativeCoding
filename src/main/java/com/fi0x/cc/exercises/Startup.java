@@ -1,4 +1,4 @@
-package com.fi0x.cc;
+package com.fi0x.cc.exercises;
 
 import com.fi0x.cc.project.synth.SynthPlayer;
 import io.fi0x.javalogger.logging.Logger;
@@ -27,50 +27,49 @@ public class Startup
         Logger.createNewTemplate(String.valueOf(LogTemplate.DEBUG_ERROR), Logger.RED, "ERR", false, false, true, false);
 
         Scanner sc = new Scanner(System.in);
-        Logger.getInstance().log("Welcome to my Creative Coding Lecture Project!", String.valueOf(LogTemplate.INFO_WHITE));
+        Logger.log("Welcome to my Creative Coding Lecture Project!", String.valueOf(LogTemplate.INFO_WHITE));
         showMainMenu(sc);
     }
 
     private static void showMainMenu(Scanner sc)
     {
-        Logger.getInstance().log("Please type in the number of the exercise you would like to see(1-8): ", String.valueOf(LogTemplate.INFO_BLUE));
+        Logger.log("Please type in the number of the exercise you would like to see(1-8): ", String.valueOf(LogTemplate.INFO_BLUE));
         String input = sc.next();
 
         switch(input)
         {
             case "1":
-                Logger.getInstance().log("Starting exercise 1-1", String.valueOf(LogTemplate.INFO_GREEN));
-                PApplet.main("com.fi0x.cc.week1.Exercise1");
+                Logger.log("Starting exercise 1-1", String.valueOf(LogTemplate.INFO_GREEN));
+                PApplet.main("com.fi0x.cc.exercises.week1.Exercise1");
                 break;
             case "2":
-                Logger.getInstance().log("Starting exercise 1-3", String.valueOf(LogTemplate.INFO_GREEN));
-                PApplet.main("com.fi0x.cc.week1.Exercise3");
+                Logger.log("Starting exercise 1-3", String.valueOf(LogTemplate.INFO_GREEN));
+                PApplet.main("com.fi0x.cc.exercises.week1.Exercise3");
                 break;
             case "3":
-                Logger.getInstance().log("Starting exercise 1-3 variant", String.valueOf(LogTemplate.INFO_GREEN));
-                PApplet.main("com.fi0x.cc.week1.Exercise3Different");
+                Logger.log("Starting exercise 1-3 variant", String.valueOf(LogTemplate.INFO_GREEN));
+                PApplet.main("com.fi0x.cc.exercises.week1.Exercise3Different");
                 break;
             case "4":
-                Logger.getInstance().log("Starting exercise 1-4", String.valueOf(LogTemplate.INFO_GREEN));
-                PApplet.main("com.fi0x.cc.week1.Exercise4");
+                Logger.log("Starting exercise 1-4", String.valueOf(LogTemplate.INFO_GREEN));
+                PApplet.main("com.fi0x.cc.exercises.week1.Exercise4");
                 break;
             case "5":
-                Logger.getInstance().log("Starting exercise 1-4 variant", String.valueOf(LogTemplate.INFO_GREEN));
-                PApplet.main("com.fi0x.cc.week1.Exercise4Different");
+                Logger.log("Starting exercise 1-4 variant", String.valueOf(LogTemplate.INFO_GREEN));
+                PApplet.main("com.fi0x.cc.exercises.week1.Exercise4Different");
                 break;
             case "6":
-                Logger.getInstance().log("Starting exercise 1-4 variant", String.valueOf(LogTemplate.INFO_GREEN));
-                PApplet.main("com.fi0x.cc.week1.Exercise4Pointillism");
+                Logger.log("Starting exercise 1-4 variant", String.valueOf(LogTemplate.INFO_GREEN));
+                PApplet.main("com.fi0x.cc.exercises.week1.Exercise4Pointillism");
                 break;
             case "7":
-                Logger.getInstance().log("Starting Synthesizer", String.valueOf(LogTemplate.INFO_GREEN));
-                SynthPlayer.getInstance().startListening();
+                Logger.log("Nothing here yet", String.valueOf(LogTemplate.INFO_GREEN));
                 break;
             case "8":
-                Logger.getInstance().log("Nothing here yet", String.valueOf(LogTemplate.INFO_GREEN));
+                Logger.log("Nothing here yet", String.valueOf(LogTemplate.INFO_GREEN));
                 break;
             default:
-                Logger.getInstance().log("No valid input, please try a valid number(1-8): ", String.valueOf(LogTemplate.INFO_RED));
+                Logger.log("No valid input, please try a valid number(1-8): ", String.valueOf(LogTemplate.INFO_RED));
                 showMainMenu(sc);
                 break;
         }
