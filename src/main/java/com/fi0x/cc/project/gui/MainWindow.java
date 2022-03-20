@@ -1,10 +1,16 @@
 package com.fi0x.cc.project.gui;
 
 import com.fi0x.cc.project.LoggerManager;
+import com.fi0x.cc.project.synth.UDP.UDPProcessor;
+import com.fi0x.cc.project.synth.midi.MidiHandler;
 import controlP5.ControlEvent;
 import io.fi0x.javalogger.logging.Logger;
+import processing.awt.PSurfaceAWT;
 import processing.core.PApplet;
 import processing.core.PImage;
+
+import javax.swing.*;
+import java.awt.*;
 
 public class MainWindow extends PApplet
 {
@@ -18,13 +24,20 @@ public class MainWindow extends PApplet
         surface.setResizable(true);
         surface.setIcon(icon);
         surface.setTitle("Computer-Grafik-Projekt");
-        surface.setSize(displayWidth, displayHeight);
-        surface.setLocation(0, 0);
+        surface.setSize(displayWidth / 2, displayHeight / 2);
+        surface.setLocation(displayWidth / 4, displayHeight / 4);
+
+        JFrame f = (JFrame) ((PSurfaceAWT.SmoothCanvas)getSurface().getNative()).getFrame();
+        f.setLocation(0, 0);
+        f.setExtendedState(f.getExtendedState() | Frame.MAXIMIZED_BOTH);
+
         frameRate(60);
         background(0);
         noStroke();
 
         initializeSynths();
+        new MidiHandler();
+        new Thread(() -> UDPProcessor.getInstance().run()).start();
     }
     @Override
     public void settings()

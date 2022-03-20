@@ -9,9 +9,11 @@ import javax.sound.midi.*;
 public abstract class AbstractSynth implements ISynthesizer
 {
     protected final MidiChannel channel;
+    public final int channelNumber;
 
     public AbstractSynth(int mappedChannel)
     {
+        channelNumber = mappedChannel;
         channel = SynthManager.getChannel(mappedChannel);
     }
 
@@ -27,17 +29,50 @@ public abstract class AbstractSynth implements ISynthesizer
         }
         channel.noteOff(note);
     }
+    @Override
+    public void sendMidiCommand(MidiMessage message)
+    {
+        String status = Integer.toBinaryString(message.getStatus());
+        byte[] data = message.getMessage();
+
+        switch(status.substring(0, 4))
+        {
+            case "1000":
+                channel.noteOff(data[1], data[2]);
+                break;
+            case "1001":
+                channel.noteOn(data[1], data[2]);
+                break;
+            case "1010":
+                channel.setPolyPressure(data[1], data[2]);
+                break;
+            case "1011":
+                channel.controlChange(data[1], data[2]);
+                break;
+            case "1100":
+                channel.programChange(data[1]);
+                break;
+            case "1101":
+                channel.setChannelPressure(data[1]);
+                break;
+            case "1110":
+                channel.setPitchBend(data[1]);
+                break;
+        }
+    }
 
     @Override
     public String getInstrumentName()
     {
-        return SynthManager.getInstrumentName(channel.getProgram());
+        return SynthManager.getInstrumentName(channel.getProgram()).replace("Instrument: ", "");
     }
 
     @Override
     public void mute(boolean state)
     {
         channel.setMute(state);
+        channel.allNotesOff();
+        channel.allSoundOff();
     }
 
     @Override

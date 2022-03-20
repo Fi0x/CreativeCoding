@@ -68,6 +68,26 @@ public class SynthManager
         return synths.get(nextSynthToLoad - 1);
     }
 
+    public static void playSynth(int deviceChannel, int octave, char note, int volume, int length)
+    {
+        if(synths.size() - 1 < deviceChannel)
+            return;
+
+        ISynthesizer synth = synths.get(deviceChannel);
+        if(synth == null)
+            return;
+
+        new Thread(() -> synth.playNote(octave, note, volume, length)).start();
+    }
+    public static void handleMidiCommand(MidiMessage msg)
+    {
+        String status = Integer.toBinaryString(msg.getStatus());
+        int midiChannel = Integer.parseInt(status.substring(4), 2);
+        if(midiChannel >= synths.size())
+            return;
+        synths.get(midiChannel).sendMidiCommand(msg);
+    }
+
     public static String getInstrumentName(int programNumber)
     {
         return instruments[programNumber].toString().split("bank")[0];

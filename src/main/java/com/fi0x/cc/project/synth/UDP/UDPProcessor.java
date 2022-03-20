@@ -1,7 +1,7 @@
 package com.fi0x.cc.project.synth.UDP;
 
 import com.fi0x.cc.exercises.Startup;
-import com.fi0x.cc.project.synth.SynthPlayer;
+import com.fi0x.cc.project.synth.SynthManager;
 import io.fi0x.javalogger.logging.Logger;
 
 import java.net.DatagramPacket;
@@ -53,11 +53,11 @@ public class UDPProcessor
                 int volume = getIntFromChar((char) buffer.get(3));
                 int length = getIntFromChar((char) buffer.get(4));
 
-                SynthPlayer.getInstance().playSynth(channel, octave, note, volume, length);
+                SynthManager.playSynth(channel, octave, note, volume, length);
             }
             catch(Exception ignored)
             {
-                Logger.getInstance().log("Could not decode a UDP note", String.valueOf(Startup.LogTemplate.DEBUG_WARNING));
+                Logger.log("Could not decode a UDP note", String.valueOf(Startup.LogTemplate.DEBUG_WARNING));
             }
         }
     }

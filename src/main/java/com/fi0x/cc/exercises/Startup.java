@@ -1,6 +1,5 @@
 package com.fi0x.cc.exercises;
 
-import com.fi0x.cc.project.synth.SynthPlayer;
 import io.fi0x.javalogger.logging.Logger;
 import processing.core.PApplet;
 

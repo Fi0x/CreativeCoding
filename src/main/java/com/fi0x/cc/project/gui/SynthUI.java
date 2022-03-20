@@ -1,6 +1,7 @@
 package com.fi0x.cc.project.gui;
 
 import com.fi0x.cc.project.synth.SynthManager;
+import com.fi0x.cc.project.synth.synthesizers.AbstractSynth;
 import com.fi0x.cc.project.synth.synthesizers.ISynthesizer;
 import controlP5.ControlEvent;
 import controlP5.ControlP5;
@@ -40,6 +41,10 @@ public class SynthUI
 
         parentScreen.fill(255);
         parentScreen.rect(5, 5, xSize - 10, ySize - 10);
+        parentScreen.textSize(14);
+        parentScreen.fill(0);
+        parentScreen.text(linkedSynth.getInstrumentName(), (float) xSize / 2 - 100, 10, 200, 30);
+        parentScreen.text("Channel: " + ((AbstractSynth) linkedSynth).channelNumber, 10, 45, 100, 30);
 
         parentScreen.translate(-x, -y);
     }
