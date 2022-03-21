@@ -14,6 +14,7 @@ public class Main
         }
 
         LoggerManager.initializeTemplates();
+        Logger.getInstance().setSmallLog(true);
 
         PApplet.main("com.fi0x.cc.project.gui.MainWindow");
     }

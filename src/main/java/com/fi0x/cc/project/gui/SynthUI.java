@@ -4,10 +4,10 @@ import com.fi0x.cc.project.LoggerManager;
 import com.fi0x.cc.project.synth.SynthManager;
 import com.fi0x.cc.project.synth.synthesizers.AbstractSynth;
 import com.fi0x.cc.project.synth.synthesizers.ISynthesizer;
-import controlP5.CColor;
 import controlP5.ControlEvent;
 import controlP5.ControlP5;
 import controlP5.DropdownList;
+import io.fi0x.javalogger.logging.LogEntry;
 import io.fi0x.javalogger.logging.Logger;
 import processing.core.PApplet;
 
@@ -71,21 +71,24 @@ public class SynthUI
         if(event.getController() == control.getController("Next Synth"))
             linkedSynth.nextInstrument();
         if(event.getController() == control.getController("DDL"))
-            linkedSynth.setInstrument(SynthManager.getInstrumentName((int) event.getValue()));
+            linkedSynth.setInstrument(SynthManager.getAllInstrumentNames()[(int) event.getValue()]);
         if(event.getController() == control.getController("Open Orca"))
         {
             try
             {
                 new ProcessBuilder("E:\\Users\\Fi0x\\Documents\\Programmieren\\ORCA\\Orca Tool\\Orca.exe").start();
-            } catch(IOException ignored)
+            } catch(IOException e)
             {
-                Logger.log("Could not open ORCA", String.valueOf(LoggerManager.Template.DEBUG_WARNING));
+                Logger.log(new LogEntry("Could not open ORCA", String.valueOf(LoggerManager.Template.DEBUG_WARNING)).EXCEPTION(e));
             }
         }
     }
 
     private void addButtons()
     {
+        if(((AbstractSynth) linkedSynth).channelNumber == 9)
+            return;
+
         control.addButton("Previous Synth")
                 .setSize(100, 30)
                 .setValue(0);
@@ -110,15 +113,15 @@ public class SynthUI
     }
     private void updateButtonPositions()
     {
-        control.getController("Previous Synth")
-                .setPosition(x + 10, y + 10);
-        control.getController("Next Synth")
-                .setPosition(x + xSize - 100 - 10, y + 10);
-        DropdownList ddl = (DropdownList) control.getController("DDL")
-                .setPosition(x + (float) xSize / 2 - 100, y + 10 + 35);
-        ddl.setSize(200, ySize - 10 - 10 - 35);
         try
         {
+            control.getController("Previous Synth")
+                    .setPosition(x + 10, y + 10);
+            control.getController("Next Synth")
+                    .setPosition(x + xSize - 100 - 10, y + 10);
+            DropdownList ddl = (DropdownList) control.getController("DDL")
+                    .setPosition(x + (float) xSize / 2 - 100, y + 10 + 35);
+            ddl.setSize(200, ySize - 10 - 10 - 35);
             control.getController("Open Orca")
                     .setPosition(x + 10, y + ySize - 30 - 10);
         } catch(Exception ignored)

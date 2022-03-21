@@ -6,6 +6,7 @@ import io.fi0x.javalogger.logging.Logger;
 
 import javax.sound.midi.*;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class SynthManager
 {
@@ -26,22 +27,22 @@ public class SynthManager
 
         synths = new ArrayList<>();
 
-        synths.add(new BassSynth(synths.size()));
-        synths.add(new ChoirSynth(synths.size()));
-        synths.add(new CleanGuitarSynth(synths.size()));
-        synths.add(new Drum1Synth(synths.size()));
-        synths.add(new Drum2Synth(synths.size()));
-        synths.add(new EPianoSynth(synths.size()));
-        synths.add(new HarpSynth(synths.size()));
-        synths.add(new JazzGuitarSynth(synths.size()));
-        synths.add(new MarimbaSynth(synths.size()));
-        synths.add(new EmptySynth(synths.size()));
-        synths.add(new OrganSynth(synths.size()));
-        synths.add(new PianoSynth(synths.size()));
-        synths.add(new TremoloSynth(synths.size()));
-        synths.add(new VibraphoneSynth(synths.size()));
-        synths.add(new ViolinSynth(synths.size()));
-        synths.add(new PlaceholderSynth(synths.size()));
+        synths.add(new BassSynth(0));
+        synths.add(new ChoirSynth(1));
+        synths.add(new CleanGuitarSynth(2));
+        synths.add(new PlaceholderSynth(3));
+        synths.add(new PlaceholderSynth(4));
+        synths.add(new EPianoSynth(5));
+        synths.add(new HarpSynth(6));
+        synths.add(new JazzGuitarSynth(7));
+        synths.add(new MarimbaSynth(8));
+        synths.add(new EmptySynth(9));
+        synths.add(new OrganSynth(10));
+        synths.add(new PianoSynth(11));
+        synths.add(new TremoloSynth(12));
+        synths.add(new VibraphoneSynth(13));
+        synths.add(new ViolinSynth(14));
+        synths.add(new PlaceholderSynth(15));
 
         Logger.log("Loaded synths", String.valueOf(LoggerManager.Template.DEBUG_INFO));
     }
@@ -96,7 +97,13 @@ public class SynthManager
     {
         ArrayList<String> list = new ArrayList<>();
         for(Instrument i : instruments)
+        {
+            if(i.toString().startsWith("Drumkit"))
+                continue;
             list.add(i.toString().split("bank")[0]);
+        }
+
+        Collections.sort(list);
 
         return list.toArray(new String[0]);
     }
