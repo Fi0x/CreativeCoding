@@ -11,7 +11,10 @@ import io.fi0x.javalogger.logging.LogEntry;
 import io.fi0x.javalogger.logging.Logger;
 import processing.core.PApplet;
 
+import java.awt.*;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 public class SynthUI
 {
@@ -106,11 +109,20 @@ public class SynthUI
                 new ProcessBuilder("E:\\Users\\Fi0x\\Documents\\Programmieren\\ORCA\\Orca Tool\\Orca.exe").start();
             } catch(IOException e)
             {
-                try {
-                    Runtime.getRuntime().exec("/home/fi0x/Documents/ORCA/Orca");
-                } catch (IOException ex)
+                Logger.log(new LogEntry("Could not open ORCA in Windows location, trying Linux instead", String.valueOf(LoggerManager.Template.DEBUG_WARNING)).EXCEPTION(e));
+                try
                 {
-                    Logger.log(new LogEntry("Could not open ORCA", String.valueOf(LoggerManager.Template.DEBUG_WARNING)).EXCEPTION(e));
+                    Runtime.getRuntime().exec("/home/fi0x/Documents/ORCA/Orca");
+                } catch(IOException e1)
+                {
+                    Logger.log(new LogEntry("Could not open ORCA in Linux location, trying browser instead", String.valueOf(LoggerManager.Template.DEBUG_WARNING)).EXCEPTION(e1));
+                    try
+                    {
+                        Desktop.getDesktop().browse(new URI("https://hundredrabbits.github.io/Orca/"));
+                    } catch(IOException | URISyntaxException e2)
+                    {
+                        Logger.log(new LogEntry("Could not open ORCA", String.valueOf(LoggerManager.Template.DEBUG_WARNING)).EXCEPTION(e2));
+                    }
                 }
             }
         }

@@ -26,7 +26,7 @@ public class MainWindow extends PApplet
     {
         surface.setResizable(true);
         surface.setIcon(icon);
-        surface.setTitle("Computer-Grafik-Projekt");
+        surface.setTitle("Computer-Grafik-Projekt ~Main~");
         surface.setSize(displayWidth / 2, displayHeight / 2);
         surface.setLocation(displayWidth / 4, displayHeight / 4);
 

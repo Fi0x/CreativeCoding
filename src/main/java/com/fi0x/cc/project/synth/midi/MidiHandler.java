@@ -9,23 +9,8 @@ import java.util.List;
 
 public class MidiHandler
 {
-    private MidiDevice customMidi;
-
     public MidiHandler()
     {
-        customMidi = new CustomMidi();
-        List<Transmitter> customTrans = customMidi.getTransmitters();
-        for (Transmitter t : customTrans)
-            t.setReceiver(new MidiInputReceiver(customMidi.getDeviceInfo().toString()));
-        try
-        {
-            customMidi.open();
-            Logger.log("Custom midi opened", String.valueOf(LoggerManager.Template.DEBUG_INFO));
-        } catch (MidiUnavailableException ignored)
-        {
-            Logger.log("Could not open custom midi-device", String.valueOf(LoggerManager.Template.DEBUG_WARNING));
-        }
-
         Logger.log("Loading MIDI-Devices", String.valueOf(LoggerManager.Template.DEBUG_INFO));
         MidiDevice.Info[] infos = MidiSystem.getMidiDeviceInfo();
         for(MidiDevice.Info info : infos)

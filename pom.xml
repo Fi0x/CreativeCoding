@@ -36,5 +36,12 @@
             <artifactId>JavaLogger</artifactId>
             <version>1.1.1</version>
         </dependency>
+        <dependency>
+            <groupId>io.github.sojamo</groupId>
+            <artifactId>controlp5</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/downloadedLibraries/controlP5.jar</systemPath>
+        </dependency>
     </dependencies>
 </project>

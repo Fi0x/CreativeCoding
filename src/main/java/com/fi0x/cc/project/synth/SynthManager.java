@@ -25,9 +25,6 @@ public class SynthManager
         channels = synth.getChannels();
         instruments = synth.getLoadedInstruments();
 
-        for(Instrument i : instruments)
-            System.out.println(i);
-
         synths = new ArrayList<>();
 
         synths.add(new BassSynth(0));
@@ -85,7 +82,6 @@ public class SynthManager
     }
     public static void handleMidiCommand(MidiMessage msg)
     {
-        System.out.println("Status: " + msg.getStatus());
         String status = Integer.toBinaryString(msg.getStatus());
         int midiChannel = Integer.parseInt(status.substring(4), 2);
         if(midiChannel >= synths.size())
