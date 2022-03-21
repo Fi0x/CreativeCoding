@@ -25,12 +25,15 @@ public class SynthManager
         channels = synth.getChannels();
         instruments = synth.getLoadedInstruments();
 
+        for(Instrument i : instruments)
+            System.out.println(i);
+
         synths = new ArrayList<>();
 
         synths.add(new BassSynth(0));
         synths.add(new ChoirSynth(1));
         synths.add(new CleanGuitarSynth(2));
-        synths.add(new PlaceholderSynth(3));
+        synths.add(new ChurchOrganSynth(3));
         synths.add(new PlaceholderSynth(4));
         synths.add(new EPianoSynth(5));
         synths.add(new HarpSynth(6));
@@ -82,6 +85,7 @@ public class SynthManager
     }
     public static void handleMidiCommand(MidiMessage msg)
     {
+        System.out.println("Status: " + msg.getStatus());
         String status = Integer.toBinaryString(msg.getStatus());
         int midiChannel = Integer.parseInt(status.substring(4), 2);
         if(midiChannel >= synths.size())

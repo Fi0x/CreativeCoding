@@ -1,6 +1,7 @@
 package com.fi0x.cc.project.synth.synthesizers;
 
 import com.fi0x.cc.project.LoggerManager;
+import com.fi0x.cc.project.gui.SynthUI;
 import com.fi0x.cc.project.synth.SynthManager;
 import io.fi0x.javalogger.logging.Logger;
 
@@ -10,6 +11,7 @@ public abstract class AbstractSynth implements ISynthesizer
 {
     protected final MidiChannel channel;
     public final int channelNumber;
+    private SynthUI linkedUI;
 
     public AbstractSynth(int mappedChannel)
     {
@@ -39,9 +41,11 @@ public abstract class AbstractSynth implements ISynthesizer
         {
             case "1000":
                 channel.noteOff(data[1], data[2]);
+                linkedUI.noteTriggered(false);
                 break;
             case "1001":
                 channel.noteOn(data[1], data[2]);
+                linkedUI.noteTriggered(true);
                 break;
             case "1010":
                 channel.setPolyPressure(data[1], data[2]);
@@ -56,7 +60,8 @@ public abstract class AbstractSynth implements ISynthesizer
                 channel.setChannelPressure(data[1]);
                 break;
             case "1110":
-                channel.setPitchBend(data[1]);
+                String binary = Integer.toBinaryString(data[1]) + Integer.toBinaryString(data[2]);
+                channel.setPitchBend(Integer.parseInt(binary, 2));
                 break;
         }
     }
@@ -73,8 +78,12 @@ public abstract class AbstractSynth implements ISynthesizer
     public void mute(boolean state)
     {
         channel.setMute(state);
-        channel.allNotesOff();
-        channel.allSoundOff();
+        if(state)
+        {
+            channel.allNotesOff();
+            channel.allSoundOff();
+        }
+        linkedUI.setMute(state);
     }
 
     @Override
@@ -109,5 +118,11 @@ public abstract class AbstractSynth implements ISynthesizer
 
         channel.programChange(programNumber);
         Logger.log("Changed synth to " + SynthManager.getInstrumentName(channel.getProgram()), String.valueOf(LoggerManager.Template.DEBUG_INFO));
+    }
+
+    @Override
+    public void linkUI(SynthUI uiElement)
+    {
+        linkedUI = uiElement;
     }
 }

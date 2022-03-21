@@ -25,11 +25,16 @@ public class SynthUI
     private final PApplet parentScreen;
     private final ControlP5 control;
 
+    private boolean playStatus;
+    private boolean muteStatus;
+
     public SynthUI(PApplet parent, int xPos, int yPos, int w, int h) throws IllegalStateException
     {
         linkedSynth = SynthManager.getNextSynth();
         if(linkedSynth == null)
             throw new IllegalStateException("No Synths loaded that could be linked.");
+
+        linkedSynth.linkUI(this);
 
         x = xPos;
         y = yPos;
@@ -52,6 +57,20 @@ public class SynthUI
         parentScreen.text(linkedSynth.getInstrumentName(), (float) xSize / 2 - 100, 10, 200, 30);
         parentScreen.text("Channel: " + ((AbstractSynth) linkedSynth).channelNumber, 10, 45, 100, 30);
 
+        parentScreen.text("Playing", 10, 85, 75, 20);
+        parentScreen.text("Muted", 10, 110, 75, 20);
+
+        if(playStatus)
+            parentScreen.fill(255, 0, 0);
+        else
+            parentScreen.fill(0);
+        parentScreen.ellipse(100, 95, 20, 20);
+        if(muteStatus)
+            parentScreen.fill(255, 0, 0);
+        else
+            parentScreen.fill(0);
+        parentScreen.ellipse(100, 120, 20, 20);
+
         parentScreen.translate(-x, -y);
     }
     public void updateSize(int posX, int posY, int width, int height)
@@ -62,6 +81,14 @@ public class SynthUI
         ySize = height;
 
         updateButtonPositions();
+    }
+    public void noteTriggered(boolean turnedOn)
+    {
+        playStatus = turnedOn;
+    }
+    public void setMute(boolean isMuted)
+    {
+        muteStatus = isMuted;
     }
 
     public void buttonClicked(ControlEvent event)
