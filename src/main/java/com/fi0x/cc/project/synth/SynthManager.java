@@ -127,4 +127,15 @@ public class SynthManager
 
         return -1;
     }
+    public static int getProgramNumber(String midiName, String... alternativeName)
+    {
+        int number = getProgramNumber(midiName);
+        for (String nextName : alternativeName)
+        {
+            if(number >= 0)
+                break;
+            number = getProgramNumber(nextName);
+        }
+        return number;
+    }
 }

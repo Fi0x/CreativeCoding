@@ -106,7 +106,12 @@ public class SynthUI
                 new ProcessBuilder("E:\\Users\\Fi0x\\Documents\\Programmieren\\ORCA\\Orca Tool\\Orca.exe").start();
             } catch(IOException e)
             {
-                Logger.log(new LogEntry("Could not open ORCA", String.valueOf(LoggerManager.Template.DEBUG_WARNING)).EXCEPTION(e));
+                try {
+                    Runtime.getRuntime().exec("/home/fi0x/Documents/ORCA/Orca");
+                } catch (IOException ex)
+                {
+                    Logger.log(new LogEntry("Could not open ORCA", String.valueOf(LoggerManager.Template.DEBUG_WARNING)).EXCEPTION(e));
+                }
             }
         }
     }

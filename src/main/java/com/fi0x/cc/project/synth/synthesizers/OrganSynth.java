@@ -8,7 +8,7 @@ public class OrganSynth extends AbstractSynth
     {
         super(mappedChannel);
 
-        int programNumber = SynthManager.getProgramNumber("Instrument: Organ 1");
+        int programNumber = SynthManager.getProgramNumber("Instrument: Organ 1", "Instrument: Drawbar Organ");
         if(programNumber < 0)
             throw new NullPointerException("Instrument with specified name not found");
 

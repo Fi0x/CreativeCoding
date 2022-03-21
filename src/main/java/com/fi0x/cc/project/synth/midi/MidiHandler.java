@@ -9,17 +9,20 @@ import java.util.List;
 
 public class MidiHandler
 {
+    private List<Transmitter> transmitters;
+
     public MidiHandler()
     {
-        int openDevices = 0;
         MidiDevice device;
+
+        Logger.log("Loading MIDI-Devices", String.valueOf(LoggerManager.Template.DEBUG_INFO));
         MidiDevice.Info[] infos = MidiSystem.getMidiDeviceInfo();
         for(MidiDevice.Info info : infos)
         {
             try
             {
                 device = MidiSystem.getMidiDevice(info);
-                List<Transmitter> transmitters = device.getTransmitters();
+                transmitters = device.getTransmitters();
 
                 for(Transmitter transmitter : transmitters)
                     transmitter.setReceiver(new MidiInputReceiver(device.getDeviceInfo().toString()));
@@ -28,12 +31,11 @@ public class MidiHandler
                 trans.setReceiver(new MidiInputReceiver(device.getDeviceInfo().toString()));
 
                 device.open();
-                openDevices++;
+                Logger.log("\tFound device: " + info, String.valueOf(LoggerManager.Template.DEBUG_INFO));
             } catch(MidiUnavailableException ignored)
             {
             }
         }
-        Logger.log("Listening on " + openDevices + " MIDI-devices", String.valueOf(LoggerManager.Template.DEBUG_INFO));
     }
 
     public static class MidiInputReceiver implements Receiver

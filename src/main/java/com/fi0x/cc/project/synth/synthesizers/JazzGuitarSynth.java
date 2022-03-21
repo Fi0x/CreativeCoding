@@ -8,7 +8,7 @@ public class JazzGuitarSynth extends AbstractSynth
     {
         super(mappedChannel);
 
-        int programNumber = SynthManager.getProgramNumber("Instrument: Jazz Gt.");
+        int programNumber = SynthManager.getProgramNumber("Instrument: Jazz Gt.", "Instrument: Electric Guitar (jaz");
         if(programNumber < 0)
             throw new NullPointerException("Instrument with specified name not found");
 

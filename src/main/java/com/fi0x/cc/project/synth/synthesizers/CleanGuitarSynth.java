@@ -8,7 +8,7 @@ public class CleanGuitarSynth extends AbstractSynth
     {
         super(mappedChannel);
 
-        int programNumber = SynthManager.getProgramNumber("Instrument: Clean Gt.");
+        int programNumber = SynthManager.getProgramNumber("Instrument: Clean Gt.", "Instrument: Electric Guitar (cle");
         if(programNumber < 0)
             throw new NullPointerException("Instrument with specified name not found");
 

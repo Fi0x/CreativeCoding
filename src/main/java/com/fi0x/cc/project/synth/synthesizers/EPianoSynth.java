@@ -8,7 +8,7 @@ public class EPianoSynth extends AbstractSynth
     {
         super(mappedChannel);
 
-        int programNumber = SynthManager.getProgramNumber("Instrument: E.Piano 1");
+        int programNumber = SynthManager.getProgramNumber("Instrument: E.Piano 1", "Instrument: Electric Piano 1");
         if(programNumber < 0)
             throw new NullPointerException("Instrument with specified name not found");
 
