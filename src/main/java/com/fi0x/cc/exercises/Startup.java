@@ -66,7 +66,8 @@ public class Startup
                 PApplet.main("com.fi0x.cc.exercises.week2.Exercise1");
                 break;
             case "8":
-                Logger.log("Nothing here yet", String.valueOf(LogTemplate.INFO_GREEN));
+                Logger.log("Starting exercise 2-2", String.valueOf(LogTemplate.INFO_GREEN));
+                PApplet.main("com.fi0x.cc.exercises.week2.Exercise2");
                 break;
             default:
                 Logger.log("No valid input, please try a valid number(1-8): ", String.valueOf(LogTemplate.INFO_RED));

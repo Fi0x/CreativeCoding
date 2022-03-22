@@ -11,6 +11,7 @@ public class Exercise1 extends PApplet
     public void settings()
     {
         size(SIZE * TILE_SIZE, SIZE * TILE_SIZE);
+        smooth(0);
     }
     @Override
     public void setup()
@@ -20,22 +21,6 @@ public class Exercise1 extends PApplet
         noStroke();
     }
 
-    @Override
-    public void keyPressed()
-    {
-        if(key == ' ')
-        {
-            for(int x = 0; x <= (SIZE + 1) / 2; x++)
-            {
-                for(int y = 0; y <= (SIZE + 1) / 2; y++)
-                {
-                    fill(random(255), random(255), random(255));
-                    rect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-                    rect((SIZE - x) * TILE_SIZE, (SIZE - y) * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-                }
-            }
-        }
-    }
     @Override
     public void draw()
     {
