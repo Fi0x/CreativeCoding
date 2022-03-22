@@ -62,7 +62,8 @@ public class Startup
                 PApplet.main("com.fi0x.cc.exercises.week1.Exercise4Pointillism");
                 break;
             case "7":
-                Logger.log("Nothing here yet", String.valueOf(LogTemplate.INFO_GREEN));
+                Logger.log("Starting exercise 2-1", String.valueOf(LogTemplate.INFO_GREEN));
+                PApplet.main("com.fi0x.cc.exercises.week2.Exercise1");
                 break;
             case "8":
                 Logger.log("Nothing here yet", String.valueOf(LogTemplate.INFO_GREEN));

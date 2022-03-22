@@ -31,7 +31,7 @@ public class SynthManager
         synths.add(new ChoirSynth(1));
         synths.add(new CleanGuitarSynth(2));
         synths.add(new ChurchOrganSynth(3));
-        synths.add(new PlaceholderSynth(4));
+        synths.add(new SaxSynth(4));
         synths.add(new EPianoSynth(5));
         synths.add(new HarpSynth(6));
         synths.add(new JazzGuitarSynth(7));

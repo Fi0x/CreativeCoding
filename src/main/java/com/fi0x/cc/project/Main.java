@@ -17,5 +17,6 @@ public class Main
         Logger.getInstance().setSmallLog(true);
 
         PApplet.main("com.fi0x.cc.project.gui.MainWindow");
+        System.out.println("Wintergatan music: https://wintergatan.net/products/wintergatan-sheet-music-e-book");
     }
 }
