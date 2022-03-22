@@ -45,7 +45,7 @@ public class MainWindow extends PApplet
     @Override
     public void settings()
     {
-        icon = loadImage("logo.jpg");
+        icon = loadImage("images/logo.jpg");
     }
 
     @Override

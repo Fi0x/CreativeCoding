@@ -19,7 +19,7 @@ public class Exercise4Pointillism extends PApplet
     @Override
     public void settings()
     {
-        img = loadImage("bridge.jpg");
+        img = loadImage("images/bridge.jpg");
         sizeX = (int) (img.width * 0.5);
         sizeY = (int) (img.height * 0.5);
         size(sizeX, sizeY);

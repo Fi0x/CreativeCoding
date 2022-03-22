@@ -20,7 +20,7 @@ public class Exercise4 extends PApplet
     @Override
     public void settings()
     {
-        img = loadImage("bridge.jpg");
+        img = loadImage("images/bridge.jpg");
         sizeX = (img.width);
         sizeY = (img.height);
         size(sizeX, sizeY);
