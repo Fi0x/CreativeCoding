@@ -98,6 +98,10 @@ public class SynthUI
             parentScreen.fill(0);
         parentScreen.ellipse(100, 120, 20, 20);
 
+        parentScreen.translate((float) xSize / 2 - 10, (float) ySize / 2 - 10);
+        visualizer.display();
+        parentScreen.translate((float) -xSize / 2 + 10, (float) -ySize / 2 + 10);
+
         parentScreen.translate(-x, -y);
     }
     public void updateSize(int posX, int posY, int width, int height)

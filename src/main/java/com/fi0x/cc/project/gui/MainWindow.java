@@ -65,6 +65,7 @@ public class MainWindow extends PApplet
                 synths[x * ySynths + y].updateDisplay();
             }
         }
+        initialization = false;
     }
 
     @Override

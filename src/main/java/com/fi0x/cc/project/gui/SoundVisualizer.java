@@ -22,11 +22,17 @@ public class SoundVisualizer
     {
         synthesizer.linkVisualizer(this);
         parentScreen = parent;
+
+        xSize = w;
+        ySize = h;
     }
 
     public void display()
     {
         drawBackground();
+
+        if(lastActivity > parentScreen.frameRate * 5)
+            activeNotes.clear();
         drawNotes();
         lastActivity++;
     }
@@ -38,7 +44,7 @@ public class SoundVisualizer
 
     private void drawBackground()
     {
-        int background = lastActivity < 60 ? parentScreen.color(255 * pitchBendPercent, 50, 50) : parentScreen.color(0, 30, 50);
+        int background = lastActivity < parentScreen.frameRate ? parentScreen.color(255 * pitchBendPercent, 50, 50, 50) : parentScreen.color(0, 30, 50);
         parentScreen.fill(background);
         parentScreen.stroke(0);
         parentScreen.strokeWeight(2);
@@ -55,7 +61,9 @@ public class SoundVisualizer
                 parentScreen.stroke(0);
                 int xPos = (int) (((float) note.getKey()) / 128f * xSize);
                 parentScreen.line(xPos, ySize, xPos, 0);
-                //TODO: Draw something cooler
+                parentScreen.fill(0);
+                parentScreen.ellipse(xPos, parentScreen.random(ySize), 2, 2);
+                //TODO: Draw something cooler (volume?)
             }
         } catch(ConcurrentModificationException ignored)
         {
