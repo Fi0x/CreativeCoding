@@ -34,7 +34,7 @@ public class Exercise2 extends PApplet
         PImage invader = generateInvader();
         int invaderX = invadersDrawn % INVADERS * INVADER_SIZE * INVADER_DISPLAY_MULTI;
         int invaderY = invadersDrawn / INVADERS * INVADER_SIZE * INVADER_DISPLAY_MULTI;
-        image(invader, invaderX, invaderY, INVADER_DISPLAY_MULTI * INVADER_SIZE, INVADER_DISPLAY_MULTI * INVADER_SIZE);
+        image(invader, invaderX + 1, invaderY + 1, INVADER_DISPLAY_MULTI * INVADER_SIZE - 2, INVADER_DISPLAY_MULTI * INVADER_SIZE - 2);
 
         invadersDrawn++;
     }

@@ -32,7 +32,7 @@ public class Startup
 
     private static void showMainMenu(Scanner sc)
     {
-        Logger.log("Please type in the number of the exercise you would like to see(1-8): ", String.valueOf(LogTemplate.INFO_BLUE));
+        Logger.log("Please type in the number of the exercise you would like to see(1-9): ", String.valueOf(LogTemplate.INFO_BLUE));
         String input = sc.next();
 
         switch(input)
@@ -68,6 +68,10 @@ public class Startup
             case "8":
                 Logger.log("Starting exercise 2-2", String.valueOf(LogTemplate.INFO_GREEN));
                 PApplet.main("com.fi0x.cc.exercises.week2.Exercise2");
+                break;
+            case "9":
+                Logger.log("Starting exercise 2-3", String.valueOf(LogTemplate.INFO_GREEN));
+                PApplet.main("com.fi0x.cc.exercises.week2.Exercise3");
                 break;
             default:
                 Logger.log("No valid input, please try a valid number(1-8): ", String.valueOf(LogTemplate.INFO_RED));
