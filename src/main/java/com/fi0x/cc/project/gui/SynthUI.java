@@ -19,11 +19,15 @@ import java.net.URISyntaxException;
 public class SynthUI
 {
     private final ISynthesizer linkedSynth;
+    private final SoundVisualizer visualizer;
 
     private int x;
     private int y;
     private int xSize;
     private int ySize;
+
+    private boolean allowDropdownList = false;
+    private boolean allowInstrumentChanges = true;
 
     private final PApplet parentScreen;
     private final ControlP5 control;
@@ -38,6 +42,13 @@ public class SynthUI
             throw new IllegalStateException("No Synths loaded that could be linked.");
 
         linkedSynth.linkUI(this);
+        visualizer = new SoundVisualizer(parent, linkedSynth, w / 2, h / 2);
+
+        if(((AbstractSynth) linkedSynth).channelNumber == 9)
+        {
+            allowInstrumentChanges = false;
+            allowDropdownList = false;
+        }
 
         x = xPos;
         y = yPos;
@@ -53,15 +64,28 @@ public class SynthUI
     {
         parentScreen.translate(x, y);
 
-        parentScreen.fill(255);
+        parentScreen.fill(100);
         parentScreen.rect(5, 5, xSize - 10, ySize - 10);
         parentScreen.textSize(14);
         parentScreen.fill(0);
-        parentScreen.text(linkedSynth.getInstrumentName(), (float) xSize / 2 - 100, 10, 200, 30);
         parentScreen.text("Channel: " + ((AbstractSynth) linkedSynth).channelNumber, 10, 45, 100, 30);
 
         parentScreen.text("Playing", 10, 85, 75, 20);
         parentScreen.text("Muted", 10, 110, 75, 20);
+
+        parentScreen.translate((float) xSize / 2 - 10, (float) ySize / 2 - 10);
+        visualizer.display();
+        parentScreen.translate((float) -xSize / 2 + 10, (float) -ySize / 2 + 10);
+
+        parentScreen.translate(-x, -y);
+    }
+    public void updateDisplay()
+    {
+        parentScreen.translate(x, y);
+
+        parentScreen.textSize(14);
+        parentScreen.fill(0);
+        parentScreen.text(linkedSynth.getInstrumentName(), (float) xSize / 2 - 100, 10, 200, 30);
 
         if(playStatus)
             parentScreen.fill(255, 0, 0);
@@ -82,6 +106,8 @@ public class SynthUI
         y = posY;
         xSize = width;
         ySize = height;
+
+        visualizer.updateSize(width / 2, height / 2);
 
         updateButtonPositions();
     }
@@ -130,22 +156,26 @@ public class SynthUI
 
     private void addButtons()
     {
-        if(((AbstractSynth) linkedSynth).channelNumber == 9)
-            return;
+        if(allowInstrumentChanges)
+        {
+            control.addButton("Previous Synth")
+                    .setSize(100, 30)
+                    .setValue(0);
+            control.addButton("Next Synth")
+                    .setSize(100, 30)
+                    .setValue(0);
+        }
 
-        control.addButton("Previous Synth")
-                .setSize(100, 30)
-                .setValue(0);
-        control.addButton("Next Synth")
-                .setSize(100, 30)
-                .setValue(0);
-        control.addDropdownList("DDL")
-                .setSize(200, ySize - 10 - 10 - 35)
-                .setValue(0)
-                .setItemHeight(30)
-                .setBarHeight(30)
-                .setCaptionLabel("Select an instrument")
-                .addItems(SynthManager.getAllInstrumentNames());
+        if(allowDropdownList)
+        {
+            control.addDropdownList("DDL")
+                    .setSize(200, ySize - 10 - 10 - 35)
+                    .setValue(0)
+                    .setItemHeight(30)
+                    .setBarHeight(30)
+                    .setCaptionLabel("Select an instrument")
+                    .addItems(SynthManager.getAllInstrumentNames());
+        }
 
         if(x + y == 0)
             control.addButton("Open Orca")
@@ -159,15 +189,26 @@ public class SynthUI
     {
         try
         {
-            control.getController("Previous Synth")
-                    .setPosition(x + 10, y + 10);
-            control.getController("Next Synth")
-                    .setPosition(x + xSize - 100 - 10, y + 10);
-            DropdownList ddl = (DropdownList) control.getController("DDL")
-                    .setPosition(x + (float) xSize / 2 - 100, y + 10 + 35);
-            ddl.setSize(200, ySize - 10 - 10 - 35);
-            control.getController("Open Orca")
-                    .setPosition(x + 10, y + ySize - 30 - 10);
+            if(allowInstrumentChanges)
+            {
+                control.getController("Previous Synth")
+                        .setPosition(x + 10, y + 10);
+                control.getController("Next Synth")
+                        .setPosition(x + xSize - 100 - 10, y + 10);
+            }
+
+            if(allowDropdownList)
+            {
+                DropdownList ddl = (DropdownList) control.getController("DDL")
+                        .setPosition(x + (float) xSize / 2 - 100, y + 10 + 35);
+                ddl.setSize(200, ySize - 10 - 10 - 35);
+            }
+
+            if(x + y == 0)
+            {
+                control.getController("Open Orca")
+                        .setPosition(x + 10, y + ySize - 30 - 10);
+            }
         } catch(Exception ignored)
         {
         }

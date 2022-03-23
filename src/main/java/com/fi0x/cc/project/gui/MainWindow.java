@@ -21,6 +21,8 @@ public class MainWindow extends PApplet
     private final int ySynths = 4;
     private final SynthUI[] synths = new SynthUI[xSynths * ySynths];
 
+    private boolean initialization = true;
+
     @Override
     public void setup()
     {
@@ -56,7 +58,11 @@ public class MainWindow extends PApplet
             for(int y = 0; y < ySynths; y++)
             {
                 synths[x * ySynths + y].updateSize(x * width / xSynths, y * height / ySynths, width / xSynths, height / ySynths);
-                synths[x * ySynths + y].display();
+
+                if(initialization)
+                    synths[x * ySynths + y].display();
+
+                synths[x * ySynths + y].updateDisplay();
             }
         }
     }

@@ -1,6 +1,7 @@
 package com.fi0x.cc.project.synth.synthesizers;
 
 import com.fi0x.cc.project.LoggerManager;
+import com.fi0x.cc.project.gui.SoundVisualizer;
 import com.fi0x.cc.project.gui.SynthUI;
 import com.fi0x.cc.project.synth.SynthManager;
 import io.fi0x.javalogger.logging.Logger;
@@ -12,6 +13,7 @@ public abstract class AbstractSynth implements ISynthesizer
     protected final MidiChannel channel;
     public final int channelNumber;
     private SynthUI linkedUI;
+    private SoundVisualizer soundVisualizer;
 
     public AbstractSynth(int mappedChannel)
     {
@@ -42,10 +44,13 @@ public abstract class AbstractSynth implements ISynthesizer
             case "1000":
                 channel.noteOff(data[1], data[2]);
                 linkedUI.noteTriggered(false);
+                soundVisualizer.activeNotes.remove((int) data[1]);
                 break;
             case "1001":
                 channel.noteOn(data[1], data[2]);
                 linkedUI.noteTriggered(true);
+                soundVisualizer.activeNotes.put((int) data[1], (float) data[2]);
+                soundVisualizer.lastActivity = 0;
                 break;
             case "1010":
                 channel.setPolyPressure(data[1], data[2]);
@@ -62,6 +67,7 @@ public abstract class AbstractSynth implements ISynthesizer
             case "1110":
                 String binary = Integer.toBinaryString(data[1]) + Integer.toBinaryString(data[2]);
                 channel.setPitchBend(Integer.parseInt(binary, 2));
+                soundVisualizer.pitchBendPercent = ((float) Integer.parseInt(binary, 2)) / 16383;
                 break;
         }
     }
@@ -124,5 +130,10 @@ public abstract class AbstractSynth implements ISynthesizer
     public void linkUI(SynthUI uiElement)
     {
         linkedUI = uiElement;
+    }
+    @Override
+    public void linkVisualizer(SoundVisualizer visualizer)
+    {
+        soundVisualizer = visualizer;
     }
 }
