@@ -3,10 +3,27 @@ package com.fi0x.cc.exercises;
 import io.fi0x.javalogger.logging.Logger;
 import processing.core.PApplet;
 
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Startup
 {
+    private static final Map<String, String> exerciseMap = new HashMap<>()
+    {{
+        put("1.1", "com.fi0x.cc.exercises.week1.Exercise1");
+        put("1.3", "com.fi0x.cc.exercises.week1.Exercise3");
+        put("1.3b", "com.fi0x.cc.exercises.week1.Exercise3Different");
+        put("1.4", "com.fi0x.cc.exercises.week1.Exercise4");
+        put("1.4b", "com.fi0x.cc.exercises.week1.Exercise4Different");
+        put("1.4c", "com.fi0x.cc.exercises.week1.Exercise4Pointillism");
+        put("2.1", "com.fi0x.cc.exercises.week2.Exercise1");
+        put("2.2", "com.fi0x.cc.exercises.week2.Exercise2");
+        put("2.3", "com.fi0x.cc.exercises.week2.Exercise3");
+        put("2.4", "com.fi0x.cc.exercises.week2.Exercise4");
+    }};
+
     public static void main(String[] args)
     {
         for(String arg : args)
@@ -32,51 +49,24 @@ public class Startup
 
     private static void showMainMenu(Scanner sc)
     {
-        Logger.log("Please type in the number of the exercise you would like to see(1-9): ", String.valueOf(LogTemplate.INFO_BLUE));
-        String input = sc.next();
-
-        switch(input)
+        StringBuilder exerciseIDs = new StringBuilder();
+        for(String id : exerciseMap.keySet())
         {
-            case "1":
-                Logger.log("Starting exercise 1-1", String.valueOf(LogTemplate.INFO_GREEN));
-                PApplet.main("com.fi0x.cc.exercises.week1.Exercise1");
-                break;
-            case "2":
-                Logger.log("Starting exercise 1-3", String.valueOf(LogTemplate.INFO_GREEN));
-                PApplet.main("com.fi0x.cc.exercises.week1.Exercise3");
-                break;
-            case "3":
-                Logger.log("Starting exercise 1-3 variant", String.valueOf(LogTemplate.INFO_GREEN));
-                PApplet.main("com.fi0x.cc.exercises.week1.Exercise3Different");
-                break;
-            case "4":
-                Logger.log("Starting exercise 1-4", String.valueOf(LogTemplate.INFO_GREEN));
-                PApplet.main("com.fi0x.cc.exercises.week1.Exercise4");
-                break;
-            case "5":
-                Logger.log("Starting exercise 1-4 variant", String.valueOf(LogTemplate.INFO_GREEN));
-                PApplet.main("com.fi0x.cc.exercises.week1.Exercise4Different");
-                break;
-            case "6":
-                Logger.log("Starting exercise 1-4 variant", String.valueOf(LogTemplate.INFO_GREEN));
-                PApplet.main("com.fi0x.cc.exercises.week1.Exercise4Pointillism");
-                break;
-            case "7":
-                Logger.log("Starting exercise 2-1", String.valueOf(LogTemplate.INFO_GREEN));
-                PApplet.main("com.fi0x.cc.exercises.week2.Exercise1");
-                break;
-            case "8":
-                Logger.log("Starting exercise 2-2", String.valueOf(LogTemplate.INFO_GREEN));
-                PApplet.main("com.fi0x.cc.exercises.week2.Exercise2");
-                break;
-            case "9":
-                Logger.log("Starting exercise 2-3", String.valueOf(LogTemplate.INFO_GREEN));
-                PApplet.main("com.fi0x.cc.exercises.week2.Exercise3");
-                break;
-            default:
-                Logger.log("No valid input, please try a valid number(1-8): ", String.valueOf(LogTemplate.INFO_RED));
-                showMainMenu(sc);
-                break;
+            if(exerciseIDs.length() > 0)
+                exerciseIDs.append(", ");
+            exerciseIDs.append(id);
+        }
+        Logger.log("Please type in the number of the exercise you would like to see (" + exerciseIDs + "): ", String.valueOf(LogTemplate.INFO_BLUE));
+        String input = sc.next().toLowerCase(Locale.ROOT).replace("a", "");
+
+        if(exerciseMap.containsKey(input))
+        {
+            Logger.log("Starting exercise...", String.valueOf(LogTemplate.INFO_GREEN));
+            PApplet.main(exerciseMap.get(input));
+        } else
+        {
+            Logger.log("No valid input, please try a valid exercise id.", String.valueOf(LogTemplate.INFO_RED));
+            showMainMenu(sc);
         }
     }
 
