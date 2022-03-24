@@ -1,7 +1,7 @@
 package com.fi0x.cc.project.synth.synthesizers;
 
 import com.fi0x.cc.project.LoggerManager;
-import com.fi0x.cc.project.gui.SoundVisualizer;
+import com.fi0x.cc.project.gui.AbstractSoundVisualizer;
 import com.fi0x.cc.project.gui.SynthUI;
 import com.fi0x.cc.project.synth.SynthManager;
 import io.fi0x.javalogger.logging.Logger;
@@ -13,7 +13,7 @@ public abstract class AbstractSynth implements ISynthesizer
     protected final MidiChannel channel;
     public final int channelNumber;
     private SynthUI linkedUI;
-    private SoundVisualizer soundVisualizer;
+    private AbstractSoundVisualizer soundVisualizer;
 
     public AbstractSynth(int mappedChannel)
     {
@@ -49,7 +49,7 @@ public abstract class AbstractSynth implements ISynthesizer
             case "1001":
                 channel.noteOn(data[1], data[2]);
                 linkedUI.noteTriggered(true);
-                soundVisualizer.activeNotes.put((int) data[1], (float) data[2]);
+                soundVisualizer.activeNotes.put((int) data[1], (int) data[2]);
                 soundVisualizer.lastActivity = 0;
                 break;
             case "1010":
@@ -132,7 +132,7 @@ public abstract class AbstractSynth implements ISynthesizer
         linkedUI = uiElement;
     }
     @Override
-    public void linkVisualizer(SoundVisualizer visualizer)
+    public void linkVisualizer(AbstractSoundVisualizer visualizer)
     {
         soundVisualizer = visualizer;
     }
