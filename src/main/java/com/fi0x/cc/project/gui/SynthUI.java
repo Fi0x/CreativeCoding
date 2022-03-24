@@ -27,7 +27,7 @@ public class SynthUI
     private int ySize;
 
     private boolean allowDropdownList = false;
-    private boolean allowInstrumentChanges = true;
+    private boolean allowInstrumentChanges = false;
 
     private final PApplet parentScreen;
     private final ControlP5 control;
