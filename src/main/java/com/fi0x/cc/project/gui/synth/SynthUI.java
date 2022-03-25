@@ -1,4 +1,4 @@
-package com.fi0x.cc.project.gui;
+package com.fi0x.cc.project.gui.synth;
 
 import com.fi0x.cc.project.LoggerManager;
 import com.fi0x.cc.project.synth.SynthManager;
@@ -156,6 +156,8 @@ public class SynthUI
                 }
             }
         }
+        if(event.getController() == control.getController("Open Mixer"))
+            PApplet.main("com.fi0x.cc.project.gui.mixer.MainMixerWindow");
     }
 
     private void addButtons()
@@ -182,10 +184,16 @@ public class SynthUI
         }
 
         if(x + y == 0)
+        {
             control.addButton("Open Orca")
                     .setSize(100, 30)
                     .setValue(0)
                     .setColorBackground(parentScreen.color(200, 0, 0));
+            control.addButton("Open Mixer")
+                    .setSize(100, 30)
+                    .setValue(0)
+                    .setColorBackground(parentScreen.color(200, 0, 0));
+        }
 
         updateButtonPositions();
     }
@@ -212,6 +220,8 @@ public class SynthUI
             {
                 control.getController("Open Orca")
                         .setPosition(x + 10, y + ySize - 30 - 10);
+                control.getController("Open Mixer")
+                        .setPosition(x + 10, y + ySize - 10 - 35 - 30);
             }
         } catch(Exception ignored)
         {

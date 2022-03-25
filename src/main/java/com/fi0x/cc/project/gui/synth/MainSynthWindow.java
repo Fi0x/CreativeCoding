@@ -1,4 +1,4 @@
-package com.fi0x.cc.project.gui;
+package com.fi0x.cc.project.gui.synth;
 
 import com.fi0x.cc.project.LoggerManager;
 import com.fi0x.cc.project.synth.UDP.UDPProcessor;
@@ -13,7 +13,7 @@ import processing.core.PSurface;
 import javax.swing.*;
 import java.awt.*;
 
-public class MainWindow extends PApplet
+public class MainSynthWindow extends PApplet
 {
     private PImage icon;
 
