@@ -28,8 +28,9 @@ public class MidiHandler
 
                 device.open();
                 Logger.log("\tFound device: " + info, String.valueOf(LoggerManager.Template.DEBUG_INFO));
-            } catch(MidiUnavailableException ignored)
+            } catch(MidiUnavailableException e)
             {
+                Logger.log("\tCould not load device: " + info, String.valueOf(LoggerManager.Template.DEBUG_WARNING));
             }
         }
     }
