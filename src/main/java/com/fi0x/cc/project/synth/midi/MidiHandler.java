@@ -23,8 +23,8 @@ public class MidiHandler
                 for(Transmitter transmitter : transmitters)
                     transmitter.setReceiver(new MidiInputReceiver(device.getDeviceInfo().toString()));
 
-                Transmitter trans = device.getTransmitter();//TODO: Necessary? Same code as above
-                trans.setReceiver(new MidiInputReceiver(device.getDeviceInfo().toString()));//This too
+                Transmitter trans = device.getTransmitter();
+                trans.setReceiver(new MidiInputReceiver(device.getDeviceInfo().toString()));
 
                 device.open();
                 Logger.log("\tFound device: " + info, String.valueOf(LoggerManager.Template.DEBUG_INFO));
