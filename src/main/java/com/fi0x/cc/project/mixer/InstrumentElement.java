@@ -7,6 +7,10 @@ public class InstrumentElement extends AbstractMixerElement
     {
         //TODO: Update volume
     }
+    @Override
+    public void changeMainValue(int valueChange)
+    {
+    }
 
     @Override
     public String getDisplayName()

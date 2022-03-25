@@ -8,6 +8,11 @@ public class TimerElement extends AbstractMixerElement
     public void updateElement()
     {
     }
+    @Override
+    public void changeMainValue(int valueChange)
+    {
+        bpm += valueChange;
+    }
 
     public int getCurrentBPM()
     {
@@ -17,6 +22,6 @@ public class TimerElement extends AbstractMixerElement
     @Override
     public String getDisplayName()
     {
-        return "Timer";
+        return "Timer: " + bpm;
     }
 }

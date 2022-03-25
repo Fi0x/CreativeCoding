@@ -9,6 +9,11 @@ public class VolumeElement extends AbstractMixerElement
     {
         //TODO: Update volume
     }
+    @Override
+    public void changeMainValue(int valueChange)
+    {
+        volume += valueChange;
+    }
 
     public int getVolume()
     {
@@ -18,6 +23,6 @@ public class VolumeElement extends AbstractMixerElement
     @Override
     public String getDisplayName()
     {
-        return "Volume";
+        return "Volume: " + volume;
     }
 }

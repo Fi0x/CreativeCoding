@@ -2,11 +2,11 @@ package com.fi0x.cc.project.gui.mixer;
 
 import com.fi0x.cc.project.mixer.MixerManager;
 import com.fi0x.cc.project.mixer.TimerElement;
-import controlP5.ControlEvent;
 import processing.awt.PSurfaceAWT;
 import processing.core.PApplet;
 import processing.core.PImage;
 import processing.core.PSurface;
+import processing.event.MouseEvent;
 
 import javax.swing.*;
 import java.awt.*;
@@ -64,6 +64,9 @@ public class MainMixerWindow extends PApplet
     @Override
     public void mousePressed()
     {
+        if(mouseButton != LEFT)
+            return;
+
         loadPixels();
         if(pixels[mouseY * width + mouseX] == backgroundColor)
         {
@@ -85,12 +88,39 @@ public class MainMixerWindow extends PApplet
     @Override
     public void mouseReleased()
     {
+        if(mouseButton != LEFT)
+            return;
+
         if(draggingElement == null)
             return;
 
         draggingElement.drop();
         draggingElement = null;
     }
+
+    @Override
+    public void mouseWheel(MouseEvent event)
+    {
+        if(originElement.isAbove())
+            originElement.getLinkedElement().changeMainValue(-event.getCount());
+        else
+        {
+            for(MixerUIElement e : uiElements)
+            {
+                if(e.isAbove())
+                {
+                    e.getLinkedElement().changeMainValue(-event.getCount());
+                    break;
+                }
+            }
+        }
+    }
+    @Override
+    public void keyPressed()
+    {
+        System.out.println(key);
+    }
+
     @Override
     public void exit()
     {

@@ -1,20 +1,20 @@
 package com.fi0x.cc.project.gui.mixer;
 
 import com.fi0x.cc.project.mixer.AbstractMixerElement;
-import controlP5.ControlEvent;
 import processing.core.PApplet;
 import processing.core.PConstants;
 
 public class MixerUIElement
 {
-    protected final PApplet parent;
+    private final PApplet parent;
     protected int currentX;
     protected int currentY;
-    protected final int size = 100;
+    private final int size = 100;
 
     private boolean pickedUp = false;
+    private final int connectionDistance = 300;
 
-    protected AbstractMixerElement linkedElement;
+    private AbstractMixerElement linkedElement;
 
     public MixerUIElement(PApplet parentScreen, int xCenter, int yCenter, AbstractMixerElement element)
     {
@@ -37,6 +37,8 @@ public class MixerUIElement
             currentY = parent.mouseY;
         }
 
+        drawConnectionLines();
+
         parent.fill(255, 0, 0);
         parent.ellipse(currentX, currentY, size, size);
 
@@ -46,6 +48,11 @@ public class MixerUIElement
         parent.text(linkedElement.getDisplayName(), currentX, currentY);
     }
 
+    public boolean isAbove()
+    {
+        float distance = PApplet.dist(parent.mouseX, parent.mouseY, currentX, currentY);
+        return !(distance > size / 2f);
+    }
     public boolean pickUp()
     {
         float distance = PApplet.dist(parent.mouseX, parent.mouseY, currentX, currentY);
@@ -53,10 +60,16 @@ public class MixerUIElement
             return false;
 
         pickedUp = true;
+        linkedElement.removeAllConnections();
+
         return true;
     }
     public void drop()
     {
+        tryToConnect(MainMixerWindow.originElement);
+        for(MixerUIElement e : MainMixerWindow.uiElements)
+            tryToConnect(e);
+
         pickedUp = false;
     }
     public void updateLocation(int newX, int newY)
@@ -72,5 +85,37 @@ public class MixerUIElement
     public void changeLinkedElement(AbstractMixerElement newElement)
     {
         linkedElement = newElement;
+    }
+
+    private void tryToConnect(MixerUIElement otherElement)
+    {
+        float distance = PApplet.dist(otherElement.currentX, otherElement.currentY, currentX, currentY);
+
+        if(distance < connectionDistance)
+        {
+            otherElement.getLinkedElement().addConnectedElement(linkedElement);
+            linkedElement.addConnectedElement(otherElement.getLinkedElement());
+        }
+    }
+    private void drawConnectionLines()
+    {
+        parent.fill(255);
+        parent.stroke(255);
+
+        int otherX = MainMixerWindow.originElement.currentX;
+        int otherY = MainMixerWindow.originElement.currentY;
+        float distance = PApplet.dist(otherX, otherY, currentX, currentY);
+
+        if(distance < connectionDistance)
+            parent.line(otherX, otherY, currentX, currentY);
+
+        for(MixerUIElement e : MainMixerWindow.uiElements)
+        {
+            distance = PApplet.dist(e.currentX, e.currentY, currentX, currentY);
+            if(distance < connectionDistance)
+                parent.line(e.currentX, e.currentY, currentX, currentY);
+        }
+
+        parent.noStroke();
     }
 }
