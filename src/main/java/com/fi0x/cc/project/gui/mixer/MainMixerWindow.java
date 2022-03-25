@@ -15,9 +15,13 @@ import java.util.ArrayList;
 public class MainMixerWindow extends PApplet
 {
     private PImage icon;
+    private final int backgroundColor = color(0);
 
     private Thread handler;
-    public static final ArrayList<AbstractMixerUIElement> uiElements = new ArrayList<>();
+    public static MixerUIElement originElement;
+    public static final ArrayList<MixerUIElement> uiElements = new ArrayList<>();
+
+    public MixerUIElement draggingElement = null;
 
     @Override
     public void setup()
@@ -33,8 +37,10 @@ public class MainMixerWindow extends PApplet
         f.setExtendedState(f.getExtendedState() | Frame.MAXIMIZED_BOTH);
 
         frameRate(60);
-        background(0);
+        background(backgroundColor);
         noStroke();
+
+        originElement = new MixerUIElement(this, width / 2, height / 2, new TimerElement());
 
         handler = new Thread(MixerManager.getInstance());
         handler.start();
@@ -47,15 +53,38 @@ public class MainMixerWindow extends PApplet
     @Override
     public void draw()
     {
-        for(AbstractMixerUIElement mixerElement : uiElements)
+        background(backgroundColor);
+        for(MixerUIElement mixerElement : uiElements)
             mixerElement.draw();
     }
 
     @Override
     public void mouseClicked()
     {
-        uiElements.add(new TimerUIElement(this, mouseX, mouseY, new TimerElement()));
-        //TODO: Create new element or pick up one if mouse is over one
+        if(draggingElement != null)
+        {
+            draggingElement.drop();
+            draggingElement = null;
+            return;
+        }
+
+        loadPixels();
+        if(pixels[mouseY * width + mouseX] == backgroundColor)
+        {
+            MixerUIElement newControlElement = new MixerUIElement(this, mouseX, mouseY, new TimerElement());
+            newControlElement.init();
+            uiElements.add(newControlElement);
+        } else
+        {
+            for(MixerUIElement e : uiElements)
+            {
+                if(!e.pickUp())
+                    continue;
+
+                draggingElement = e;
+                break;
+            }
+        }
     }
     @Override
     public void exit()
@@ -74,6 +103,10 @@ public class MainMixerWindow extends PApplet
     }
     public void controlEvent(ControlEvent event)
     {
-        //TODO: handle user-input
+        if(!event.isController())
+            return;
+
+        for(MixerUIElement ui : uiElements)
+            ui.controlChangedEvent(event);
     }
 }
