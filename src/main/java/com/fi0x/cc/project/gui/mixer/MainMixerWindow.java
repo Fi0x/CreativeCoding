@@ -54,20 +54,16 @@ public class MainMixerWindow extends PApplet
     public void draw()
     {
         background(backgroundColor);
+
+        originElement.updateLocation(width / 2, height / 2);
+        originElement.draw();
         for(MixerUIElement mixerElement : uiElements)
             mixerElement.draw();
     }
 
     @Override
-    public void mouseClicked()
+    public void mousePressed()
     {
-        if(draggingElement != null)
-        {
-            draggingElement.drop();
-            draggingElement = null;
-            return;
-        }
-
         loadPixels();
         if(pixels[mouseY * width + mouseX] == backgroundColor)
         {
@@ -87,6 +83,15 @@ public class MainMixerWindow extends PApplet
         }
     }
     @Override
+    public void mouseReleased()
+    {
+        if(draggingElement == null)
+            return;
+
+        draggingElement.drop();
+        draggingElement = null;
+    }
+    @Override
     public void exit()
     {
         handler.interrupt();
@@ -100,13 +105,5 @@ public class MainMixerWindow extends PApplet
         Frame f = can.getFrame();
         f.setUndecorated(true);
         return sur;
-    }
-    public void controlEvent(ControlEvent event)
-    {
-        if(!event.isController())
-            return;
-
-        for(MixerUIElement ui : uiElements)
-            ui.controlChangedEvent(event);
     }
 }

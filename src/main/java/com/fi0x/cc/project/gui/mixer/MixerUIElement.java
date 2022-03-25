@@ -3,6 +3,7 @@ package com.fi0x.cc.project.gui.mixer;
 import com.fi0x.cc.project.mixer.AbstractMixerElement;
 import controlP5.ControlEvent;
 import processing.core.PApplet;
+import processing.core.PConstants;
 
 public class MixerUIElement
 {
@@ -38,16 +39,17 @@ public class MixerUIElement
 
         parent.fill(255, 0, 0);
         parent.ellipse(currentX, currentY, size, size);
-    }
-    public void controlChangedEvent(ControlEvent event)
-    {
-        //TODO: Handle button presses
+
+        parent.fill(0);
+        parent.textSize(20);
+        parent.textAlign(PConstants.CENTER, PConstants.CENTER);
+        parent.text(linkedElement.getDisplayName(), currentX, currentY);
     }
 
     public boolean pickUp()
     {
         float distance = PApplet.dist(parent.mouseX, parent.mouseY, currentX, currentY);
-        if(distance > (float) size / 2)
+        if(distance > size / 2f)
             return false;
 
         pickedUp = true;
@@ -56,6 +58,11 @@ public class MixerUIElement
     public void drop()
     {
         pickedUp = false;
+    }
+    public void updateLocation(int newX, int newY)
+    {
+        currentX = newX;
+        currentY = newY;
     }
 
     public AbstractMixerElement getLinkedElement()
