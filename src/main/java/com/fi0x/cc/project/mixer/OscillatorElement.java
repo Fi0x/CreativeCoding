@@ -14,6 +14,7 @@ public class OscillatorElement extends AbstractMixerElement
     @Override
     public void updateElement()
     {
+        super.updateElement();
         //TODO: Update tickrate
     }
     @Override

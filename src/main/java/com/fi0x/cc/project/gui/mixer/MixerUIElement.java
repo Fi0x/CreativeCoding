@@ -14,7 +14,9 @@ public class MixerUIElement
     private final int backgroundColor;
     private final int selectionColor;
     private final int textColor;
-    private int adjustableColor;
+    private final int strokeColor;
+    private int adjustableBackgroundColor;
+    private int adjustableStrokeColor;
 
     private boolean isSelected = false;
     private boolean pickedUp = false;
@@ -30,9 +32,11 @@ public class MixerUIElement
         currentY = yCenter;
 
         backgroundColor = parent.color(255, 0, 0);
-        selectionColor = parent.color(0, 255, 255);
+        selectionColor = parent.color(0, 0, 255);
         textColor = parent.color(0);
-        adjustableColor = backgroundColor;
+        strokeColor = parent.color(0, 0, 0, 0);
+        adjustableBackgroundColor = backgroundColor;
+        adjustableStrokeColor = strokeColor;
 
         linkedElement = new ChannelElement(this);
     }
@@ -48,12 +52,9 @@ public class MixerUIElement
             currentY = parent.mouseY;
         }
 
-        if(isSelected)
-        {
-            parent.stroke(selectionColor);
-            parent.strokeWeight(3);
-        }
-        parent.fill(adjustableColor);
+        parent.stroke(isSelected ? selectionColor : adjustableStrokeColor);
+        parent.strokeWeight(3);
+        parent.fill(adjustableBackgroundColor);
         parent.ellipse(currentX, currentY, size, size);
         parent.noStroke();
 
@@ -62,7 +63,8 @@ public class MixerUIElement
         parent.textAlign(PConstants.CENTER, PConstants.CENTER);
         parent.text(linkedElement.getDisplayName(), currentX, currentY);
 
-        adjustableColor = parent.lerpColor(adjustableColor, backgroundColor, 0.03f);
+        adjustableStrokeColor = parent.lerpColor(adjustableStrokeColor, strokeColor, 0.03f);
+        adjustableBackgroundColor = parent.lerpColor(adjustableBackgroundColor, backgroundColor, 0.03f);
     }
     public void drawLines()
     {
@@ -70,7 +72,11 @@ public class MixerUIElement
     }
     public void blinkColor()
     {
-        adjustableColor = parent.color(255);
+        adjustableBackgroundColor = parent.color(255);
+    }
+    public void blinkStroke()
+    {
+        adjustableStrokeColor = parent.color(0, 255, 0);
     }
 
     public boolean isAbove()
@@ -132,7 +138,7 @@ public class MixerUIElement
     {
         float distance = PApplet.dist(otherElement.currentX, otherElement.currentY, currentX, currentY);
 
-        if(distance < connectionDistance)
+        if(distance < connectionDistance && otherElement != this)
         {
             otherElement.getLinkedElement().addConnectedElement(linkedElement);
             linkedElement.addConnectedElement(otherElement.getLinkedElement());

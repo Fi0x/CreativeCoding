@@ -94,6 +94,7 @@ public class MainMixerWindow extends PApplet
                 MixerUIElement newControlElement = new MixerUIElement(this, mouseX, mouseY);
                 newControlElement.init();
                 uiElements.add(newControlElement);
+                newControlElement.drop();
             } else
             {
                 for(MixerUIElement e : uiElements)

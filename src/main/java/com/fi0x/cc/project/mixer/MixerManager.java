@@ -17,8 +17,6 @@ public class MixerManager implements Runnable
         while(true)
         {
             MainMixerWindow.originElement.getLinkedElement().updateElement();
-            for(MixerUIElement uiElement : MainMixerWindow.uiElements)
-                uiElement.getLinkedElement().updateElement();
 
             try
             {

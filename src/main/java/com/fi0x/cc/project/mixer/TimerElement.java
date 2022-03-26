@@ -17,11 +17,14 @@ public class TimerElement extends AbstractMixerElement
     {
         currentFrame++;
 
-        if(currentFrame % bpm == 0)
+        if(currentFrame % 60 == 0)
         {
             currentFrame = 0;
             linkedUI.blinkColor();
         }
+
+        for(AbstractMixerElement e : connectedElements)
+            e.updateElement();
     }
     @Override
     public void changeMainValue(int valueChange)
@@ -41,6 +44,6 @@ public class TimerElement extends AbstractMixerElement
     @Override
     public String getDisplayName()
     {
-        return "Timer: " + bpm;
+        return "BPM: " + bpm;
     }
 }

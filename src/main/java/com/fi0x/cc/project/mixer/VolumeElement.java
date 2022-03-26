@@ -14,6 +14,7 @@ public class VolumeElement extends AbstractMixerElement
     @Override
     public void updateElement()
     {
+        super.updateElement();
         //TODO: Update volume
     }
     @Override

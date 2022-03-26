@@ -14,6 +14,7 @@ public class PitchElement extends AbstractMixerElement
     @Override
     public void updateElement()
     {
+        super.updateElement();
         //TODO: Update pitch
     }
     @Override

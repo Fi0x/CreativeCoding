@@ -7,7 +7,7 @@ import java.util.ConcurrentModificationException;
 
 public abstract class AbstractMixerElement
 {
-    private final ArrayList<AbstractMixerElement> connectedElements = new ArrayList<>();
+    protected final ArrayList<AbstractMixerElement> connectedElements = new ArrayList<>();
     protected final MixerUIElement linkedUI;
 
     public AbstractMixerElement(MixerUIElement uiPart)
@@ -15,7 +15,10 @@ public abstract class AbstractMixerElement
         linkedUI = uiPart;
     }
 
-    public abstract void updateElement();
+    public void updateElement()
+    {
+        linkedUI.blinkStroke();
+    }
     public abstract void changeMainValue(int valueChange);
 
     public void addConnectedElement(AbstractMixerElement newConnection)
