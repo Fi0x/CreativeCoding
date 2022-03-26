@@ -32,7 +32,12 @@ public class SoundVisualizer2 extends AbstractSoundVisualizer
     }
     private void drawNotes()
     {
-        noteHistory.add(new HashMap<>(activeNotes));
+        try
+        {
+            noteHistory.add(new HashMap<>(activeNotes));
+        } catch(ConcurrentModificationException ignored)
+        {
+        }
 
         if(noteHistory.size() > ySize)
             noteHistory.remove(0);

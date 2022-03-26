@@ -23,7 +23,7 @@ public class IntervalElement extends AbstractMixerElement
     }
 
     @Override
-    public void updateElement(long globalFrame, int bpm)
+    public void updateElement(AbstractMixerElement sender, long globalFrame, int bpm)
     {
         if(updatedFrames.contains(globalFrame))
             return;
@@ -35,9 +35,14 @@ public class IntervalElement extends AbstractMixerElement
 
         if(isActive)
         {
-            super.updateElement(globalFrame, bpm);
+            super.updateElement(sender, globalFrame, bpm);
             for(AbstractMixerElement e : connectedElements)
-                e.updateElement(globalFrame, bpm);
+            {
+                if(e == sender)
+                    continue;
+                e.updateElement(this, globalFrame, bpm);
+                linkedUI.sendPulse(e.getLinkedUI(), 1);
+            }
         }
     }
     @Override

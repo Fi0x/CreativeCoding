@@ -24,13 +24,13 @@ public class IncreasingElement extends AbstractMixerElement
     }
 
     @Override
-    public void updateElement(long globalFrame, int bpm)
+    public void updateElement(AbstractMixerElement sender, long globalFrame, int bpm)
     {
         if(updatedFrames.contains(globalFrame))
             return;
         updatedFrames.add(globalFrame);
 
-        super.updateElement(globalFrame, bpm);
+        super.updateElement(sender, globalFrame, bpm);
 
         increase++;
         if(increase >= valueCount)

@@ -17,9 +17,9 @@ public class PitchElement extends AbstractMixerElement
     }
 
     @Override
-    public void updateElement(long globalFrame, int bpm)
+    public void updateElement(AbstractMixerElement sender, long globalFrame, int bpm)
     {
-        super.updateElement(globalFrame, bpm);
+        super.updateElement(sender, globalFrame, bpm);
 
         allowedConnections.add(IncreasingElement.class);
         allowedConnections.add(ChannelElement.class);

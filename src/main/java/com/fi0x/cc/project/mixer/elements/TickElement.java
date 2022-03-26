@@ -22,7 +22,7 @@ public class TickElement extends AbstractMixerElement
     }
 
     @Override
-    public void updateElement(long globalFrame, int bpm)
+    public void updateElement(AbstractMixerElement sender, long globalFrame, int bpm)
     {
         if(updatedFrames.contains(globalFrame))
             return;
@@ -31,9 +31,14 @@ public class TickElement extends AbstractMixerElement
         currentFrame++;
         if(currentFrame % delayBetweenTicks == 0)
         {
-            super.updateElement(globalFrame, bpm);
+            super.updateElement(sender, globalFrame, bpm);
             for(AbstractMixerElement e : connectedElements)
-                e.updateElement(globalFrame, bpm);
+            {
+                if(e == sender)
+                    continue;
+                e.updateElement(this, globalFrame, bpm);
+                linkedUI.sendPulse(e.getLinkedUI(), 1);
+            }
         }
     }
     @Override

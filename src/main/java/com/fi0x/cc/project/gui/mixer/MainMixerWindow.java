@@ -11,6 +11,7 @@ import processing.event.MouseEvent;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 
 public class MainMixerWindow extends PApplet
 {
@@ -21,6 +22,7 @@ public class MainMixerWindow extends PApplet
     private Thread handler;
     public static MixerUIElement originElement;
     public static final ArrayList<MixerUIElement> uiElements = new ArrayList<>();
+    private static final ArrayList<UISignal> uiSignals = new ArrayList<>();
 
     public MixerUIElement draggingElement = null;
     public MixerUIElement selectedElement = null;
@@ -34,7 +36,7 @@ public class MainMixerWindow extends PApplet
         surface.setSize(displayWidth / 2, displayHeight / 2);
         surface.setLocation(displayWidth / 4, displayHeight / 4);
 
-        JFrame f = (JFrame) ((PSurfaceAWT.SmoothCanvas)getSurface().getNative()).getFrame();
+        JFrame f = (JFrame) ((PSurfaceAWT.SmoothCanvas) getSurface().getNative()).getFrame();
         f.setLocation(0, 0);
         f.setExtendedState(f.getExtendedState() | Frame.MAXIMIZED_BOTH);
 
@@ -63,6 +65,14 @@ public class MainMixerWindow extends PApplet
         originElement.drawLines(lineColor);
         for(MixerUIElement mixerElement : uiElements)
             mixerElement.drawLines(lineColor);
+
+        try
+        {
+            for(UISignal signal : uiSignals)
+                signal.draw();
+        } catch(ConcurrentModificationException ignored)
+        {
+        }
 
         originElement.drawElement();
         for(MixerUIElement mixerElement : uiElements)
@@ -103,7 +113,6 @@ public class MainMixerWindow extends PApplet
                         {
                             e.addElementToBlacklist(e1);
                             e1.addElementToBlacklist(e);
-                            System.out.println("Found");
                             return;
                         }
                     }
@@ -200,7 +209,7 @@ public class MainMixerWindow extends PApplet
             newControlElement.init();
             uiElements.add(newControlElement);
             newControlElement.drop();
-        } else if(key == UP)
+        } else if(key == CODED && keyCode == UP)
         {
             if(originElement.isAbove())
                 originElement.getLinkedElement().changeSecondaryValue(1);
@@ -215,7 +224,7 @@ public class MainMixerWindow extends PApplet
                     }
                 }
             }
-        } else if(key == DOWN)
+        } else if(key == CODED && keyCode == DOWN)
         {
             if(originElement.isAbove())
                 originElement.getLinkedElement().changeSecondaryValue(-1);
@@ -226,6 +235,26 @@ public class MainMixerWindow extends PApplet
                     if(e.isAbove())
                     {
                         e.getLinkedElement().changeSecondaryValue(-1);
+                        break;
+                    }
+                }
+            }
+        } else if(key == 'C' || key == 'c')
+        {
+            if(selectedElement != null)
+            {
+                if(originElement.isAbove())
+                {
+                    originElement.addElementToWhitelist(selectedElement);
+                    selectedElement.addElementToWhitelist(originElement);
+                    return;
+                }
+                for(MixerUIElement e : uiElements)
+                {
+                    if(e.isAbove())
+                    {
+                        e.addElementToWhitelist(selectedElement);
+                        selectedElement.addElementToWhitelist(e);
                         break;
                     }
                 }
@@ -247,6 +276,15 @@ public class MainMixerWindow extends PApplet
         Frame f = can.getFrame();
         f.setUndecorated(true);
         return sur;
+    }
+
+    public static void addUISignal(UISignal signal)
+    {
+        uiSignals.add(signal);
+    }
+    public static void removeUISignal(UISignal signal)
+    {
+        uiSignals.remove(signal);
     }
 
     private void selectElement(MixerUIElement element)

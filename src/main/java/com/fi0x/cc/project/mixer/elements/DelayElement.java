@@ -23,7 +23,7 @@ public class DelayElement extends AbstractMixerElement
     }
 
     @Override
-    public void updateElement(long globalFrame, int bpm)
+    public void updateElement(AbstractMixerElement sender, long globalFrame, int bpm)
     {
         if(updatedFrames.contains(globalFrame))
             return;
@@ -39,9 +39,14 @@ public class DelayElement extends AbstractMixerElement
                 return;
             }
 
-            super.updateElement(globalFrame, bpm);
+            super.updateElement(sender, globalFrame, bpm);
             for(AbstractMixerElement e : connectedElements)
-                e.updateElement(globalFrame - 1000, bpm);
+            {
+                if(e == sender)
+                    continue;
+                e.updateElement(this, globalFrame - 1000, bpm);
+                linkedUI.sendPulse(e.getLinkedUI(), 1);
+            }
         }).start();
     }
     @Override

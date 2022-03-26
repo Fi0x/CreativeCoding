@@ -19,7 +19,7 @@ public abstract class AbstractMixerElement
         linkedUI = uiPart;
     }
 
-    public void updateElement(long globalFrame, int bpm)
+    public void updateElement(AbstractMixerElement sender, long globalFrame, int bpm)
     {
         linkedUI.blinkStroke(0.03f * bpm / 60);
         if(updatedFrames.size() > 60)
@@ -44,6 +44,10 @@ public abstract class AbstractMixerElement
         for(AbstractMixerElement e : connectedElements)
             uis.add(e.linkedUI);
         return uis;
+    }
+    public MixerUIElement getLinkedUI()
+    {
+        return linkedUI;
     }
     public void removeConnectedElement(AbstractMixerElement connectionToRemove)
     {

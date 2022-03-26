@@ -17,9 +17,9 @@ public class LengthElement extends AbstractMixerElement
     }
 
     @Override
-    public void updateElement(long globalFrame, int bpm)
+    public void updateElement(AbstractMixerElement sender, long globalFrame, int bpm)
     {
-        super.updateElement(globalFrame, bpm);
+        super.updateElement(sender, globalFrame, bpm);
     }
     @Override
     public void changeMainValue(int valueChange)
@@ -48,7 +48,7 @@ public class LengthElement extends AbstractMixerElement
             if(e instanceof IncreasingElement)
                 updatedLength += ((IncreasingElement) e).getCurrentIncrease();
         }
-        return Math.min(updatedLength, 0);
+        return Math.max(updatedLength, 0);
     }
 
     @Override

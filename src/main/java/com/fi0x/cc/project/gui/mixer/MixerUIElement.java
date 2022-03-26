@@ -27,7 +27,7 @@ public class MixerUIElement
 
     private boolean isSelected = false;
     private boolean pickedUp = false;
-    private final int connectionDistance = 400;
+    private final int connectionDistance = 200;
 
     private AbstractMixerElement linkedElement;
 
@@ -87,6 +87,11 @@ public class MixerUIElement
         colorReverseRate = resetRate;
         adjustableStrokeColor = parent.color(0, 255, 0);
     }
+    public void sendPulse(MixerUIElement target, float travelTime)
+    {
+        int transferFrames = (int) (travelTime * parent.frameRate);
+        MainMixerWindow.addUISignal(new UISignal(parent, this, target, transferFrames, adjustableBackgroundColor));
+    }
 
     public boolean isAbove()
     {
@@ -136,6 +141,8 @@ public class MixerUIElement
     {
         blacklistedElements.remove(element);
         whitelistedElements.add(element);
+
+        tryToConnect(element);
     }
 
     public AbstractMixerElement getLinkedElement()

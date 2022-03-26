@@ -27,32 +27,32 @@ public class ChannelElement extends AbstractMixerElement
     }
 
     @Override
-    public void updateElement(long globalFrame, int bpm)
+    public void updateElement(AbstractMixerElement sender, long globalFrame, int bpm)
     {
         if(updatedFrames.contains(globalFrame))
             return;
         updatedFrames.add(globalFrame);
 
-        super.updateElement(globalFrame, bpm);
+        super.updateElement(sender, globalFrame, bpm);
 
         notes.clear();
         for(AbstractMixerElement e : connectedElements)
         {
             if(e instanceof NoteElement)
             {
-                e.updateElement(globalFrame, bpm);
+                e.updateElement(this, globalFrame, bpm);
                 notes.add(((NoteElement) e).getNote());
             } else if(e instanceof PitchElement)
             {
-                e.updateElement(globalFrame, bpm);
+                e.updateElement(this, globalFrame, bpm);
                 ((PitchElement) e).updateChannelPitch(getUpdatedChannel());
             } else if(e instanceof VolumeElement)
             {
-                e.updateElement(globalFrame, bpm);
+                e.updateElement(this, globalFrame, bpm);
                 volume = ((VolumeElement) e).getVolume();
             } else if(e instanceof LengthElement)
             {
-                e.updateElement(globalFrame, bpm);
+                e.updateElement(this, globalFrame, bpm);
                 noteLength = ((LengthElement) e).getLength();
             }
         }
@@ -100,6 +100,7 @@ public class ChannelElement extends AbstractMixerElement
                 try
                 {
                     ShortMessage msg = new ShortMessage();
+                    //TODO: use correct volume
                     msg.setMessage(ShortMessage.NOTE_ON, currentChannel, note, volume);
                     SynthManager.handleMidiCommand(msg);
                 } catch(InvalidMidiDataException e)

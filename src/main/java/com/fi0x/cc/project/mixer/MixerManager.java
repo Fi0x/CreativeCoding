@@ -23,7 +23,7 @@ public class MixerManager implements Runnable
         {
             bpm = masterClock.getCurrentBPM();
             notesPerBeat = masterClock.getNotesPerBeat();
-            masterClock.updateElement(currentFrame, bpm);
+            masterClock.updateElement(null, currentFrame, bpm);
 
             try
             {

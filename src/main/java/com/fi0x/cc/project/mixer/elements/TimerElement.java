@@ -3,8 +3,6 @@ package com.fi0x.cc.project.mixer.elements;
 import com.fi0x.cc.project.gui.mixer.MixerUIElement;
 import com.fi0x.cc.project.mixer.AbstractMixerElement;
 
-import java.util.ArrayList;
-
 public class TimerElement extends AbstractMixerElement
 {
     private int bpm = 60;
@@ -24,7 +22,7 @@ public class TimerElement extends AbstractMixerElement
     }
 
     @Override
-    public void updateElement(long globalFrame, int bpm)
+    public void updateElement(AbstractMixerElement sender, long globalFrame, int bpm)
     {
         if(updatedFrames.contains(globalFrame))
             return;
@@ -38,7 +36,12 @@ public class TimerElement extends AbstractMixerElement
         }
 
         for(AbstractMixerElement e : connectedElements)
-            e.updateElement(globalFrame, bpm);
+        {
+            if(e == sender)
+                continue;
+            e.updateElement(this, globalFrame, bpm);
+            linkedUI.sendPulse(e.getLinkedUI(), 1);
+        }
     }
     @Override
     public void changeMainValue(int valueChange)
@@ -79,6 +82,6 @@ public class TimerElement extends AbstractMixerElement
     @Override
     public String getDisplayName()
     {
-        return "BPM: " + bpm;
+        return "BPM: " + bpm + ", " + notesPerBeat;
     }
 }
