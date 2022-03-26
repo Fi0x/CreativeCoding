@@ -1,8 +1,15 @@
 package com.fi0x.cc.project.mixer;
 
+import com.fi0x.cc.project.gui.mixer.MixerUIElement;
+
 public class ChannelElement extends AbstractMixerElement
 {
     private int channel = 0;
+
+    public ChannelElement(MixerUIElement uiPart)
+    {
+        super(uiPart);
+    }
 
     @Override
     public void updateElement()

@@ -1,11 +1,19 @@
 package com.fi0x.cc.project.mixer;
 
+import com.fi0x.cc.project.gui.mixer.MixerUIElement;
+
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 
 public abstract class AbstractMixerElement
 {
     private final ArrayList<AbstractMixerElement> connectedElements = new ArrayList<>();
+    protected final MixerUIElement linkedUI;
+
+    public AbstractMixerElement(MixerUIElement uiPart)
+    {
+        linkedUI = uiPart;
+    }
 
     public abstract void updateElement();
     public abstract void changeMainValue(int valueChange);

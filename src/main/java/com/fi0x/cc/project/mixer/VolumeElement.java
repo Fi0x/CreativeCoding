@@ -1,8 +1,15 @@
 package com.fi0x.cc.project.mixer;
 
+import com.fi0x.cc.project.gui.mixer.MixerUIElement;
+
 public class VolumeElement extends AbstractMixerElement
 {
     private int volume = 30;
+
+    public VolumeElement(MixerUIElement uiPart)
+    {
+        super(uiPart);
+    }
 
     @Override
     public void updateElement()

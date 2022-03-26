@@ -1,8 +1,15 @@
 package com.fi0x.cc.project.mixer;
 
+import com.fi0x.cc.project.gui.mixer.MixerUIElement;
+
 public class PitchElement extends AbstractMixerElement
 {
     private int pitchDifference = 0;
+
+    public PitchElement(MixerUIElement uiPart)
+    {
+        super(uiPart);
+    }
 
     @Override
     public void updateElement()

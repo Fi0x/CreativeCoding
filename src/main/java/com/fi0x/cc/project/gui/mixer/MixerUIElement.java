@@ -9,7 +9,12 @@ public class MixerUIElement
     private final PApplet parent;
     protected int currentX;
     protected int currentY;
-    private final int size = 100;
+    private final int size = 120;
+
+    private final int backgroundColor;
+    private final int selectionColor;
+    private final int textColor;
+    private int adjustableColor;
 
     private boolean isSelected = false;
     private boolean pickedUp = false;
@@ -17,14 +22,19 @@ public class MixerUIElement
 
     private AbstractMixerElement linkedElement;
 
-    public MixerUIElement(PApplet parentScreen, int xCenter, int yCenter, AbstractMixerElement element)
+    public MixerUIElement(PApplet parentScreen, int xCenter, int yCenter)
     {
         parent = parentScreen;
 
         currentX = xCenter;
         currentY = yCenter;
 
-        linkedElement = element;
+        backgroundColor = parent.color(255, 0, 0);
+        selectionColor = parent.color(0, 255, 255);
+        textColor = parent.color(0);
+        adjustableColor = backgroundColor;
+
+        linkedElement = new ChannelElement(this);
     }
 
     public void init()
@@ -40,21 +50,27 @@ public class MixerUIElement
 
         if(isSelected)
         {
-            parent.stroke(0, 255, 255);
+            parent.stroke(selectionColor);
             parent.strokeWeight(3);
         }
-        parent.fill(255, 0, 0);
+        parent.fill(adjustableColor);
         parent.ellipse(currentX, currentY, size, size);
         parent.noStroke();
 
-        parent.fill(0);
-        parent.textSize(20);
+        parent.fill(textColor);
+        parent.textSize(18);
         parent.textAlign(PConstants.CENTER, PConstants.CENTER);
         parent.text(linkedElement.getDisplayName(), currentX, currentY);
+
+        adjustableColor = parent.lerpColor(adjustableColor, backgroundColor, 0.03f);
     }
     public void drawLines()
     {
         drawConnectionLines();
+    }
+    public void blinkColor()
+    {
+        adjustableColor = parent.color(255);
     }
 
     public boolean isAbove()
@@ -99,15 +115,17 @@ public class MixerUIElement
     public void selectNextElement()
     {
         if(ChannelElement.class.equals(linkedElement.getClass()))
-            linkedElement = new OscillatorElement();
+            linkedElement = new OscillatorElement(this);
         else if(OscillatorElement.class.equals(linkedElement.getClass()))
-            linkedElement = new PitchElement();
+            linkedElement = new PitchElement(this);
         else if(PitchElement.class.equals(linkedElement.getClass()))
-            linkedElement = new TimerElement();
-        else if(TimerElement.class.equals(linkedElement.getClass()))
-            linkedElement = new VolumeElement();
+            linkedElement = new VolumeElement(this);
         else if(VolumeElement.class.equals(linkedElement.getClass()))
-            linkedElement = new ChannelElement();
+            linkedElement = new ChannelElement(this);
+    }
+    public void changeLinkedElement(AbstractMixerElement newElement)
+    {
+        linkedElement = newElement;
     }
 
     private void tryToConnect(MixerUIElement otherElement)

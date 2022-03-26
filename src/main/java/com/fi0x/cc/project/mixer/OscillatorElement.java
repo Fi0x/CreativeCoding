@@ -1,8 +1,15 @@
 package com.fi0x.cc.project.mixer;
 
+import com.fi0x.cc.project.gui.mixer.MixerUIElement;
+
 public class OscillatorElement extends AbstractMixerElement
 {
     private int ticksPerSecond = 1;
+
+    public OscillatorElement(MixerUIElement uiPart)
+    {
+        super(uiPart);
+    }
 
     @Override
     public void updateElement()

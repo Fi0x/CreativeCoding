@@ -1,6 +1,5 @@
 package com.fi0x.cc.project.gui.mixer;
 
-import com.fi0x.cc.project.mixer.AbstractMixerElement;
 import com.fi0x.cc.project.mixer.MixerManager;
 import com.fi0x.cc.project.mixer.TimerElement;
 import processing.awt.PSurfaceAWT;
@@ -38,11 +37,12 @@ public class MainMixerWindow extends PApplet
         f.setLocation(0, 0);
         f.setExtendedState(f.getExtendedState() | Frame.MAXIMIZED_BOTH);
 
-        frameRate(60);
+        frameRate(120);
         background(backgroundColor);
         noStroke();
 
-        originElement = new MixerUIElement(this, width / 2, height / 2, new TimerElement());
+        originElement = new MixerUIElement(this, width / 2, height / 2);
+        originElement.changeLinkedElement(new TimerElement(originElement));
 
         handler = new Thread(MixerManager.getInstance());
         handler.start();
@@ -91,7 +91,7 @@ public class MainMixerWindow extends PApplet
             loadPixels();
             if(pixels[mouseY * width + mouseX] == backgroundColor)
             {
-                MixerUIElement newControlElement = new MixerUIElement(this, mouseX, mouseY, new TimerElement());
+                MixerUIElement newControlElement = new MixerUIElement(this, mouseX, mouseY);
                 newControlElement.init();
                 uiElements.add(newControlElement);
             } else
@@ -133,6 +133,8 @@ public class MainMixerWindow extends PApplet
 
         if(originElement.isAbove())
         {
+            selectElement(originElement);
+            return;
         }
         for(MixerUIElement e : uiElements)
         {
@@ -163,7 +165,15 @@ public class MainMixerWindow extends PApplet
     @Override
     public void keyPressed()
     {
-        System.out.println(key);
+        if(key == DELETE)
+        {
+            if(selectedElement == originElement)
+                return;
+
+            uiElements.remove(selectedElement);
+            selectedElement.getLinkedElement().removeAllConnections();
+            selectedElement = null;
+        }
     }
 
     @Override
