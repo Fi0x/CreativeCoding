@@ -32,6 +32,13 @@ public abstract class AbstractMixerElement
         if(!connectedElements.contains(newConnection))
             connectedElements.add(newConnection);
     }
+    public ArrayList<MixerUIElement> getConnectedUIs()
+    {
+        ArrayList<MixerUIElement> uis = new ArrayList<>();
+        for(AbstractMixerElement e : connectedElements)
+            uis.add(e.linkedUI);
+        return uis;
+    }
     public void removeConnectedElement(AbstractMixerElement connectionToRemove)
     {
         connectedElements.remove(connectionToRemove);

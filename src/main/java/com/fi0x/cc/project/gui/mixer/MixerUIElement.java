@@ -5,12 +5,17 @@ import com.fi0x.cc.project.mixer.elements.*;
 import processing.core.PApplet;
 import processing.core.PConstants;
 
+import java.util.ArrayList;
+
 public class MixerUIElement
 {
     private final PApplet parent;
     protected int currentX;
     protected int currentY;
     private final int size = 100;
+
+    private final ArrayList<MixerUIElement> blacklistedElements = new ArrayList<>();
+    private final ArrayList<MixerUIElement> whitelistedElements = new ArrayList<>();
 
     private final int backgroundColor;
     private final int selectionColor;
@@ -68,9 +73,9 @@ public class MixerUIElement
         adjustableStrokeColor = parent.lerpColor(adjustableStrokeColor, strokeColor, colorReverseRate);
         adjustableBackgroundColor = parent.lerpColor(adjustableBackgroundColor, backgroundColor, colorReverseRate);
     }
-    public void drawLines()
+    public void drawLines(int color)
     {
-        drawConnectionLines();
+        drawConnectionLines(color);
     }
     public void blinkColor(float resetRate)
     {
@@ -120,6 +125,19 @@ public class MixerUIElement
         currentY = newY;
     }
 
+    public void addElementToBlacklist(MixerUIElement element)
+    {
+        whitelistedElements.remove(element);
+        blacklistedElements.add(element);
+
+        linkedElement.removeConnectedElement(element.linkedElement);
+    }
+    public void addElementToWhitelist(MixerUIElement element)
+    {
+        blacklistedElements.remove(element);
+        whitelistedElements.add(element);
+    }
+
     public AbstractMixerElement getLinkedElement()
     {
         return linkedElement;
@@ -154,33 +172,34 @@ public class MixerUIElement
 
     private void tryToConnect(MixerUIElement otherElement)
     {
-        float distance = PApplet.dist(otherElement.currentX, otherElement.currentY, currentX, currentY);
+        if(blacklistedElements.contains(otherElement))
+            return;
 
-        if(distance < connectionDistance && otherElement != this)
+        float distance = PApplet.dist(otherElement.currentX, otherElement.currentY, currentX, currentY);
+        if(whitelistedElements.contains(otherElement) || (distance < connectionDistance && otherElement != this))
         {
             otherElement.getLinkedElement().addConnectedElement(linkedElement);
             linkedElement.addConnectedElement(otherElement.getLinkedElement());
         }
     }
-    private void drawConnectionLines()
+    private void drawConnectionLines(int color)
     {
-        parent.fill(255);
-        parent.stroke(255);
+        parent.stroke(color);
+        parent.strokeWeight(5);
 
-        int otherX = MainMixerWindow.originElement.currentX;
-        int otherY = MainMixerWindow.originElement.currentY;
-        float distance = PApplet.dist(otherX, otherY, currentX, currentY);
-
-        if(distance < connectionDistance)
-            parent.line(otherX, otherY, currentX, currentY);
-
+        drawLine(MainMixerWindow.originElement);
         for(MixerUIElement e : MainMixerWindow.uiElements)
-        {
-            distance = PApplet.dist(e.currentX, e.currentY, currentX, currentY);
-            if(distance < connectionDistance)
-                parent.line(e.currentX, e.currentY, currentX, currentY);
-        }
+            drawLine(e);
 
         parent.noStroke();
+    }
+    private void drawLine(MixerUIElement otherUI)
+    {
+        if(blacklistedElements.contains(otherUI))
+            return;
+
+        float dist = PApplet.dist(currentX, currentY, otherUI.currentX, otherUI.currentY);
+        if(whitelistedElements.contains(otherUI) || dist < connectionDistance)
+            parent.line(currentX, currentY, otherUI.currentX, otherUI.currentY);
     }
 }

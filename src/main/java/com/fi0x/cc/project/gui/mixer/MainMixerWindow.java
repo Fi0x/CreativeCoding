@@ -1,5 +1,6 @@
 package com.fi0x.cc.project.gui.mixer;
 
+import com.fi0x.cc.project.mixer.AbstractMixerElement;
 import com.fi0x.cc.project.mixer.MixerManager;
 import com.fi0x.cc.project.mixer.elements.TimerElement;
 import processing.awt.PSurfaceAWT;
@@ -16,6 +17,7 @@ public class MainMixerWindow extends PApplet
 {
     private PImage icon;
     private final int backgroundColor = color(0);
+    private final int lineColor = color(255);
 
     private Thread handler;
     public static MixerUIElement originElement;
@@ -59,9 +61,9 @@ public class MainMixerWindow extends PApplet
 
         originElement.updateLocation(width / 2, height / 2);
 
-        originElement.drawLines();
+        originElement.drawLines(lineColor);
         for(MixerUIElement mixerElement : uiElements)
-            mixerElement.drawLines();
+            mixerElement.drawLines(lineColor);
 
         originElement.drawElement();
         for(MixerUIElement mixerElement : uiElements)
@@ -88,6 +90,27 @@ public class MainMixerWindow extends PApplet
         }
         if(mouseButton == LEFT)
         {
+            loadPixels();
+            if(pixels[mouseY * width + mouseX] == lineColor)
+            {
+                for(MixerUIElement e : uiElements)
+                {
+                    for(MixerUIElement e1 : e.getLinkedElement().getConnectedUIs())
+                    {
+                        float d1 = dist(mouseX, mouseY, e.currentX, e.currentY);
+                        float d2 = dist(mouseX, mouseY, e1.currentX, e1.currentY);
+                        float d3 = dist(e.currentX, e.currentY, e1.currentX, e1.currentY);
+                        if(d1 + d2 < d3 + 1 && d1 + d2 > d3 - 1)
+                        {
+                            e.addElementToBlacklist(e1);
+                            e1.addElementToBlacklist(e);
+                            System.out.println("Found");
+                            return;
+                        }
+                    }
+                }
+            }
+
             for(MixerUIElement e : uiElements)
             {
                 if(!e.pickUp())
@@ -166,7 +189,7 @@ public class MainMixerWindow extends PApplet
     {
         if(key == DELETE)
         {
-            if(selectedElement == originElement)
+            if(selectedElement == null || selectedElement == originElement)
                 return;
 
             uiElements.remove(selectedElement);
