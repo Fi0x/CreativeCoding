@@ -7,12 +7,14 @@ public class OscillatorElement extends AbstractMixerElement
     @Override
     public void updateElement()
     {
-        //TODO: Update volume
+        //TODO: Update tickrate
     }
     @Override
     public void changeMainValue(int valueChange)
     {
         ticksPerSecond += valueChange;
+        if(ticksPerSecond < 1)
+            ticksPerSecond = 1;
     }
 
     @Override

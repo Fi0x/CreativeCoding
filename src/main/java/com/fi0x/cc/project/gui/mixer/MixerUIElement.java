@@ -1,6 +1,6 @@
 package com.fi0x.cc.project.gui.mixer;
 
-import com.fi0x.cc.project.mixer.AbstractMixerElement;
+import com.fi0x.cc.project.mixer.*;
 import processing.core.PApplet;
 import processing.core.PConstants;
 
@@ -11,6 +11,7 @@ public class MixerUIElement
     protected int currentY;
     private final int size = 100;
 
+    private boolean isSelected = false;
     private boolean pickedUp = false;
     private final int connectionDistance = 300;
 
@@ -29,7 +30,7 @@ public class MixerUIElement
     public void init()
     {
     }
-    public void draw()
+    public void drawElement()
     {
         if(pickedUp)
         {
@@ -37,15 +38,23 @@ public class MixerUIElement
             currentY = parent.mouseY;
         }
 
-        drawConnectionLines();
-
+        if(isSelected)
+        {
+            parent.stroke(0, 255, 255);
+            parent.strokeWeight(3);
+        }
         parent.fill(255, 0, 0);
         parent.ellipse(currentX, currentY, size, size);
+        parent.noStroke();
 
         parent.fill(0);
         parent.textSize(20);
         parent.textAlign(PConstants.CENTER, PConstants.CENTER);
         parent.text(linkedElement.getDisplayName(), currentX, currentY);
+    }
+    public void drawLines()
+    {
+        drawConnectionLines();
     }
 
     public boolean isAbove()
@@ -72,6 +81,11 @@ public class MixerUIElement
 
         pickedUp = false;
     }
+    public void select(boolean selected)
+    {
+        isSelected = selected;
+    }
+
     public void updateLocation(int newX, int newY)
     {
         currentX = newX;
@@ -82,9 +96,18 @@ public class MixerUIElement
     {
         return linkedElement;
     }
-    public void changeLinkedElement(AbstractMixerElement newElement)
+    public void selectNextElement()
     {
-        linkedElement = newElement;
+        if(ChannelElement.class.equals(linkedElement.getClass()))
+            linkedElement = new OscillatorElement();
+        else if(OscillatorElement.class.equals(linkedElement.getClass()))
+            linkedElement = new PitchElement();
+        else if(PitchElement.class.equals(linkedElement.getClass()))
+            linkedElement = new TimerElement();
+        else if(TimerElement.class.equals(linkedElement.getClass()))
+            linkedElement = new VolumeElement();
+        else if(VolumeElement.class.equals(linkedElement.getClass()))
+            linkedElement = new ChannelElement();
     }
 
     private void tryToConnect(MixerUIElement otherElement)

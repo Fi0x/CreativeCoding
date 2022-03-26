@@ -12,6 +12,10 @@ public class TimerElement extends AbstractMixerElement
     public void changeMainValue(int valueChange)
     {
         bpm += valueChange;
+        if(bpm < 0)
+            bpm = 0;
+        if(bpm > 1000)
+            bpm = 1000;
     }
 
     public int getCurrentBPM()

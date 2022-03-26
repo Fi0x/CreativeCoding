@@ -1,5 +1,6 @@
 package com.fi0x.cc.project.gui.mixer;
 
+import com.fi0x.cc.project.mixer.AbstractMixerElement;
 import com.fi0x.cc.project.mixer.MixerManager;
 import com.fi0x.cc.project.mixer.TimerElement;
 import processing.awt.PSurfaceAWT;
@@ -22,6 +23,7 @@ public class MainMixerWindow extends PApplet
     public static final ArrayList<MixerUIElement> uiElements = new ArrayList<>();
 
     public MixerUIElement draggingElement = null;
+    public MixerUIElement selectedElement = null;
 
     @Override
     public void setup()
@@ -56,32 +58,54 @@ public class MainMixerWindow extends PApplet
         background(backgroundColor);
 
         originElement.updateLocation(width / 2, height / 2);
-        originElement.draw();
+
+        originElement.drawLines();
         for(MixerUIElement mixerElement : uiElements)
-            mixerElement.draw();
+            mixerElement.drawLines();
+
+        originElement.drawElement();
+        for(MixerUIElement mixerElement : uiElements)
+            mixerElement.drawElement();
     }
 
     @Override
     public void mousePressed()
     {
-        if(mouseButton != LEFT)
-            return;
+        if(mouseButton == RIGHT)
+        {
+            loadPixels();
+            if(pixels[mouseY * width + mouseX] == backgroundColor)
+                return;
 
-        loadPixels();
-        if(pixels[mouseY * width + mouseX] == backgroundColor)
-        {
-            MixerUIElement newControlElement = new MixerUIElement(this, mouseX, mouseY, new TimerElement());
-            newControlElement.init();
-            uiElements.add(newControlElement);
-        } else
-        {
             for(MixerUIElement e : uiElements)
             {
-                if(!e.pickUp())
+                if(!e.isAbove())
                     continue;
 
-                draggingElement = e;
+                e.selectNextElement();
                 break;
+            }
+        }
+        if(mouseButton == LEFT)
+        {
+            loadPixels();
+            if(pixels[mouseY * width + mouseX] == backgroundColor)
+            {
+                MixerUIElement newControlElement = new MixerUIElement(this, mouseX, mouseY, new TimerElement());
+                newControlElement.init();
+                uiElements.add(newControlElement);
+            } else
+            {
+                for(MixerUIElement e : uiElements)
+                {
+                    if(!e.pickUp())
+                        continue;
+
+                    draggingElement = e;
+
+                    selectElement(e);
+                    break;
+                }
             }
         }
     }
@@ -96,8 +120,29 @@ public class MainMixerWindow extends PApplet
 
         draggingElement.drop();
         draggingElement = null;
-    }
 
+        selectedElement.select(false);
+        selectedElement = null;
+    }
+    @Override
+    public void mouseClicked()
+    {
+        loadPixels();
+        if(pixels[mouseY * width + mouseX] == backgroundColor)
+            return;
+
+        if(originElement.isAbove())
+        {
+        }
+        for(MixerUIElement e : uiElements)
+        {
+            if(!e.isAbove())
+                continue;
+
+            selectElement(e);
+            break;
+        }
+    }
     @Override
     public void mouseWheel(MouseEvent event)
     {
@@ -135,5 +180,14 @@ public class MainMixerWindow extends PApplet
         Frame f = can.getFrame();
         f.setUndecorated(true);
         return sur;
+    }
+
+    private void selectElement(MixerUIElement element)
+    {
+        if(selectedElement != null)
+            selectedElement.select(false);
+
+        selectedElement = element;
+        selectedElement.select(true);
     }
 }

@@ -7,7 +7,7 @@ public class PitchElement extends AbstractMixerElement
     @Override
     public void updateElement()
     {
-        //TODO: Update volume
+        //TODO: Update pitch
     }
     @Override
     public void changeMainValue(int valueChange)

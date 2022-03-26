@@ -1,6 +1,7 @@
 package com.fi0x.cc.project.mixer;
 
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 
 public abstract class AbstractMixerElement
 {
@@ -20,9 +21,14 @@ public abstract class AbstractMixerElement
     }
     public void removeAllConnections()
     {
-        for(AbstractMixerElement e : connectedElements)
-            e.removeConnectedElement(this);
-        connectedElements.clear();
+        try
+        {
+            for(AbstractMixerElement e : connectedElements)
+                e.removeConnectedElement(this);
+            connectedElements.clear();
+        } catch(ConcurrentModificationException ignored)
+        {
+        }
     }
 
     public abstract String getDisplayName();
