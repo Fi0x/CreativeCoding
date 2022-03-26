@@ -7,6 +7,8 @@ import java.util.ConcurrentModificationException;
 
 public abstract class AbstractMixerElement
 {
+    protected final ArrayList<Class<? extends AbstractMixerElement>> allowedConnections = new ArrayList<>();
+
     protected final ArrayList<AbstractMixerElement> connectedElements = new ArrayList<>();
     protected final MixerUIElement linkedUI;
 
@@ -27,7 +29,10 @@ public abstract class AbstractMixerElement
     public abstract void changeSecondaryValue(int valueChange);
     public abstract void syncClock(int timerFrame);
 
-    public abstract boolean canConnectTo(AbstractMixerElement otherElement);
+    public boolean canConnectTo(AbstractMixerElement otherElement)
+    {
+        return allowedConnections.contains(otherElement.getClass());
+    }
     public void addConnectedElement(AbstractMixerElement newConnection)
     {
         if(!connectedElements.contains(newConnection))

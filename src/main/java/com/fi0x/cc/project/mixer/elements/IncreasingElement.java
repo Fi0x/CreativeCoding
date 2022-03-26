@@ -2,20 +2,21 @@ package com.fi0x.cc.project.mixer.elements;
 
 import com.fi0x.cc.project.gui.mixer.MixerUIElement;
 import com.fi0x.cc.project.mixer.AbstractMixerElement;
-import com.fi0x.cc.project.mixer.MixerManager;
 
-public class IntervalElement extends AbstractMixerElement
+public class IncreasingElement extends AbstractMixerElement
 {
-    private int intervalLength = 8 * MixerManager.getNotesPerBeat() / 8;
-    private int currentFrame = 0;
-    private boolean isActive = false;
+    private int valueCount = 16;
+    private int increase = 0;
 
-    public IntervalElement(MixerUIElement uiPart)
+    public IncreasingElement(MixerUIElement uiPart)
     {
         super(uiPart);
 
-        allowedConnections.add(IncreasingElement.class);
         allowedConnections.add(ChannelElement.class);
+        allowedConnections.add(LengthElement.class);
+        allowedConnections.add(NoteElement.class);
+        allowedConnections.add(PitchElement.class);
+        allowedConnections.add(VolumeElement.class);
         allowedConnections.add(DelayElement.class);
         allowedConnections.add(IntervalElement.class);
         allowedConnections.add(TickElement.class);
@@ -29,23 +30,18 @@ public class IntervalElement extends AbstractMixerElement
             return;
         updatedFrames.add(globalFrame);
 
-        currentFrame++;
-        if(currentFrame % intervalLength == 0)
-            isActive = !isActive;
+        super.updateElement(globalFrame, bpm);
 
-        if(isActive)
-        {
-            super.updateElement(globalFrame, bpm);
-            for(AbstractMixerElement e : connectedElements)
-                e.updateElement(globalFrame, bpm);
-        }
+        increase++;
+        if(increase >= valueCount)
+            increase = 0;
     }
     @Override
     public void changeMainValue(int valueChange)
     {
-        intervalLength += valueChange;
-        if(intervalLength < 1)
-            intervalLength = 1;
+        valueCount += valueChange;
+        if(valueCount < 0)
+            valueCount = 0;
     }
     @Override
     public void changeSecondaryValue(int valueChange)
@@ -54,12 +50,16 @@ public class IntervalElement extends AbstractMixerElement
     @Override
     public void syncClock(int timerFrame)
     {
-        currentFrame = timerFrame;
+    }
+
+    public int getCurrentIncrease()
+    {
+        return increase;
     }
 
     @Override
     public String getDisplayName()
     {
-        return "Interval: " + intervalLength;
+        return "Iterate: " + valueCount;
     }
 }

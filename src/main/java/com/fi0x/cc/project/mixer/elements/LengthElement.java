@@ -11,6 +11,9 @@ public class LengthElement extends AbstractMixerElement
     public LengthElement(MixerUIElement uiPart)
     {
         super(uiPart);
+
+        allowedConnections.add(IncreasingElement.class);
+        allowedConnections.add(ChannelElement.class);
     }
 
     @Override
@@ -36,15 +39,16 @@ public class LengthElement extends AbstractMixerElement
     public void syncClock(int timerFrame)
     {
     }
-    @Override
-    public boolean canConnectTo(AbstractMixerElement otherElement)
-    {
-        return otherElement instanceof ChannelElement;
-    }
 
     public int getLength()
     {
-        return length;
+        int updatedLength = length;
+        for(AbstractMixerElement e :connectedElements)
+        {
+            if(e instanceof IncreasingElement)
+                updatedLength += ((IncreasingElement) e).getCurrentIncrease();
+        }
+        return Math.min(updatedLength, 0);
     }
 
     @Override

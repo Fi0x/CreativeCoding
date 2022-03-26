@@ -5,6 +5,8 @@ import com.fi0x.cc.project.mixer.AbstractMixerElement;
 import com.fi0x.cc.project.mixer.MixerManager;
 import com.fi0x.cc.project.mixer.TimeCalculator;
 
+import java.util.ArrayList;
+
 public class DelayElement extends AbstractMixerElement
 {
     private int delay = 2 * MixerManager.getNotesPerBeat() / 8;
@@ -12,6 +14,12 @@ public class DelayElement extends AbstractMixerElement
     public DelayElement(MixerUIElement uiPart)
     {
         super(uiPart);
+
+        allowedConnections.add(ChannelElement.class);
+        allowedConnections.add(IncreasingElement.class);
+        allowedConnections.add(IntervalElement.class);
+        allowedConnections.add(TickElement.class);
+        allowedConnections.add(TimerElement.class);
     }
 
     @Override

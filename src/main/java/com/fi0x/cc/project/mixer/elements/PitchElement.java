@@ -20,6 +20,9 @@ public class PitchElement extends AbstractMixerElement
     public void updateElement(long globalFrame, int bpm)
     {
         super.updateElement(globalFrame, bpm);
+
+        allowedConnections.add(IncreasingElement.class);
+        allowedConnections.add(ChannelElement.class);
     }
     @Override
     public void changeMainValue(int valueChange)
@@ -38,18 +41,20 @@ public class PitchElement extends AbstractMixerElement
     public void syncClock(int timerFrame)
     {
     }
-    @Override
-    public boolean canConnectTo(AbstractMixerElement otherElement)
-    {
-        return otherElement instanceof ChannelElement;
-    }
 
     public void updateChannelPitch(int channel)
     {
+        int updatedPitch = pitchDifference;
+        for(AbstractMixerElement e : connectedElements)
+        {
+            if(e instanceof IncreasingElement)
+                updatedPitch += ((IncreasingElement) e).getCurrentIncrease();
+        }
+        updatedPitch = Math.max(-128, Math.min(127, updatedPitch));
         try
         {
             //TODO: Use correct values
-            String value = Integer.toBinaryString((pitchDifference + 128) * 64);
+            String value = Integer.toBinaryString((updatedPitch + 128) * 64);
             while(value.length() < 14)
                 value = "0" + value;
 

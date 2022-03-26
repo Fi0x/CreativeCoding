@@ -3,6 +3,8 @@ package com.fi0x.cc.project.mixer.elements;
 import com.fi0x.cc.project.gui.mixer.MixerUIElement;
 import com.fi0x.cc.project.mixer.AbstractMixerElement;
 
+import java.util.ArrayList;
+
 public class TimerElement extends AbstractMixerElement
 {
     private int bpm = 60;
@@ -13,6 +15,12 @@ public class TimerElement extends AbstractMixerElement
     public TimerElement(MixerUIElement uiPart)
     {
         super(uiPart);
+
+        allowedConnections.add(ChannelElement.class);
+        allowedConnections.add(DelayElement.class);
+        allowedConnections.add(IncreasingElement.class);
+        allowedConnections.add(IntervalElement.class);
+        allowedConnections.add(TickElement.class);
     }
 
     @Override
@@ -53,14 +61,6 @@ public class TimerElement extends AbstractMixerElement
     @Override
     public void syncClock(int timerFrame)
     {
-    }
-    @Override
-    public boolean canConnectTo(AbstractMixerElement otherElement)
-    {
-        return !(otherElement instanceof LengthElement)
-                && !(otherElement instanceof NoteElement)
-                && !(otherElement instanceof PitchElement)
-                && !(otherElement instanceof VolumeElement);
     }
 
     public int getCurrentBPM()

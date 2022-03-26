@@ -12,6 +12,13 @@ public class TickElement extends AbstractMixerElement
     public TickElement(MixerUIElement uiPart)
     {
         super(uiPart);
+
+        allowedConnections.add(ChannelElement.class);
+        allowedConnections.add(DelayElement.class);
+        allowedConnections.add(IncreasingElement.class);
+        allowedConnections.add(IntervalElement.class);
+        allowedConnections.add(TickElement.class);
+        allowedConnections.add(TimerElement.class);
     }
 
     @Override
@@ -44,14 +51,6 @@ public class TickElement extends AbstractMixerElement
     public void syncClock(int timerFrame)
     {
         currentFrame = timerFrame;
-    }
-    @Override
-    public boolean canConnectTo(AbstractMixerElement otherElement)
-    {
-        return !(otherElement instanceof LengthElement)
-                && !(otherElement instanceof NoteElement)
-                && !(otherElement instanceof PitchElement)
-                && !(otherElement instanceof VolumeElement);
     }
 
     @Override

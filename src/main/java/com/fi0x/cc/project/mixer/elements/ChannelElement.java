@@ -45,7 +45,7 @@ public class ChannelElement extends AbstractMixerElement
             } else if(e instanceof PitchElement)
             {
                 e.updateElement(globalFrame, bpm);
-                ((PitchElement) e).updateChannelPitch(channel);
+                ((PitchElement) e).updateChannelPitch(getUpdatedChannel());
             } else if(e instanceof VolumeElement)
             {
                 e.updateElement(globalFrame, bpm);
@@ -96,7 +96,7 @@ public class ChannelElement extends AbstractMixerElement
         {
             new Thread(() ->
             {
-                int currentChannel = channel;
+                int currentChannel = getUpdatedChannel();
                 try
                 {
                     ShortMessage msg = new ShortMessage();
@@ -115,7 +115,7 @@ public class ChannelElement extends AbstractMixerElement
                 {
                 }
 
-                if(lastNotePlayed > System.currentTimeMillis() - delay && currentChannel == channel)
+                if(lastNotePlayed > System.currentTimeMillis() - delay && currentChannel == getUpdatedChannel())
                     return;
 
                 try
@@ -129,5 +129,15 @@ public class ChannelElement extends AbstractMixerElement
                 }
             }).start();
         }
+    }
+    private int getUpdatedChannel()
+    {
+        int newChannel = channel;
+        for(AbstractMixerElement e : connectedElements)
+        {
+            if(e instanceof IncreasingElement)
+                channel += ((IncreasingElement) e).getCurrentIncrease();
+        }
+        return newChannel % 16;
     }
 }

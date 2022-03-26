@@ -16,6 +16,9 @@ public class VolumeElement extends AbstractMixerElement
     public void updateElement(long globalFrame, int bpm)
     {
         super.updateElement(globalFrame, bpm);
+
+        allowedConnections.add(IncreasingElement.class);
+        allowedConnections.add(ChannelElement.class);
     }
     @Override
     public void changeMainValue(int valueChange)
@@ -34,15 +37,16 @@ public class VolumeElement extends AbstractMixerElement
     public void syncClock(int timerFrame)
     {
     }
-    @Override
-    public boolean canConnectTo(AbstractMixerElement otherElement)
-    {
-        return otherElement instanceof ChannelElement;
-    }
 
     public int getVolume()
     {
-        return volume;
+        int updatedVolume = volume;
+        for(AbstractMixerElement e : connectedElements)
+        {
+            if(e instanceof IncreasingElement)
+                updatedVolume += ((IncreasingElement) e).getCurrentIncrease();
+        }
+        return updatedVolume;
     }
 
     @Override

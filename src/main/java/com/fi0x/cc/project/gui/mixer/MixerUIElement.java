@@ -149,7 +149,9 @@ public class MixerUIElement
         if(ChannelElement.class.equals(linkedElement.getClass()))
             linkedElement = new DelayElement(this);
         else if(DelayElement.class.equals(linkedElement.getClass()))
-            linkedElement = new IntervalElement(this);
+            linkedElement = new IncreasingElement(this);
+        else if(IncreasingElement.class.equals(linkedElement.getClass()))
+        linkedElement = new IntervalElement(this);
         else if(IntervalElement.class.equals(linkedElement.getClass()))
             linkedElement = new LengthElement(this);
         else if(LengthElement.class.equals(linkedElement.getClass()))
