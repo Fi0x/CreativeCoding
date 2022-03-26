@@ -29,6 +29,11 @@ public class OscillatorElement extends AbstractMixerElement
         if(ticksPerSecond < 1)
             ticksPerSecond = 1;
     }
+    @Override
+    public void syncClock(int timerFrame)
+    {
+        //TODO: Sync
+    }
 
     @Override
     public String getDisplayName()

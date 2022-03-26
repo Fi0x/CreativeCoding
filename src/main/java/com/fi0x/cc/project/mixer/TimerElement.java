@@ -24,7 +24,7 @@ public class TimerElement extends AbstractMixerElement
         if(currentFrame % 60 == 0)
         {
             currentFrame = 0;
-            linkedUI.blinkColor();
+            linkedUI.blinkColor(0.03f * bpm / 60);
         }
 
         for(AbstractMixerElement e : connectedElements)
@@ -39,10 +39,18 @@ public class TimerElement extends AbstractMixerElement
         if(bpm > 1000)
             bpm = 1000;
     }
+    @Override
+    public void syncClock(int timerFrame)
+    {
+    }
 
     public int getCurrentBPM()
     {
         return bpm;
+    }
+    public int getCurrentFrame()
+    {
+        return currentFrame;
     }
 
     @Override

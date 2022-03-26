@@ -22,6 +22,10 @@ public class PitchElement extends AbstractMixerElement
     {
         pitchDifference += valueChange;
     }
+    @Override
+    public void syncClock(int timerFrame)
+    {
+    }
 
     @Override
     public String getDisplayName()

@@ -17,6 +17,7 @@ public class MixerUIElement
     private final int strokeColor;
     private int adjustableBackgroundColor;
     private int adjustableStrokeColor;
+    private float colorReverseRate;
 
     private boolean isSelected = false;
     private boolean pickedUp = false;
@@ -63,19 +64,21 @@ public class MixerUIElement
         parent.textAlign(PConstants.CENTER, PConstants.CENTER);
         parent.text(linkedElement.getDisplayName(), currentX, currentY);
 
-        adjustableStrokeColor = parent.lerpColor(adjustableStrokeColor, strokeColor, 0.03f);
-        adjustableBackgroundColor = parent.lerpColor(adjustableBackgroundColor, backgroundColor, 0.03f);
+        adjustableStrokeColor = parent.lerpColor(adjustableStrokeColor, strokeColor, colorReverseRate);
+        adjustableBackgroundColor = parent.lerpColor(adjustableBackgroundColor, backgroundColor, colorReverseRate);
     }
     public void drawLines()
     {
         drawConnectionLines();
     }
-    public void blinkColor()
+    public void blinkColor(float resetRate)
     {
+        colorReverseRate = resetRate;
         adjustableBackgroundColor = parent.color(255);
     }
-    public void blinkStroke()
+    public void blinkStroke(float resetRate)
     {
+        colorReverseRate = resetRate;
         adjustableStrokeColor = parent.color(0, 255, 0);
     }
 
@@ -100,6 +103,8 @@ public class MixerUIElement
         tryToConnect(MainMixerWindow.originElement);
         for(MixerUIElement e : MainMixerWindow.uiElements)
             tryToConnect(e);
+
+        linkedElement.syncClock(((TimerElement) MainMixerWindow.originElement.getLinkedElement()).getCurrentFrame());
 
         pickedUp = false;
     }

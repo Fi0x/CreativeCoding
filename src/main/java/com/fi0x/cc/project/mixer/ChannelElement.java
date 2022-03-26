@@ -42,6 +42,10 @@ public class ChannelElement extends AbstractMixerElement
         if(channel > 15)
             channel = 0;
     }
+    @Override
+    public void syncClock(int timerFrame)
+    {
+    }
 
     @Override
     public String getDisplayName()

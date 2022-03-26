@@ -26,6 +26,10 @@ public class VolumeElement extends AbstractMixerElement
         if(volume > 127)
             volume = 127;
     }
+    @Override
+    public void syncClock(int timerFrame)
+    {
+    }
 
     public int getVolume()
     {

@@ -17,9 +17,10 @@ public abstract class AbstractMixerElement
 
     public void updateElement(long currentFrame, int bpm)
     {
-        linkedUI.blinkStroke();
+        linkedUI.blinkStroke(0.03f * bpm / 60);
     }
     public abstract void changeMainValue(int valueChange);
+    public abstract void syncClock(int timerFrame);
 
     public void addConnectedElement(AbstractMixerElement newConnection)
     {
