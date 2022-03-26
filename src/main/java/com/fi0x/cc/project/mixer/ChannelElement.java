@@ -31,6 +31,24 @@ public class ChannelElement extends AbstractMixerElement
         lastUpdatedFrame = currentFrame;
 
         super.updateElement(currentFrame, bpm);
+
+        for(AbstractMixerElement e : connectedElements)
+        {
+            if(e instanceof NoteElement)
+            {
+                e.updateElement(currentFrame, bpm);
+                note = ((NoteElement) e).getNote();
+            } else if(e instanceof PitchElement)
+            {
+                e.updateElement(currentFrame, bpm);
+                ((PitchElement) e).updateChannelPitch(channel);
+            } else if(e instanceof VolumeElement)
+            {
+                e.updateElement(currentFrame, bpm);
+                volume = ((VolumeElement) e).getVolume();
+            }
+        }
+
         playNote();
     }
     @Override

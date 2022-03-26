@@ -42,6 +42,15 @@ public abstract class AbstractMixerElement
         {
         }
     }
+    public void replaceConnections(AbstractMixerElement newElement)
+    {
+        for(AbstractMixerElement e : connectedElements)
+        {
+            e.removeConnectedElement(this);
+            e.addConnectedElement(newElement);
+            newElement.addConnectedElement(e);
+        }
+    }
 
     public abstract String getDisplayName();
 }

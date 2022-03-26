@@ -125,7 +125,11 @@ public class MixerUIElement
     }
     public void selectNextElement()
     {
+        AbstractMixerElement oldElement = linkedElement;
+
         if(ChannelElement.class.equals(linkedElement.getClass()))
+            linkedElement = new NoteElement(this);
+        else if(NoteElement.class.equals(linkedElement.getClass()))
             linkedElement = new OscillatorElement(this);
         else if(OscillatorElement.class.equals(linkedElement.getClass()))
             linkedElement = new PitchElement(this);
@@ -135,6 +139,8 @@ public class MixerUIElement
             linkedElement = new VolumeElement(this);
         else if(VolumeElement.class.equals(linkedElement.getClass()))
             linkedElement = new ChannelElement(this);
+
+        oldElement.replaceConnections(linkedElement);
     }
     public void changeLinkedElement(AbstractMixerElement newElement)
     {

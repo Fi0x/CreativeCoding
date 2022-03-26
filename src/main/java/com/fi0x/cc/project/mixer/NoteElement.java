@@ -1,12 +1,13 @@
 package com.fi0x.cc.project.mixer;
 
 import com.fi0x.cc.project.gui.mixer.MixerUIElement;
+import com.fi0x.cc.project.synth.synthesizers.MusicConverter;
 
-public class PitchElement extends AbstractMixerElement
+public class NoteElement extends AbstractMixerElement
 {
-    private int pitchDifference = 0;
+    private int note = 60;
 
-    public PitchElement(MixerUIElement uiPart)
+    public NoteElement(MixerUIElement uiPart)
     {
         super(uiPart);
     }
@@ -19,21 +20,26 @@ public class PitchElement extends AbstractMixerElement
     @Override
     public void changeMainValue(int valueChange)
     {
-        pitchDifference += valueChange;
+        note += valueChange;
+
+        if(note < 0)
+            note = 0;
+        else if(note > 127)
+            note = 127;
     }
     @Override
     public void syncClock(int timerFrame)
     {
     }
 
-    public void updateChannelPitch(int channel)
+    public int getNote()
     {
-        //TODO: update channel pitch
+        return note;
     }
 
     @Override
     public String getDisplayName()
     {
-        return "Pitch: " + pitchDifference;
+        return "Note: " + MusicConverter.getOctave(note) + MusicConverter.getNoteName(note);
     }
 }
