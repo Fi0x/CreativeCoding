@@ -1,6 +1,7 @@
 package com.fi0x.cc.project.gui.mixer;
 
 import com.fi0x.cc.project.mixer.*;
+import com.fi0x.cc.project.mixer.elements.*;
 import processing.core.PApplet;
 import processing.core.PConstants;
 
@@ -9,7 +10,7 @@ public class MixerUIElement
     private final PApplet parent;
     protected int currentX;
     protected int currentY;
-    private final int size = 120;
+    private final int size = 100;
 
     private final int backgroundColor;
     private final int selectionColor;
@@ -128,10 +129,14 @@ public class MixerUIElement
         AbstractMixerElement oldElement = linkedElement;
 
         if(ChannelElement.class.equals(linkedElement.getClass()))
+            linkedElement = new DelayElement(this);
+        else if(DelayElement.class.equals(linkedElement.getClass()))
+            linkedElement = new IntervalElement(this);
+        else if(IntervalElement.class.equals(linkedElement.getClass()))
+            linkedElement = new LengthElement(this);
+        else if(LengthElement.class.equals(linkedElement.getClass()))
             linkedElement = new NoteElement(this);
         else if(NoteElement.class.equals(linkedElement.getClass()))
-            linkedElement = new OscillatorElement(this);
-        else if(OscillatorElement.class.equals(linkedElement.getClass()))
             linkedElement = new PitchElement(this);
         else if(PitchElement.class.equals(linkedElement.getClass()))
             linkedElement = new TickElement(this);

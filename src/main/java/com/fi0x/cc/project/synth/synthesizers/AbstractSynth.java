@@ -65,6 +65,7 @@ public abstract class AbstractSynth implements ISynthesizer
                 channel.setChannelPressure(data[1]);
                 break;
             case "1110":
+                //TODO: Fix length of binary numbers
                 String binary = Integer.toBinaryString(data[1]) + Integer.toBinaryString(data[2]);
                 channel.setPitchBend(Integer.parseInt(binary, 2));
                 soundVisualizer.pitchBendPercent = ((float) Integer.parseInt(binary, 2)) / 16383;

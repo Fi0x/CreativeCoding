@@ -1,12 +1,14 @@
-package com.fi0x.cc.project.mixer;
+package com.fi0x.cc.project.mixer.elements;
 
 import com.fi0x.cc.project.gui.mixer.MixerUIElement;
+import com.fi0x.cc.project.mixer.AbstractMixerElement;
 
 public class TimerElement extends AbstractMixerElement
 {
     private int bpm = 60;
+    private int notesPerBeat = 8;
+
     private int currentFrame = 0;
-    private long lastUpdatedFrame = 0;
 
     public TimerElement(MixerUIElement uiPart)
     {
@@ -14,21 +16,21 @@ public class TimerElement extends AbstractMixerElement
     }
 
     @Override
-    public void updateElement(long frameToUpdate, int bpm)
+    public void updateElement(long globalFrame, int bpm)
     {
-        if(frameToUpdate == lastUpdatedFrame)
+        if(updatedFrames.contains(globalFrame))
             return;
-        lastUpdatedFrame = frameToUpdate;
+        updatedFrames.add(globalFrame);
 
         currentFrame++;
-        if(currentFrame % 60 == 0)
+        if(currentFrame % notesPerBeat == 0)
         {
             currentFrame = 0;
             linkedUI.blinkColor(0.03f * bpm / 60);
         }
 
         for(AbstractMixerElement e : connectedElements)
-            e.updateElement(frameToUpdate, bpm);
+            e.updateElement(globalFrame, bpm);
     }
     @Override
     public void changeMainValue(int valueChange)
@@ -40,6 +42,15 @@ public class TimerElement extends AbstractMixerElement
             bpm = 1000;
     }
     @Override
+    public void changeSecondaryValue(int valueChange)
+    {
+        notesPerBeat += valueChange;
+        if(notesPerBeat < 1)
+            notesPerBeat = 1;
+        if(notesPerBeat > 128)
+            notesPerBeat = 128;
+    }
+    @Override
     public void syncClock(int timerFrame)
     {
     }
@@ -47,6 +58,10 @@ public class TimerElement extends AbstractMixerElement
     public int getCurrentBPM()
     {
         return bpm;
+    }
+    public int getNotesPerBeat()
+    {
+        return notesPerBeat;
     }
     public int getCurrentFrame()
     {

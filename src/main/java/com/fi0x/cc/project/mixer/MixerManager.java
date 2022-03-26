@@ -1,11 +1,15 @@
 package com.fi0x.cc.project.mixer;
 
 import com.fi0x.cc.project.gui.mixer.MainMixerWindow;
+import com.fi0x.cc.project.mixer.elements.TimerElement;
 
 public class MixerManager implements Runnable
 {
     private static MixerManager instance;
+
     private long currentFrame = 0;
+    private int bpm = 60;
+    private int notesPerBeat = 8;
 
     private MixerManager()
     {
@@ -14,14 +18,16 @@ public class MixerManager implements Runnable
     @Override
     public void run()
     {
+        TimerElement masterClock = ((TimerElement) MainMixerWindow.originElement.getLinkedElement());
         while(true)
         {
-            int currentBPM = ((TimerElement) MainMixerWindow.originElement.getLinkedElement()).getCurrentBPM();
-            MainMixerWindow.originElement.getLinkedElement().updateElement(currentFrame, currentBPM);
+            bpm = masterClock.getCurrentBPM();
+            notesPerBeat = masterClock.getNotesPerBeat();
+            masterClock.updateElement(currentFrame, bpm);
 
             try
             {
-                Thread.sleep(1000 / ((TimerElement) MainMixerWindow.originElement.getLinkedElement()).getCurrentBPM());
+                Thread.sleep(60000 / bpm / notesPerBeat);
             } catch(InterruptedException ignored)
             {
                 break;
@@ -37,5 +43,14 @@ public class MixerManager implements Runnable
             instance = new MixerManager();
 
         return instance;
+    }
+
+    public static int getBPM()
+    {
+        return getInstance().bpm;
+    }
+    public static int getNotesPerBeat()
+    {
+        return getInstance().notesPerBeat;
     }
 }

@@ -1,6 +1,7 @@
-package com.fi0x.cc.project.mixer;
+package com.fi0x.cc.project.mixer.elements;
 
 import com.fi0x.cc.project.gui.mixer.MixerUIElement;
+import com.fi0x.cc.project.mixer.AbstractMixerElement;
 
 public class VolumeElement extends AbstractMixerElement
 {
@@ -12,10 +13,9 @@ public class VolumeElement extends AbstractMixerElement
     }
 
     @Override
-    public void updateElement(long currentFrame, int bpm)
+    public void updateElement(long globalFrame, int bpm)
     {
-        super.updateElement(currentFrame, bpm);
-        //TODO: Update volume
+        super.updateElement(globalFrame, bpm);
     }
     @Override
     public void changeMainValue(int valueChange)
@@ -25,6 +25,10 @@ public class VolumeElement extends AbstractMixerElement
             volume = 0;
         if(volume > 127)
             volume = 127;
+    }
+    @Override
+    public void changeSecondaryValue(int valueChange)
+    {
     }
     @Override
     public void syncClock(int timerFrame)

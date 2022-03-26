@@ -1,12 +1,12 @@
-package com.fi0x.cc.project.mixer;
+package com.fi0x.cc.project.mixer.elements;
 
 import com.fi0x.cc.project.gui.mixer.MixerUIElement;
+import com.fi0x.cc.project.mixer.AbstractMixerElement;
+import com.fi0x.cc.project.mixer.MixerManager;
 
 public class TickElement extends AbstractMixerElement
 {
-    private long lastUpdatedFrame = 0;
-
-    private int delayBetweenTicks = 60;
+    private int delayBetweenTicks = 8 * MixerManager.getNotesPerBeat() / 8;
     private int currentFrame = 0;
 
     public TickElement(MixerUIElement uiPart)
@@ -15,18 +15,18 @@ public class TickElement extends AbstractMixerElement
     }
 
     @Override
-    public void updateElement(long frameToUpdate, int bpm)
+    public void updateElement(long globalFrame, int bpm)
     {
-        if(lastUpdatedFrame == frameToUpdate)
+        if(updatedFrames.contains(globalFrame))
             return;
-        lastUpdatedFrame = frameToUpdate;
+        updatedFrames.add(globalFrame);
 
         currentFrame++;
         if(currentFrame % delayBetweenTicks == 0)
         {
-            super.updateElement(frameToUpdate, bpm);
+            super.updateElement(globalFrame, bpm);
             for(AbstractMixerElement e : connectedElements)
-                e.updateElement(frameToUpdate, bpm);
+                e.updateElement(globalFrame, bpm);
         }
     }
     @Override
@@ -35,6 +35,10 @@ public class TickElement extends AbstractMixerElement
         delayBetweenTicks += valueChange;
         if(delayBetweenTicks < 1)
             delayBetweenTicks = 1;
+    }
+    @Override
+    public void changeSecondaryValue(int valueChange)
+    {
     }
     @Override
     public void syncClock(int timerFrame)

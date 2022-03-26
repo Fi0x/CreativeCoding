@@ -1,7 +1,7 @@
 package com.fi0x.cc.project.gui.mixer;
 
 import com.fi0x.cc.project.mixer.MixerManager;
-import com.fi0x.cc.project.mixer.TimerElement;
+import com.fi0x.cc.project.mixer.elements.TimerElement;
 import processing.awt.PSurfaceAWT;
 import processing.core.PApplet;
 import processing.core.PImage;

@@ -1,6 +1,7 @@
-package com.fi0x.cc.project.mixer;
+package com.fi0x.cc.project.mixer.elements;
 
 import com.fi0x.cc.project.gui.mixer.MixerUIElement;
+import com.fi0x.cc.project.mixer.AbstractMixerElement;
 import com.fi0x.cc.project.synth.synthesizers.MusicConverter;
 
 public class NoteElement extends AbstractMixerElement
@@ -13,9 +14,9 @@ public class NoteElement extends AbstractMixerElement
     }
 
     @Override
-    public void updateElement(long currentFrame, int bpm)
+    public void updateElement(long globalFrame, int bpm)
     {
-        super.updateElement(currentFrame, bpm);
+        super.updateElement(globalFrame, bpm);
     }
     @Override
     public void changeMainValue(int valueChange)
@@ -26,6 +27,10 @@ public class NoteElement extends AbstractMixerElement
             note = 0;
         else if(note > 127)
             note = 127;
+    }
+    @Override
+    public void changeSecondaryValue(int valueChange)
+    {
     }
     @Override
     public void syncClock(int timerFrame)
