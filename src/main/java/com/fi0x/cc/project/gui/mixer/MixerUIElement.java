@@ -17,7 +17,7 @@ public class MixerUIElement
     private final ArrayList<MixerUIElement> blacklistedElements = new ArrayList<>();
     private final ArrayList<MixerUIElement> whitelistedElements = new ArrayList<>();
 
-    private final int backgroundColor;
+    private int backgroundColor;
     private final int selectionColor;
     private final int textColor;
     private final int strokeColor;
@@ -60,7 +60,7 @@ public class MixerUIElement
         }
 
         parent.stroke(isSelected ? selectionColor : adjustableStrokeColor);
-        parent.strokeWeight(3);
+        parent.strokeWeight(5);
         parent.fill(adjustableBackgroundColor);
         parent.ellipse(currentX, currentY, size, size);
         parent.noStroke();
@@ -85,7 +85,15 @@ public class MixerUIElement
     public void blinkStroke(float resetRate)
     {
         colorReverseRate = resetRate;
-        adjustableStrokeColor = parent.color(0, 255, 0);
+
+        if(linkedElement instanceof ISignalSenderElement)
+            adjustableStrokeColor = parent.color(0, 255, 0);
+        else if(linkedElement instanceof IParameterElement)
+            adjustableStrokeColor = parent.color(0, 0, 255);
+        else if(linkedElement instanceof INumberElement)
+            adjustableStrokeColor = parent.color(0, 255, 0);
+        else
+            adjustableStrokeColor = parent.color(0, 255, 0);
     }
     public void sendPulse(MixerUIElement target, float travelTime)
     {
@@ -158,7 +166,7 @@ public class MixerUIElement
         else if(DelayElement.class.equals(linkedElement.getClass()))
             linkedElement = new IncreasingElement(this);
         else if(IncreasingElement.class.equals(linkedElement.getClass()))
-        linkedElement = new IntervalElement(this);
+            linkedElement = new IntervalElement(this);
         else if(IntervalElement.class.equals(linkedElement.getClass()))
             linkedElement = new LengthElement(this);
         else if(LengthElement.class.equals(linkedElement.getClass()))
@@ -173,10 +181,41 @@ public class MixerUIElement
             linkedElement = new ChannelElement(this);
 
         oldElement.replaceConnections(linkedElement);
+
+        if(linkedElement instanceof ISignalSenderElement)
+        {
+            backgroundColor = parent.color(0, 0, 255);
+            adjustableBackgroundColor = backgroundColor;
+        } else if(linkedElement instanceof IParameterElement)
+        {
+            backgroundColor = parent.color(255, 255, 0);
+            adjustableBackgroundColor = backgroundColor;
+        } else if(linkedElement instanceof INumberElement)
+        {
+            backgroundColor = parent.color(182, 0, 207);
+            adjustableBackgroundColor = backgroundColor;
+        } else
+        {
+            backgroundColor = parent.color(255, 0, 0);
+            adjustableBackgroundColor = backgroundColor;
+        }
     }
     public void changeLinkedElement(AbstractMixerElement newElement)
     {
         linkedElement = newElement;
+        if(linkedElement instanceof ISignalSenderElement)
+        {
+            backgroundColor = parent.color(0, 0, 255);
+            adjustableBackgroundColor = backgroundColor;
+        } else if(linkedElement instanceof ChannelElement)
+        {
+            backgroundColor = parent.color(255, 0, 0);
+            adjustableBackgroundColor = backgroundColor;
+        } else
+        {
+            backgroundColor = parent.color(255, 255, 0);
+            adjustableBackgroundColor = backgroundColor;
+        }
     }
 
     private void tryToConnect(MixerUIElement otherElement)

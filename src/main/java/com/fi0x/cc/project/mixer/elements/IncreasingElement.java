@@ -2,8 +2,9 @@ package com.fi0x.cc.project.mixer.elements;
 
 import com.fi0x.cc.project.gui.mixer.MixerUIElement;
 import com.fi0x.cc.project.mixer.AbstractMixerElement;
+import com.fi0x.cc.project.mixer.INumberElement;
 
-public class IncreasingElement extends AbstractMixerElement
+public class IncreasingElement extends AbstractMixerElement implements INumberElement
 {
     private int valueCount = 16;
     private int increase = 0;

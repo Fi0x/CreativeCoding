@@ -2,12 +2,13 @@ package com.fi0x.cc.project.mixer.elements;
 
 import com.fi0x.cc.project.gui.mixer.MixerUIElement;
 import com.fi0x.cc.project.mixer.AbstractMixerElement;
+import com.fi0x.cc.project.mixer.IParameterElement;
 import com.fi0x.cc.project.synth.SynthManager;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.ShortMessage;
 
-public class PitchElement extends AbstractMixerElement
+public class PitchElement extends AbstractMixerElement implements IParameterElement
 {
     private int pitchDifference = 0;
 

@@ -2,12 +2,11 @@ package com.fi0x.cc.project.mixer.elements;
 
 import com.fi0x.cc.project.gui.mixer.MixerUIElement;
 import com.fi0x.cc.project.mixer.AbstractMixerElement;
+import com.fi0x.cc.project.mixer.ISignalSenderElement;
 import com.fi0x.cc.project.mixer.MixerManager;
 import com.fi0x.cc.project.mixer.TimeCalculator;
 
-import java.util.ArrayList;
-
-public class DelayElement extends AbstractMixerElement
+public class DelayElement extends AbstractMixerElement implements ISignalSenderElement
 {
     private int delay = 2 * MixerManager.getNotesPerBeat() / 8;
 

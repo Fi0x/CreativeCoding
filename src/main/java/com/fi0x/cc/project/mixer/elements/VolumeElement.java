@@ -2,8 +2,9 @@ package com.fi0x.cc.project.mixer.elements;
 
 import com.fi0x.cc.project.gui.mixer.MixerUIElement;
 import com.fi0x.cc.project.mixer.AbstractMixerElement;
+import com.fi0x.cc.project.mixer.IParameterElement;
 
-public class VolumeElement extends AbstractMixerElement
+public class VolumeElement extends AbstractMixerElement implements IParameterElement
 {
     private int volume = 30;
 

@@ -2,9 +2,10 @@ package com.fi0x.cc.project.mixer.elements;
 
 import com.fi0x.cc.project.gui.mixer.MixerUIElement;
 import com.fi0x.cc.project.mixer.AbstractMixerElement;
+import com.fi0x.cc.project.mixer.ISignalSenderElement;
 import com.fi0x.cc.project.mixer.MixerManager;
 
-public class IntervalElement extends AbstractMixerElement
+public class IntervalElement extends AbstractMixerElement implements ISignalSenderElement
 {
     private int intervalLength = 8 * MixerManager.getNotesPerBeat() / 8;
     private int currentFrame = 0;

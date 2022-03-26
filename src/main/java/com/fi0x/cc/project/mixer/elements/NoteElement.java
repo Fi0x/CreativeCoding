@@ -2,9 +2,10 @@ package com.fi0x.cc.project.mixer.elements;
 
 import com.fi0x.cc.project.gui.mixer.MixerUIElement;
 import com.fi0x.cc.project.mixer.AbstractMixerElement;
+import com.fi0x.cc.project.mixer.IParameterElement;
 import com.fi0x.cc.project.synth.synthesizers.MusicConverter;
 
-public class NoteElement extends AbstractMixerElement
+public class NoteElement extends AbstractMixerElement implements IParameterElement
 {
     private int note = 60;
 

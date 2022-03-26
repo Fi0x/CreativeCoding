@@ -2,8 +2,9 @@ package com.fi0x.cc.project.mixer.elements;
 
 import com.fi0x.cc.project.gui.mixer.MixerUIElement;
 import com.fi0x.cc.project.mixer.AbstractMixerElement;
+import com.fi0x.cc.project.mixer.ISignalSenderElement;
 
-public class TimerElement extends AbstractMixerElement
+public class TimerElement extends AbstractMixerElement implements ISignalSenderElement
 {
     private int bpm = 60;
     private int notesPerBeat = 8;
