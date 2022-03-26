@@ -16,7 +16,8 @@ public class MixerManager implements Runnable
     {
         while(true)
         {
-            MainMixerWindow.originElement.getLinkedElement().updateElement(currentFrame);
+            int currentBPM = ((TimerElement) MainMixerWindow.originElement.getLinkedElement()).getCurrentBPM();
+            MainMixerWindow.originElement.getLinkedElement().updateElement(currentFrame, currentBPM);
 
             try
             {

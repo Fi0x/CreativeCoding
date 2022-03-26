@@ -88,25 +88,15 @@ public class MainMixerWindow extends PApplet
         }
         if(mouseButton == LEFT)
         {
-            loadPixels();
-            if(pixels[mouseY * width + mouseX] == backgroundColor)
+            for(MixerUIElement e : uiElements)
             {
-                MixerUIElement newControlElement = new MixerUIElement(this, mouseX, mouseY);
-                newControlElement.init();
-                uiElements.add(newControlElement);
-                newControlElement.drop();
-            } else
-            {
-                for(MixerUIElement e : uiElements)
-                {
-                    if(!e.pickUp())
-                        continue;
+                if(!e.pickUp())
+                    continue;
 
-                    draggingElement = e;
+                draggingElement = e;
 
-                    selectElement(e);
-                    break;
-                }
+                selectElement(e);
+                break;
             }
         }
     }
@@ -128,9 +118,17 @@ public class MainMixerWindow extends PApplet
     @Override
     public void mouseClicked()
     {
+        if(mouseButton != LEFT)
+            return;
+
         loadPixels();
         if(pixels[mouseY * width + mouseX] == backgroundColor)
+        {
+            if(selectedElement != null)
+                selectedElement.select(false);
+            selectedElement = null;
             return;
+        }
 
         if(originElement.isAbove())
         {
@@ -174,6 +172,12 @@ public class MainMixerWindow extends PApplet
             uiElements.remove(selectedElement);
             selectedElement.getLinkedElement().removeAllConnections();
             selectedElement = null;
+        } else if(key == ENTER)
+        {
+            MixerUIElement newControlElement = new MixerUIElement(this, mouseX, mouseY);
+            newControlElement.init();
+            uiElements.add(newControlElement);
+            newControlElement.drop();
         }
     }
 

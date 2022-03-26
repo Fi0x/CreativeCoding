@@ -1,17 +1,22 @@
 package com.fi0x.cc.project.mixer;
 
+import com.fi0x.cc.project.LoggerManager;
 import com.fi0x.cc.project.gui.mixer.MixerUIElement;
 import com.fi0x.cc.project.synth.SynthManager;
-import com.fi0x.cc.project.synth.synthesizers.MusicConverter;
+import io.fi0x.javalogger.logging.Logger;
+
+import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.ShortMessage;
 
 public class ChannelElement extends AbstractMixerElement
 {
     private long lastUpdatedFrame = 0;
+    private long lastNotePlayed = 0;
 
     private int channel = 0;
     private int note = 60;
     private int volume = 30;
-    private int noteLength = 1;
+    private int noteLength = 1000;
 
     public ChannelElement(MixerUIElement uiPart)
     {
@@ -19,13 +24,13 @@ public class ChannelElement extends AbstractMixerElement
     }
 
     @Override
-    public void updateElement(long currentFrame)
+    public void updateElement(long currentFrame, int bpm)
     {
         if(lastUpdatedFrame == currentFrame)
             return;
         lastUpdatedFrame = currentFrame;
 
-        super.updateElement(currentFrame);
+        super.updateElement(currentFrame, bpm);
         playNote();
     }
     @Override
@@ -46,6 +51,40 @@ public class ChannelElement extends AbstractMixerElement
 
     private void playNote()
     {
-        SynthManager.playSynth(channel, MusicConverter.getOctave(note), MusicConverter.getNoteName(note), volume, noteLength);
+        lastNotePlayed = System.currentTimeMillis();
+        new Thread(() ->
+        {
+            int currentChannel = channel;
+            int currentNote = note;
+            try
+            {
+                ShortMessage msg = new ShortMessage();
+                msg.setMessage(ShortMessage.NOTE_ON, currentChannel, currentNote, volume);
+                SynthManager.handleMidiCommand(msg);
+            } catch(InvalidMidiDataException e)
+            {
+                return;
+            }
+
+            try
+            {
+                Thread.sleep(noteLength);
+            } catch(InterruptedException ignored)
+            {
+            }
+
+            if(lastNotePlayed > System.currentTimeMillis() - noteLength)
+                return;
+
+            try
+            {
+                ShortMessage msg = new ShortMessage();
+                msg.setMessage(ShortMessage.NOTE_OFF, currentChannel, currentNote, 0);
+                SynthManager.handleMidiCommand(msg);
+            } catch(InvalidMidiDataException e)
+            {
+                Logger.log("Could not stop midi note", String.valueOf(LoggerManager.Template.DEBUG_WARNING));
+            }
+        }).start();
     }
 }

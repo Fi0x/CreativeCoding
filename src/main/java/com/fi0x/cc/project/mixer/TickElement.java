@@ -15,7 +15,7 @@ public class TickElement extends AbstractMixerElement
     }
 
     @Override
-    public void updateElement(long frameToUpdate)
+    public void updateElement(long frameToUpdate, int bpm)
     {
         if(lastUpdatedFrame == frameToUpdate)
             return;
@@ -24,9 +24,12 @@ public class TickElement extends AbstractMixerElement
         currentFrame++;
         if(currentFrame % delayBetweenTicks == 0)
         {
-            super.updateElement(currentFrame);
+
+            super.updateElement(frameToUpdate, bpm);
             for(AbstractMixerElement e : connectedElements)
-                e.updateElement(currentFrame);
+                e.updateElement(frameToUpdate, bpm);
+
+            currentFrame = (int) (frameToUpdate % bpm);
         }
     }
     @Override

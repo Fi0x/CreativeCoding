@@ -15,7 +15,7 @@ public abstract class AbstractMixerElement
         linkedUI = uiPart;
     }
 
-    public void updateElement(long currentFrame)
+    public void updateElement(long currentFrame, int bpm)
     {
         linkedUI.blinkStroke();
     }

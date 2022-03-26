@@ -14,7 +14,7 @@ public class TimerElement extends AbstractMixerElement
     }
 
     @Override
-    public void updateElement(long frameToUpdate)
+    public void updateElement(long frameToUpdate, int bpm)
     {
         if(frameToUpdate == lastUpdatedFrame)
             return;
@@ -28,7 +28,7 @@ public class TimerElement extends AbstractMixerElement
         }
 
         for(AbstractMixerElement e : connectedElements)
-            e.updateElement(frameToUpdate);
+            e.updateElement(frameToUpdate, bpm);
     }
     @Override
     public void changeMainValue(int valueChange)

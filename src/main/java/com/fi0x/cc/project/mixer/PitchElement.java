@@ -12,9 +12,9 @@ public class PitchElement extends AbstractMixerElement
     }
 
     @Override
-    public void updateElement(long currentFrame)
+    public void updateElement(long currentFrame, int bpm)
     {
-        super.updateElement(currentFrame);
+        super.updateElement(currentFrame, bpm);
         //TODO: Update pitch
     }
     @Override

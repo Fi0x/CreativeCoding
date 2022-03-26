@@ -13,13 +13,13 @@ public class OscillatorElement extends AbstractMixerElement
     }
 
     @Override
-    public void updateElement(long currentFrame)
+    public void updateElement(long currentFrame, int bpm)
     {
         if(lastUpdatedFrame == currentFrame)
             return;
         lastUpdatedFrame = currentFrame;
 
-        super.updateElement(currentFrame);
+        super.updateElement(currentFrame, bpm);
         //TODO: Update tickrate
     }
     @Override
