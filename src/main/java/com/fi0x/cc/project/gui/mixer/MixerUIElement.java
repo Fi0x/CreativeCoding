@@ -27,7 +27,7 @@ public class MixerUIElement
 
     private boolean isSelected = false;
     private boolean pickedUp = false;
-    private final int connectionDistance = 300;
+    private final int connectionDistance = 400;
 
     private AbstractMixerElement linkedElement;
 
@@ -174,6 +174,8 @@ public class MixerUIElement
     {
         if(blacklistedElements.contains(otherElement))
             return;
+        if(!linkedElement.canConnectTo(otherElement.linkedElement))
+            return;
 
         float distance = PApplet.dist(otherElement.currentX, otherElement.currentY, currentX, currentY);
         if(whitelistedElements.contains(otherElement) || (distance < connectionDistance && otherElement != this))
@@ -196,6 +198,8 @@ public class MixerUIElement
     private void drawLine(MixerUIElement otherUI)
     {
         if(blacklistedElements.contains(otherUI))
+            return;
+        if(!linkedElement.canConnectTo(otherUI.linkedElement))
             return;
 
         float dist = PApplet.dist(currentX, currentY, otherUI.currentX, otherUI.currentY);

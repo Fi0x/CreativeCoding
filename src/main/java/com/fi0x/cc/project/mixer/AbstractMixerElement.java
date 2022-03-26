@@ -27,6 +27,7 @@ public abstract class AbstractMixerElement
     public abstract void changeSecondaryValue(int valueChange);
     public abstract void syncClock(int timerFrame);
 
+    public abstract boolean canConnectTo(AbstractMixerElement otherElement);
     public void addConnectedElement(AbstractMixerElement newConnection)
     {
         if(!connectedElements.contains(newConnection))

@@ -76,6 +76,11 @@ public class ChannelElement extends AbstractMixerElement
     public void syncClock(int timerFrame)
     {
     }
+    @Override
+    public boolean canConnectTo(AbstractMixerElement otherElement)
+    {
+        return true;
+    }
 
     @Override
     public String getDisplayName()

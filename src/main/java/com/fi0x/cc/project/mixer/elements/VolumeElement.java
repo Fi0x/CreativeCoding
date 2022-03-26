@@ -34,6 +34,11 @@ public class VolumeElement extends AbstractMixerElement
     public void syncClock(int timerFrame)
     {
     }
+    @Override
+    public boolean canConnectTo(AbstractMixerElement otherElement)
+    {
+        return otherElement instanceof ChannelElement;
+    }
 
     public int getVolume()
     {

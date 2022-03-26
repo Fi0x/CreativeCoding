@@ -45,6 +45,14 @@ public class TickElement extends AbstractMixerElement
     {
         currentFrame = timerFrame;
     }
+    @Override
+    public boolean canConnectTo(AbstractMixerElement otherElement)
+    {
+        return !(otherElement instanceof LengthElement)
+                && !(otherElement instanceof NoteElement)
+                && !(otherElement instanceof PitchElement)
+                && !(otherElement instanceof VolumeElement);
+    }
 
     @Override
     public String getDisplayName()

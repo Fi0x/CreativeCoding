@@ -1,6 +1,5 @@
 package com.fi0x.cc.project.gui.mixer;
 
-import com.fi0x.cc.project.mixer.AbstractMixerElement;
 import com.fi0x.cc.project.mixer.MixerManager;
 import com.fi0x.cc.project.mixer.elements.TimerElement;
 import processing.awt.PSurfaceAWT;
@@ -201,6 +200,36 @@ public class MainMixerWindow extends PApplet
             newControlElement.init();
             uiElements.add(newControlElement);
             newControlElement.drop();
+        } else if(key == UP)
+        {
+            if(originElement.isAbove())
+                originElement.getLinkedElement().changeSecondaryValue(1);
+            else
+            {
+                for(MixerUIElement e : uiElements)
+                {
+                    if(e.isAbove())
+                    {
+                        e.getLinkedElement().changeSecondaryValue(1);
+                        break;
+                    }
+                }
+            }
+        } else if(key == DOWN)
+        {
+            if(originElement.isAbove())
+                originElement.getLinkedElement().changeSecondaryValue(-1);
+            else
+            {
+                for(MixerUIElement e : uiElements)
+                {
+                    if(e.isAbove())
+                    {
+                        e.getLinkedElement().changeSecondaryValue(-1);
+                        break;
+                    }
+                }
+            }
         }
     }
 
