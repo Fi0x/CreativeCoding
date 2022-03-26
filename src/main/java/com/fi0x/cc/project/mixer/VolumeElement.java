@@ -12,9 +12,9 @@ public class VolumeElement extends AbstractMixerElement
     }
 
     @Override
-    public void updateElement()
+    public void updateElement(long currentFrame)
     {
-        super.updateElement();
+        super.updateElement(currentFrame);
         //TODO: Update volume
     }
     @Override

@@ -6,6 +6,8 @@ import com.fi0x.cc.project.synth.synthesizers.MusicConverter;
 
 public class ChannelElement extends AbstractMixerElement
 {
+    private long lastUpdatedFrame = 0;
+
     private int channel = 0;
     private int note = 60;
     private int volume = 30;
@@ -17,9 +19,13 @@ public class ChannelElement extends AbstractMixerElement
     }
 
     @Override
-    public void updateElement()
+    public void updateElement(long currentFrame)
     {
-        super.updateElement();
+        if(lastUpdatedFrame == currentFrame)
+            return;
+        lastUpdatedFrame = currentFrame;
+
+        super.updateElement(currentFrame);
         playNote();
     }
     @Override

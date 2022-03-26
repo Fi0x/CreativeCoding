@@ -4,6 +4,7 @@ import com.fi0x.cc.project.gui.mixer.MixerUIElement;
 
 public class OscillatorElement extends AbstractMixerElement
 {
+    private long lastUpdatedFrame = 0;
     private int ticksPerSecond = 1;
 
     public OscillatorElement(MixerUIElement uiPart)
@@ -12,9 +13,13 @@ public class OscillatorElement extends AbstractMixerElement
     }
 
     @Override
-    public void updateElement()
+    public void updateElement(long currentFrame)
     {
-        super.updateElement();
+        if(lastUpdatedFrame == currentFrame)
+            return;
+        lastUpdatedFrame = currentFrame;
+
+        super.updateElement(currentFrame);
         //TODO: Update tickrate
     }
     @Override

@@ -1,11 +1,11 @@
 package com.fi0x.cc.project.mixer;
 
-import com.fi0x.cc.project.gui.mixer.MixerUIElement;
 import com.fi0x.cc.project.gui.mixer.MainMixerWindow;
 
 public class MixerManager implements Runnable
 {
     private static MixerManager instance;
+    private long currentFrame = 0;
 
     private MixerManager()
     {
@@ -16,7 +16,7 @@ public class MixerManager implements Runnable
     {
         while(true)
         {
-            MainMixerWindow.originElement.getLinkedElement().updateElement();
+            MainMixerWindow.originElement.getLinkedElement().updateElement(currentFrame);
 
             try
             {
@@ -25,6 +25,8 @@ public class MixerManager implements Runnable
             {
                 break;
             }
+
+            currentFrame++;
         }
     }
 

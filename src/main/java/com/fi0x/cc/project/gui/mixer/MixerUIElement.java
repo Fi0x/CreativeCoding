@@ -125,6 +125,8 @@ public class MixerUIElement
         else if(OscillatorElement.class.equals(linkedElement.getClass()))
             linkedElement = new PitchElement(this);
         else if(PitchElement.class.equals(linkedElement.getClass()))
+            linkedElement = new TickElement(this);
+        else if(TickElement.class.equals(linkedElement.getClass()))
             linkedElement = new VolumeElement(this);
         else if(VolumeElement.class.equals(linkedElement.getClass()))
             linkedElement = new ChannelElement(this);

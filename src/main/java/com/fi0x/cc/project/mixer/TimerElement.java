@@ -6,6 +6,7 @@ public class TimerElement extends AbstractMixerElement
 {
     private int bpm = 60;
     private int currentFrame = 0;
+    private long lastUpdatedFrame = 0;
 
     public TimerElement(MixerUIElement uiPart)
     {
@@ -13,10 +14,13 @@ public class TimerElement extends AbstractMixerElement
     }
 
     @Override
-    public void updateElement()
+    public void updateElement(long frameToUpdate)
     {
-        currentFrame++;
+        if(frameToUpdate == lastUpdatedFrame)
+            return;
+        lastUpdatedFrame = frameToUpdate;
 
+        currentFrame++;
         if(currentFrame % 60 == 0)
         {
             currentFrame = 0;
@@ -24,7 +28,7 @@ public class TimerElement extends AbstractMixerElement
         }
 
         for(AbstractMixerElement e : connectedElements)
-            e.updateElement();
+            e.updateElement(frameToUpdate);
     }
     @Override
     public void changeMainValue(int valueChange)
