@@ -1,29 +1,28 @@
-package com.fi0x.cc.project.mixer.elements;
+package com.fi0x.cc.project.mixer.old;
 
 import com.fi0x.cc.project.gui.mixer.MixerUIElement;
-import com.fi0x.cc.project.mixer.AbstractMixerElement;
-import com.fi0x.cc.project.mixer.ISignalSenderElement;
 
-public class TimerElement extends AbstractMixerElement implements ISignalSenderElement
+@Deprecated
+public class OldTimerElement extends OldAbstractMixerElement implements ISignalSenderElement
 {
     private int bpm = 60;
     private int notesPerBeat = 8;
 
     private int currentFrame = 0;
 
-    public TimerElement(MixerUIElement uiPart)
+    public OldTimerElement(MixerUIElement uiPart)
     {
         super(uiPart);
 
-        allowedConnections.add(ChannelElement.class);
-        allowedConnections.add(DelayElement.class);
-        allowedConnections.add(IncreasingElement.class);
-        allowedConnections.add(IntervalElement.class);
-        allowedConnections.add(TickElement.class);
+        allowedConnections.add(OldChannelElement.class);
+        allowedConnections.add(OldDelayElement.class);
+        allowedConnections.add(OldIncreasingElement.class);
+        allowedConnections.add(OldIntervalElement.class);
+        allowedConnections.add(OldTickElement.class);
     }
 
     @Override
-    public void updateElement(AbstractMixerElement sender, long globalFrame, int bpm)
+    public void updateElement(OldAbstractMixerElement sender, long globalFrame, int bpm)
     {
         if(updatedFrames.contains(globalFrame))
             return;
@@ -36,7 +35,7 @@ public class TimerElement extends AbstractMixerElement implements ISignalSenderE
             linkedUI.blinkColor(0.03f * bpm / 60);
         }
 
-        for(AbstractMixerElement e : connectedElements)
+        for(OldAbstractMixerElement e : connectedElements)
         {
             if(e == sender)
                 continue;
@@ -69,7 +68,7 @@ public class TimerElement extends AbstractMixerElement implements ISignalSenderE
 
     public int getCurrentBPM()
     {
-        return bpm;
+        return getUpdatedBpm();
     }
     public int getNotesPerBeat()
     {
@@ -80,9 +79,20 @@ public class TimerElement extends AbstractMixerElement implements ISignalSenderE
         return currentFrame;
     }
 
+    private int getUpdatedBpm()
+    {
+        int newValue = bpm;
+        for(OldAbstractMixerElement e : connectedElements)
+        {
+            if(e instanceof OldIncreasingElement)
+                newValue += ((OldIncreasingElement) e).getCurrentIncrease();
+        }
+        return Math.min(Math.max(newValue, 1), 1000);
+    }
+
     @Override
     public String getDisplayName()
     {
-        return "BPM: " + bpm + ", " + notesPerBeat;
+        return "BPM: " + getUpdatedBpm() + "(" + bpm + ")\nNPB: " + notesPerBeat;
     }
 }

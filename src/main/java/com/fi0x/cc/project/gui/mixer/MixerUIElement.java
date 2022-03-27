@@ -1,7 +1,6 @@
 package com.fi0x.cc.project.gui.mixer;
 
-import com.fi0x.cc.project.mixer.*;
-import com.fi0x.cc.project.mixer.elements.*;
+import com.fi0x.cc.project.mixer.old.*;
 import processing.core.PApplet;
 import processing.core.PConstants;
 
@@ -29,7 +28,7 @@ public class MixerUIElement
     private boolean pickedUp = false;
     private final int connectionDistance = 200;
 
-    private AbstractMixerElement linkedElement;
+    private OldAbstractMixerElement linkedElement;
 
     public MixerUIElement(PApplet parentScreen, int xCenter, int yCenter)
     {
@@ -45,7 +44,7 @@ public class MixerUIElement
         adjustableBackgroundColor = backgroundColor;
         adjustableStrokeColor = strokeColor;
 
-        linkedElement = new ChannelElement(this);
+        linkedElement = new OldChannelElement(this);
     }
 
     public void init()
@@ -66,7 +65,7 @@ public class MixerUIElement
         parent.noStroke();
 
         parent.fill(textColor);
-        parent.textSize(18);
+        parent.textSize(14);
         parent.textAlign(PConstants.CENTER, PConstants.CENTER);
         parent.text(linkedElement.getDisplayName(), currentX, currentY);
 
@@ -123,7 +122,7 @@ public class MixerUIElement
         for(MixerUIElement e : MainMixerWindow.uiElements)
             tryToConnect(e);
 
-        linkedElement.syncClock(((TimerElement) MainMixerWindow.originElement.getLinkedElement()).getCurrentFrame());
+        linkedElement.syncClock(((OldTimerElement) MainMixerWindow.originElement.getLinkedElement()).getCurrentFrame());
 
         pickedUp = false;
     }
@@ -153,32 +152,32 @@ public class MixerUIElement
         tryToConnect(element);
     }
 
-    public AbstractMixerElement getLinkedElement()
+    public OldAbstractMixerElement getLinkedElement()
     {
         return linkedElement;
     }
     public void selectNextElement()
     {
-        AbstractMixerElement oldElement = linkedElement;
+        OldAbstractMixerElement oldElement = linkedElement;
 
-        if(ChannelElement.class.equals(linkedElement.getClass()))
-            linkedElement = new DelayElement(this);
-        else if(DelayElement.class.equals(linkedElement.getClass()))
-            linkedElement = new IncreasingElement(this);
-        else if(IncreasingElement.class.equals(linkedElement.getClass()))
-            linkedElement = new IntervalElement(this);
-        else if(IntervalElement.class.equals(linkedElement.getClass()))
-            linkedElement = new LengthElement(this);
-        else if(LengthElement.class.equals(linkedElement.getClass()))
-            linkedElement = new NoteElement(this);
-        else if(NoteElement.class.equals(linkedElement.getClass()))
-            linkedElement = new PitchElement(this);
-        else if(PitchElement.class.equals(linkedElement.getClass()))
-            linkedElement = new TickElement(this);
-        else if(TickElement.class.equals(linkedElement.getClass()))
-            linkedElement = new VolumeElement(this);
-        else if(VolumeElement.class.equals(linkedElement.getClass()))
-            linkedElement = new ChannelElement(this);
+        if(OldChannelElement.class.equals(linkedElement.getClass()))
+            linkedElement = new OldDelayElement(this);
+        else if(OldDelayElement.class.equals(linkedElement.getClass()))
+            linkedElement = new OldIncreasingElement(this);
+        else if(OldIncreasingElement.class.equals(linkedElement.getClass()))
+            linkedElement = new OldIntervalElement(this);
+        else if(OldIntervalElement.class.equals(linkedElement.getClass()))
+            linkedElement = new OldLengthElement(this);
+        else if(OldLengthElement.class.equals(linkedElement.getClass()))
+            linkedElement = new OldNoteElement(this);
+        else if(OldNoteElement.class.equals(linkedElement.getClass()))
+            linkedElement = new OldPitchElement(this);
+        else if(OldPitchElement.class.equals(linkedElement.getClass()))
+            linkedElement = new OldTickElement(this);
+        else if(OldTickElement.class.equals(linkedElement.getClass()))
+            linkedElement = new OldVolumeElement(this);
+        else if(OldVolumeElement.class.equals(linkedElement.getClass()))
+            linkedElement = new OldChannelElement(this);
 
         oldElement.replaceConnections(linkedElement);
 
@@ -200,14 +199,14 @@ public class MixerUIElement
             adjustableBackgroundColor = backgroundColor;
         }
     }
-    public void changeLinkedElement(AbstractMixerElement newElement)
+    public void changeLinkedElement(OldAbstractMixerElement newElement)
     {
         linkedElement = newElement;
         if(linkedElement instanceof ISignalSenderElement)
         {
             backgroundColor = parent.color(0, 0, 255);
             adjustableBackgroundColor = backgroundColor;
-        } else if(linkedElement instanceof ChannelElement)
+        } else if(linkedElement instanceof OldChannelElement)
         {
             backgroundColor = parent.color(255, 0, 0);
             adjustableBackgroundColor = backgroundColor;

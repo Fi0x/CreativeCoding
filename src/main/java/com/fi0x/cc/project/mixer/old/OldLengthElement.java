@@ -1,24 +1,23 @@
-package com.fi0x.cc.project.mixer.elements;
+package com.fi0x.cc.project.mixer.old;
 
 import com.fi0x.cc.project.gui.mixer.MixerUIElement;
-import com.fi0x.cc.project.mixer.AbstractMixerElement;
-import com.fi0x.cc.project.mixer.IParameterElement;
 import com.fi0x.cc.project.mixer.MixerManager;
 
-public class LengthElement extends AbstractMixerElement implements IParameterElement
+@Deprecated
+public class OldLengthElement extends OldAbstractMixerElement implements IParameterElement
 {
     private int length = 2 * MixerManager.getNotesPerBeat() / 8;
 
-    public LengthElement(MixerUIElement uiPart)
+    public OldLengthElement(MixerUIElement uiPart)
     {
         super(uiPart);
 
-        allowedConnections.add(IncreasingElement.class);
-        allowedConnections.add(ChannelElement.class);
+        allowedConnections.add(OldIncreasingElement.class);
+        allowedConnections.add(OldChannelElement.class);
     }
 
     @Override
-    public void updateElement(AbstractMixerElement sender, long globalFrame, int bpm)
+    public void updateElement(OldAbstractMixerElement sender, long globalFrame, int bpm)
     {
         super.updateElement(sender, globalFrame, bpm);
     }
@@ -44,17 +43,17 @@ public class LengthElement extends AbstractMixerElement implements IParameterEle
     public int getLength()
     {
         int updatedLength = length;
-        for(AbstractMixerElement e :connectedElements)
+        for(OldAbstractMixerElement e :connectedElements)
         {
-            if(e instanceof IncreasingElement)
-                updatedLength += ((IncreasingElement) e).getCurrentIncrease();
+            if(e instanceof OldIncreasingElement)
+                updatedLength += ((OldIncreasingElement) e).getCurrentIncrease();
         }
-        return Math.max(updatedLength, 0);
+        return Math.min(Math.max(updatedLength, 0), 127);
     }
 
     @Override
     public String getDisplayName()
     {
-        return "Length: " + length;
+        return "Length: " + getLength() + "(" + length + ")";
     }
 }

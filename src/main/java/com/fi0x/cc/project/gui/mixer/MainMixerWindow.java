@@ -1,7 +1,7 @@
 package com.fi0x.cc.project.gui.mixer;
 
 import com.fi0x.cc.project.mixer.MixerManager;
-import com.fi0x.cc.project.mixer.elements.TimerElement;
+import com.fi0x.cc.project.mixer.old.OldTimerElement;
 import processing.awt.PSurfaceAWT;
 import processing.core.PApplet;
 import processing.core.PImage;
@@ -45,7 +45,7 @@ public class MainMixerWindow extends PApplet
         noStroke();
 
         originElement = new MixerUIElement(this, width / 2, height / 2);
-        originElement.changeLinkedElement(new TimerElement(originElement));
+        originElement.changeLinkedElement(new OldTimerElement(originElement));
 
         handler = new Thread(MixerManager.getInstance());
         handler.start();

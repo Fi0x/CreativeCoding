@@ -1,25 +1,26 @@
-package com.fi0x.cc.project.mixer;
+package com.fi0x.cc.project.mixer.old;
 
 import com.fi0x.cc.project.gui.mixer.MixerUIElement;
 
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 
-public abstract class AbstractMixerElement
+@Deprecated
+public abstract class OldAbstractMixerElement
 {
-    protected final ArrayList<Class<? extends AbstractMixerElement>> allowedConnections = new ArrayList<>();
+    protected final ArrayList<Class<? extends OldAbstractMixerElement>> allowedConnections = new ArrayList<>();
 
-    protected final ArrayList<AbstractMixerElement> connectedElements = new ArrayList<>();
+    protected final ArrayList<OldAbstractMixerElement> connectedElements = new ArrayList<>();
     protected final MixerUIElement linkedUI;
 
     protected final ArrayList<Long> updatedFrames = new ArrayList<>();
 
-    public AbstractMixerElement(MixerUIElement uiPart)
+    public OldAbstractMixerElement(MixerUIElement uiPart)
     {
         linkedUI = uiPart;
     }
 
-    public void updateElement(AbstractMixerElement sender, long globalFrame, int bpm)
+    public void updateElement(OldAbstractMixerElement sender, long globalFrame, int bpm)
     {
         linkedUI.blinkStroke(0.03f * bpm / 60);
         if(updatedFrames.size() > 60)
@@ -29,11 +30,11 @@ public abstract class AbstractMixerElement
     public abstract void changeSecondaryValue(int valueChange);
     public abstract void syncClock(int timerFrame);
 
-    public boolean canConnectTo(AbstractMixerElement otherElement)
+    public boolean canConnectTo(OldAbstractMixerElement otherElement)
     {
         return allowedConnections.contains(otherElement.getClass());
     }
-    public void addConnectedElement(AbstractMixerElement newConnection)
+    public void addConnectedElement(OldAbstractMixerElement newConnection)
     {
         if(!connectedElements.contains(newConnection))
             connectedElements.add(newConnection);
@@ -41,7 +42,7 @@ public abstract class AbstractMixerElement
     public ArrayList<MixerUIElement> getConnectedUIs()
     {
         ArrayList<MixerUIElement> uis = new ArrayList<>();
-        for(AbstractMixerElement e : connectedElements)
+        for(OldAbstractMixerElement e : connectedElements)
             uis.add(e.linkedUI);
         return uis;
     }
@@ -49,7 +50,7 @@ public abstract class AbstractMixerElement
     {
         return linkedUI;
     }
-    public void removeConnectedElement(AbstractMixerElement connectionToRemove)
+    public void removeConnectedElement(OldAbstractMixerElement connectionToRemove)
     {
         connectedElements.remove(connectionToRemove);
     }
@@ -57,16 +58,16 @@ public abstract class AbstractMixerElement
     {
         try
         {
-            for(AbstractMixerElement e : connectedElements)
+            for(OldAbstractMixerElement e : connectedElements)
                 e.removeConnectedElement(this);
             connectedElements.clear();
         } catch(ConcurrentModificationException ignored)
         {
         }
     }
-    public void replaceConnections(AbstractMixerElement newElement)
+    public void replaceConnections(OldAbstractMixerElement newElement)
     {
-        for(AbstractMixerElement e : connectedElements)
+        for(OldAbstractMixerElement e : connectedElements)
         {
             e.removeConnectedElement(this);
             e.addConnectedElement(newElement);

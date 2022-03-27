@@ -1,7 +1,7 @@
 package com.fi0x.cc.project.mixer;
 
 import com.fi0x.cc.project.gui.mixer.MainMixerWindow;
-import com.fi0x.cc.project.mixer.elements.TimerElement;
+import com.fi0x.cc.project.mixer.old.OldTimerElement;
 
 public class MixerManager implements Runnable
 {
@@ -18,7 +18,7 @@ public class MixerManager implements Runnable
     @Override
     public void run()
     {
-        TimerElement masterClock = ((TimerElement) MainMixerWindow.originElement.getLinkedElement());
+        OldTimerElement masterClock = ((OldTimerElement) MainMixerWindow.originElement.getLinkedElement());
         while(true)
         {
             bpm = masterClock.getCurrentBPM();

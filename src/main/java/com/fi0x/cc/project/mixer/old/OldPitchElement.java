@@ -1,29 +1,28 @@
-package com.fi0x.cc.project.mixer.elements;
+package com.fi0x.cc.project.mixer.old;
 
 import com.fi0x.cc.project.gui.mixer.MixerUIElement;
-import com.fi0x.cc.project.mixer.AbstractMixerElement;
-import com.fi0x.cc.project.mixer.IParameterElement;
 import com.fi0x.cc.project.synth.SynthManager;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.ShortMessage;
 
-public class PitchElement extends AbstractMixerElement implements IParameterElement
+@Deprecated
+public class OldPitchElement extends OldAbstractMixerElement implements IParameterElement
 {
     private int pitchDifference = 0;
 
-    public PitchElement(MixerUIElement uiPart)
+    public OldPitchElement(MixerUIElement uiPart)
     {
         super(uiPart);
     }
 
     @Override
-    public void updateElement(AbstractMixerElement sender, long globalFrame, int bpm)
+    public void updateElement(OldAbstractMixerElement sender, long globalFrame, int bpm)
     {
         super.updateElement(sender, globalFrame, bpm);
 
-        allowedConnections.add(IncreasingElement.class);
-        allowedConnections.add(ChannelElement.class);
+        allowedConnections.add(OldIncreasingElement.class);
+        allowedConnections.add(OldChannelElement.class);
     }
     @Override
     public void changeMainValue(int valueChange)
@@ -45,13 +44,7 @@ public class PitchElement extends AbstractMixerElement implements IParameterElem
 
     public void updateChannelPitch(int channel)
     {
-        int updatedPitch = pitchDifference;
-        for(AbstractMixerElement e : connectedElements)
-        {
-            if(e instanceof IncreasingElement)
-                updatedPitch += ((IncreasingElement) e).getCurrentIncrease();
-        }
-        updatedPitch = Math.max(-128, Math.min(127, updatedPitch));
+        int updatedPitch = Math.max(-128, Math.min(127, getUpdatedPitch()));
         try
         {
             //TODO: Use correct values
@@ -72,9 +65,20 @@ public class PitchElement extends AbstractMixerElement implements IParameterElem
         }
     }
 
+    private int getUpdatedPitch()
+    {
+        int newValue = pitchDifference;
+        for(OldAbstractMixerElement e : connectedElements)
+        {
+            if(e instanceof OldIncreasingElement)
+                newValue += ((OldIncreasingElement) e).getCurrentIncrease();
+        }
+        return Math.max(Math.min(newValue, 127), -128);
+    }
+
     @Override
     public String getDisplayName()
     {
-        return "Pitch: " + pitchDifference;
+        return "Pitch: " + getUpdatedPitch() + "(" + pitchDifference + ")";
     }
 }

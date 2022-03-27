@@ -1,8 +1,7 @@
-package com.fi0x.cc.project.mixer.elements;
+package com.fi0x.cc.project.mixer.old;
 
 import com.fi0x.cc.project.LoggerManager;
 import com.fi0x.cc.project.gui.mixer.MixerUIElement;
-import com.fi0x.cc.project.mixer.AbstractMixerElement;
 import com.fi0x.cc.project.mixer.MixerManager;
 import com.fi0x.cc.project.mixer.TimeCalculator;
 import com.fi0x.cc.project.synth.SynthManager;
@@ -12,7 +11,8 @@ import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.ShortMessage;
 import java.util.ArrayList;
 
-public class ChannelElement extends AbstractMixerElement
+@Deprecated
+public class OldChannelElement extends OldAbstractMixerElement
 {
     private long lastNotePlayed = 0;
 
@@ -21,13 +21,13 @@ public class ChannelElement extends AbstractMixerElement
     private int volume = 30;
     private int noteLength = 2 * MixerManager.getNotesPerBeat() / 8;
 
-    public ChannelElement(MixerUIElement uiPart)
+    public OldChannelElement(MixerUIElement uiPart)
     {
         super(uiPart);
     }
 
     @Override
-    public void updateElement(AbstractMixerElement sender, long globalFrame, int bpm)
+    public void updateElement(OldAbstractMixerElement sender, long globalFrame, int bpm)
     {
         if(updatedFrames.contains(globalFrame))
             return;
@@ -36,24 +36,24 @@ public class ChannelElement extends AbstractMixerElement
         super.updateElement(sender, globalFrame, bpm);
 
         notes.clear();
-        for(AbstractMixerElement e : connectedElements)
+        for(OldAbstractMixerElement e : connectedElements)
         {
-            if(e instanceof NoteElement)
+            if(e instanceof OldNoteElement)
             {
                 e.updateElement(this, globalFrame, bpm);
-                notes.add(((NoteElement) e).getNote());
-            } else if(e instanceof PitchElement)
+                notes.add(((OldNoteElement) e).getNote());
+            } else if(e instanceof OldPitchElement)
             {
                 e.updateElement(this, globalFrame, bpm);
-                ((PitchElement) e).updateChannelPitch(getUpdatedChannel());
-            } else if(e instanceof VolumeElement)
+                ((OldPitchElement) e).updateChannelPitch(getUpdatedChannel());
+            } else if(e instanceof OldVolumeElement)
             {
                 e.updateElement(this, globalFrame, bpm);
-                volume = ((VolumeElement) e).getVolume();
-            } else if(e instanceof LengthElement)
+                volume = ((OldVolumeElement) e).getVolume();
+            } else if(e instanceof OldLengthElement)
             {
                 e.updateElement(this, globalFrame, bpm);
-                noteLength = ((LengthElement) e).getLength();
+                noteLength = ((OldLengthElement) e).getLength();
             }
         }
 
@@ -77,7 +77,7 @@ public class ChannelElement extends AbstractMixerElement
     {
     }
     @Override
-    public boolean canConnectTo(AbstractMixerElement otherElement)
+    public boolean canConnectTo(OldAbstractMixerElement otherElement)
     {
         return true;
     }
@@ -85,7 +85,7 @@ public class ChannelElement extends AbstractMixerElement
     @Override
     public String getDisplayName()
     {
-        return "Channel: " + channel;
+        return "Channel: " + getUpdatedChannel() + "(" + channel + ")";
     }
 
     private void playNotes()
@@ -134,11 +134,11 @@ public class ChannelElement extends AbstractMixerElement
     private int getUpdatedChannel()
     {
         int newChannel = channel;
-        for(AbstractMixerElement e : connectedElements)
+        for(OldAbstractMixerElement e : connectedElements)
         {
-            if(e instanceof IncreasingElement)
-                channel += ((IncreasingElement) e).getCurrentIncrease();
+            if(e instanceof OldIncreasingElement)
+                newChannel += ((OldIncreasingElement) e).getCurrentIncrease();
         }
-        return newChannel % 16;
+        return Math.max(newChannel % 16, channel);
     }
 }
