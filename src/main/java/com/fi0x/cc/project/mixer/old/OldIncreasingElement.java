@@ -1,6 +1,6 @@
 package com.fi0x.cc.project.mixer.old;
 
-import com.fi0x.cc.project.gui.mixer.MixerUIElement;
+import com.fi0x.cc.project.gui.mixer.OldMixerUIElement;
 
 @Deprecated
 public class OldIncreasingElement extends OldAbstractMixerElement implements INumberElement
@@ -9,7 +9,7 @@ public class OldIncreasingElement extends OldAbstractMixerElement implements INu
     private int increase = 0;
     private int stepSize = 1;
 
-    public OldIncreasingElement(MixerUIElement uiPart)
+    public OldIncreasingElement(OldMixerUIElement uiPart)
     {
         super(uiPart);
 

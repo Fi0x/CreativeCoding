@@ -1,6 +1,6 @@
 package com.fi0x.cc.project.mixer.old;
 
-import com.fi0x.cc.project.gui.mixer.MixerUIElement;
+import com.fi0x.cc.project.gui.mixer.OldMixerUIElement;
 import com.fi0x.cc.project.synth.synthesizers.MusicConverter;
 
 @Deprecated
@@ -8,7 +8,7 @@ public class OldNoteElement extends OldAbstractMixerElement implements IParamete
 {
     private int note = 60;
 
-    public OldNoteElement(MixerUIElement uiPart)
+    public OldNoteElement(OldMixerUIElement uiPart)
     {
         super(uiPart);
     }

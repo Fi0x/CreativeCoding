@@ -1,7 +1,7 @@
 package com.fi0x.cc.project.mixer.old;
 
 import com.fi0x.cc.project.LoggerManager;
-import com.fi0x.cc.project.gui.mixer.MixerUIElement;
+import com.fi0x.cc.project.gui.mixer.OldMixerUIElement;
 import com.fi0x.cc.project.mixer.MixerManager;
 import com.fi0x.cc.project.mixer.TimeCalculator;
 import com.fi0x.cc.project.synth.SynthManager;
@@ -21,7 +21,7 @@ public class OldChannelElement extends OldAbstractMixerElement
     private int volume = 30;
     private int noteLength = 2 * MixerManager.getNotesPerBeat() / 8;
 
-    public OldChannelElement(MixerUIElement uiPart)
+    public OldChannelElement(OldMixerUIElement uiPart)
     {
         super(uiPart);
     }

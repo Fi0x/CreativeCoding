@@ -1,13 +1,13 @@
 package com.fi0x.cc.project.mixer.old;
 
-import com.fi0x.cc.project.gui.mixer.MixerUIElement;
+import com.fi0x.cc.project.gui.mixer.OldMixerUIElement;
 
 @Deprecated
 public class OldVolumeElement extends OldAbstractMixerElement implements IParameterElement
 {
     private int volume = 30;
 
-    public OldVolumeElement(MixerUIElement uiPart)
+    public OldVolumeElement(OldMixerUIElement uiPart)
     {
         super(uiPart);
     }

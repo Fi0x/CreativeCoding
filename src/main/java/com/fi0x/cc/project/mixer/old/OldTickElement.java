@@ -1,6 +1,6 @@
 package com.fi0x.cc.project.mixer.old;
 
-import com.fi0x.cc.project.gui.mixer.MixerUIElement;
+import com.fi0x.cc.project.gui.mixer.OldMixerUIElement;
 import com.fi0x.cc.project.mixer.MixerManager;
 
 @Deprecated
@@ -9,7 +9,7 @@ public class OldTickElement extends OldAbstractMixerElement implements ISignalSe
     private int delayBetweenTicks = 8 * MixerManager.getNotesPerBeat() / 8;
     private int currentFrame = 0;
 
-    public OldTickElement(MixerUIElement uiPart)
+    public OldTickElement(OldMixerUIElement uiPart)
     {
         super(uiPart);
 

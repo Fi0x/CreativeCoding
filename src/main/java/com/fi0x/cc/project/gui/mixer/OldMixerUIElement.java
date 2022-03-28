@@ -6,15 +6,16 @@ import processing.core.PConstants;
 
 import java.util.ArrayList;
 
-public class MixerUIElement
+@Deprecated
+public class OldMixerUIElement
 {
     private final PApplet parent;
     protected int currentX;
     protected int currentY;
     private final int size = 100;
 
-    private final ArrayList<MixerUIElement> blacklistedElements = new ArrayList<>();
-    private final ArrayList<MixerUIElement> whitelistedElements = new ArrayList<>();
+    private final ArrayList<OldMixerUIElement> blacklistedElements = new ArrayList<>();
+    private final ArrayList<OldMixerUIElement> whitelistedElements = new ArrayList<>();
 
     private int backgroundColor;
     private final int selectionColor;
@@ -30,7 +31,7 @@ public class MixerUIElement
 
     private OldAbstractMixerElement linkedElement;
 
-    public MixerUIElement(PApplet parentScreen, int xCenter, int yCenter)
+    public OldMixerUIElement(PApplet parentScreen, int xCenter, int yCenter)
     {
         parent = parentScreen;
 
@@ -94,7 +95,7 @@ public class MixerUIElement
         else
             adjustableStrokeColor = parent.color(0, 255, 0);
     }
-    public void sendPulse(MixerUIElement target, float travelTime)
+    public void sendPulse(OldMixerUIElement target, float travelTime)
     {
         int transferFrames = (int) (travelTime * parent.frameRate);
         MainMixerWindow.addUISignal(new UISignal(parent, this, target, transferFrames, adjustableBackgroundColor));
@@ -118,11 +119,8 @@ public class MixerUIElement
     }
     public void drop()
     {
-        tryToConnect(MainMixerWindow.originElement);
-        for(MixerUIElement e : MainMixerWindow.uiElements)
+        for(OldMixerUIElement e : MainMixerWindow.uiElements)
             tryToConnect(e);
-
-        linkedElement.syncClock(((OldTimerElement) MainMixerWindow.originElement.getLinkedElement()).getCurrentFrame());
 
         pickedUp = false;
     }
@@ -137,14 +135,14 @@ public class MixerUIElement
         currentY = newY;
     }
 
-    public void addElementToBlacklist(MixerUIElement element)
+    public void addElementToBlacklist(OldMixerUIElement element)
     {
         whitelistedElements.remove(element);
         blacklistedElements.add(element);
 
         linkedElement.removeConnectedElement(element.linkedElement);
     }
-    public void addElementToWhitelist(MixerUIElement element)
+    public void addElementToWhitelist(OldMixerUIElement element)
     {
         blacklistedElements.remove(element);
         whitelistedElements.add(element);
@@ -217,7 +215,7 @@ public class MixerUIElement
         }
     }
 
-    private void tryToConnect(MixerUIElement otherElement)
+    private void tryToConnect(OldMixerUIElement otherElement)
     {
         if(blacklistedElements.contains(otherElement))
             return;
@@ -236,13 +234,12 @@ public class MixerUIElement
         parent.stroke(color);
         parent.strokeWeight(5);
 
-        drawLine(MainMixerWindow.originElement);
-        for(MixerUIElement e : MainMixerWindow.uiElements)
+        for(OldMixerUIElement e : MainMixerWindow.uiElements)
             drawLine(e);
 
         parent.noStroke();
     }
-    private void drawLine(MixerUIElement otherUI)
+    private void drawLine(OldMixerUIElement otherUI)
     {
         if(blacklistedElements.contains(otherUI))
             return;

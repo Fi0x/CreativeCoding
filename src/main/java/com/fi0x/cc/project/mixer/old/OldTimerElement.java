@@ -1,6 +1,6 @@
 package com.fi0x.cc.project.mixer.old;
 
-import com.fi0x.cc.project.gui.mixer.MixerUIElement;
+import com.fi0x.cc.project.gui.mixer.OldMixerUIElement;
 
 @Deprecated
 public class OldTimerElement extends OldAbstractMixerElement implements ISignalSenderElement
@@ -10,7 +10,7 @@ public class OldTimerElement extends OldAbstractMixerElement implements ISignalS
 
     private int currentFrame = 0;
 
-    public OldTimerElement(MixerUIElement uiPart)
+    public OldTimerElement(OldMixerUIElement uiPart)
     {
         super(uiPart);
 

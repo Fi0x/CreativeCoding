@@ -6,14 +6,14 @@ import processing.core.PVector;
 public class UISignal
 {
     private final PApplet parent;
-    private final MixerUIElement source;
-    private final MixerUIElement target;
+    private final OldMixerUIElement source;
+    private final OldMixerUIElement target;
     private final int color;
 
     private final int stepCount;
     private int currentStep;
 
-    public UISignal(PApplet parentScreen, MixerUIElement src, MixerUIElement dest, int transferFrames, int baseColor)
+    public UISignal(PApplet parentScreen, OldMixerUIElement src, OldMixerUIElement dest, int transferFrames, int baseColor)
     {
         parent = parentScreen;
         source = src;

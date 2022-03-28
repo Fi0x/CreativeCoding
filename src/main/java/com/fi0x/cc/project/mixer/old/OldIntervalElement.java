@@ -1,6 +1,6 @@
 package com.fi0x.cc.project.mixer.old;
 
-import com.fi0x.cc.project.gui.mixer.MixerUIElement;
+import com.fi0x.cc.project.gui.mixer.OldMixerUIElement;
 import com.fi0x.cc.project.mixer.MixerManager;
 
 @Deprecated
@@ -10,7 +10,7 @@ public class OldIntervalElement extends OldAbstractMixerElement implements ISign
     private int currentFrame = 0;
     private boolean isActive = false;
 
-    public OldIntervalElement(MixerUIElement uiPart)
+    public OldIntervalElement(OldMixerUIElement uiPart)
     {
         super(uiPart);
 

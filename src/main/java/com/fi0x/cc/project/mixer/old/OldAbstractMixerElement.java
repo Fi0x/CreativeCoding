@@ -1,6 +1,6 @@
 package com.fi0x.cc.project.mixer.old;
 
-import com.fi0x.cc.project.gui.mixer.MixerUIElement;
+import com.fi0x.cc.project.gui.mixer.OldMixerUIElement;
 
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
@@ -11,11 +11,11 @@ public abstract class OldAbstractMixerElement
     protected final ArrayList<Class<? extends OldAbstractMixerElement>> allowedConnections = new ArrayList<>();
 
     protected final ArrayList<OldAbstractMixerElement> connectedElements = new ArrayList<>();
-    protected final MixerUIElement linkedUI;
+    protected final OldMixerUIElement linkedUI;
 
     protected final ArrayList<Long> updatedFrames = new ArrayList<>();
 
-    public OldAbstractMixerElement(MixerUIElement uiPart)
+    public OldAbstractMixerElement(OldMixerUIElement uiPart)
     {
         linkedUI = uiPart;
     }
@@ -39,14 +39,14 @@ public abstract class OldAbstractMixerElement
         if(!connectedElements.contains(newConnection))
             connectedElements.add(newConnection);
     }
-    public ArrayList<MixerUIElement> getConnectedUIs()
+    public ArrayList<OldMixerUIElement> getConnectedUIs()
     {
-        ArrayList<MixerUIElement> uis = new ArrayList<>();
+        ArrayList<OldMixerUIElement> uis = new ArrayList<>();
         for(OldAbstractMixerElement e : connectedElements)
             uis.add(e.linkedUI);
         return uis;
     }
-    public MixerUIElement getLinkedUI()
+    public OldMixerUIElement getLinkedUI()
     {
         return linkedUI;
     }

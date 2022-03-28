@@ -1,6 +1,6 @@
 package com.fi0x.cc.project.mixer.old;
 
-import com.fi0x.cc.project.gui.mixer.MixerUIElement;
+import com.fi0x.cc.project.gui.mixer.OldMixerUIElement;
 import com.fi0x.cc.project.mixer.MixerManager;
 
 @Deprecated
@@ -8,7 +8,7 @@ public class OldLengthElement extends OldAbstractMixerElement implements IParame
 {
     private int length = 2 * MixerManager.getNotesPerBeat() / 8;
 
-    public OldLengthElement(MixerUIElement uiPart)
+    public OldLengthElement(OldMixerUIElement uiPart)
     {
         super(uiPart);
 

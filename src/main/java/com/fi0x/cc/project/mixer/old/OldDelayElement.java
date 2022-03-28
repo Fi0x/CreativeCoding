@@ -1,6 +1,6 @@
 package com.fi0x.cc.project.mixer.old;
 
-import com.fi0x.cc.project.gui.mixer.MixerUIElement;
+import com.fi0x.cc.project.gui.mixer.OldMixerUIElement;
 import com.fi0x.cc.project.mixer.MixerManager;
 import com.fi0x.cc.project.mixer.TimeCalculator;
 
@@ -9,7 +9,7 @@ public class OldDelayElement extends OldAbstractMixerElement implements ISignalS
 {
     private int delay = 2 * MixerManager.getNotesPerBeat() / 8;
 
-    public OldDelayElement(MixerUIElement uiPart)
+    public OldDelayElement(OldMixerUIElement uiPart)
     {
         super(uiPart);
 

@@ -1,6 +1,6 @@
 package com.fi0x.cc.project.mixer.old;
 
-import com.fi0x.cc.project.gui.mixer.MixerUIElement;
+import com.fi0x.cc.project.gui.mixer.OldMixerUIElement;
 import com.fi0x.cc.project.synth.SynthManager;
 
 import javax.sound.midi.InvalidMidiDataException;
@@ -11,7 +11,7 @@ public class OldPitchElement extends OldAbstractMixerElement implements IParamet
 {
     private int pitchDifference = 0;
 
-    public OldPitchElement(MixerUIElement uiPart)
+    public OldPitchElement(OldMixerUIElement uiPart)
     {
         super(uiPart);
     }

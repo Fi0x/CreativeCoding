@@ -1,15 +1,17 @@
 package com.fi0x.cc.project.mixer;
 
-import com.fi0x.cc.project.gui.mixer.MainMixerWindow;
-import com.fi0x.cc.project.mixer.old.OldTimerElement;
+import com.fi0x.cc.project.mixer.elements.ISignalCreator;
+
+import java.util.ArrayList;
 
 public class MixerManager implements Runnable
 {
     private static MixerManager instance;
+    private final ArrayList<ISignalCreator> beatListeners = new ArrayList<>();
 
-    private long currentFrame = 0;
-    private int bpm = 60;
-    private int notesPerBeat = 8;
+    private long globalFrame = 0;
+    private static int bpm = 60;
+    private static int notesPerBeat = 8;
 
     private MixerManager()
     {
@@ -18,12 +20,10 @@ public class MixerManager implements Runnable
     @Override
     public void run()
     {
-        OldTimerElement masterClock = ((OldTimerElement) MainMixerWindow.originElement.getLinkedElement());
         while(true)
         {
-            bpm = masterClock.getCurrentBPM();
-            notesPerBeat = masterClock.getNotesPerBeat();
-            masterClock.updateElement(null, currentFrame, bpm);
+            for(ISignalCreator s : beatListeners)
+                s.beatUpdate(globalFrame);
 
             try
             {
@@ -33,7 +33,7 @@ public class MixerManager implements Runnable
                 break;
             }
 
-            currentFrame++;
+            globalFrame++;
         }
     }
 
@@ -45,12 +45,34 @@ public class MixerManager implements Runnable
         return instance;
     }
 
+    public void addBeatListener(ISignalCreator listener)
+    {
+        beatListeners.add(listener);
+    }
+
+    public void removeBeatListener(ISignalCreator listener)
+    {
+        beatListeners.remove(listener);
+    }
+
     public static int getBPM()
     {
-        return getInstance().bpm;
+        return bpm;
     }
     public static int getNotesPerBeat()
     {
-        return getInstance().notesPerBeat;
+        return notesPerBeat;
+    }
+    public static void changeBPM(int bpmChange)
+    {
+        bpm += bpmChange;
+        if(bpm < 1)
+            bpm = 1;
+    }
+    public static void changeNPB(int npbChange)
+    {
+        notesPerBeat += npbChange;
+        if(notesPerBeat < 1)
+            notesPerBeat = 1;
     }
 }
