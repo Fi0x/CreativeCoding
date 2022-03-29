@@ -1,10 +1,13 @@
 package com.fi0x.cc.project.gui.mixer;
 
-import com.fi0x.cc.project.mixer.MixerManager;
+import com.fi0x.cc.project.LoggerManager;
 import com.fi0x.cc.project.mixer.elements.*;
 import controlP5.ControlEvent;
 import controlP5.ControlP5;
+import io.fi0x.javalogger.logging.Logger;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,6 +31,7 @@ public class TypeSelector
         originalX = x;
         originalY = y;
         control = new ControlP5(parent);
+        control.setPosition(0, 0);
 
         createButtons();
 
@@ -40,25 +44,35 @@ public class TypeSelector
         {
             if(event.getController() == control.getController(entry.getKey()))
             {
-                //TODO: Add new element if necessary to mainWindow
-                //TODO: Create specified element at currentCenter
-                //TODO: Remove this TypeSelector
+                try
+                {
+                    Constructor<? extends AbstractElement> ctor = entry.getValue().getDeclaredConstructor();
+                    AbstractElement instance = ctor.newInstance();
+                    parent.addNewElement(new ElementUI(parent, instance, originalX, originalY));
+                } catch(NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e)
+                {
+                    Logger.log("Could not create element from type-selector", String.valueOf(LoggerManager.Template.DEBUG_WARNING));
+                }
                 return true;
             }
         }
 
-        if(event.getController() == control.getController("Abort"))
-        {
-            //TODO: Remove this TypeSelector
-            return true;
-        }
-
-        return false;
+        return event.getController() == control.getController("Abort");
     }
 
     public void hide()
     {
         control.hide();
+        new Thread(() ->
+        {
+            try
+            {
+                Thread.sleep(100);
+            } catch(InterruptedException ignored)
+            {
+            }
+            control.dispose();
+        }).start();
     }
     public void show(int xPos, int yPos)
     {

@@ -52,7 +52,6 @@ public class MainMixerWindow extends PApplet
         noStroke();
 
         controller = new GlobalController(this);
-        typeSelector = new TypeSelector(this, 0, 0);
 
         handler = new Thread(MixerManager.getInstance());
         handler.start();
@@ -80,8 +79,8 @@ public class MainMixerWindow extends PApplet
         {
         }
 
-        for(OldMixerUIElement mixerElement : oldUiElements)
-            mixerElement.drawElement();
+        for(ElementUI element : uiElements)
+            element.draw();
     }
 
     @Override
@@ -137,7 +136,11 @@ public class MainMixerWindow extends PApplet
     {
         if(mouseButton == LEFT)
         {
-            typeSelector.hide();
+            if(typeSelector != null)
+            {
+                typeSelector.hide();
+                typeSelector = null;
+            }
             loadPixels();
             if(pixels[mouseY * width + mouseX] == backgroundColor)
             {
@@ -157,6 +160,8 @@ public class MainMixerWindow extends PApplet
             }
         } else if(mouseButton == RIGHT)
         {
+            if(typeSelector == null)
+                typeSelector = new TypeSelector(this, mouseX, mouseY);
             typeSelector.show(mouseX, mouseY);
         }
     }
@@ -233,7 +238,13 @@ public class MainMixerWindow extends PApplet
 
         controller.buttonClicked(event);
         if(typeSelector != null)
-            typeSelector.selectElement(event);
+        {
+            if(typeSelector.selectElement(event))
+            {
+                typeSelector.hide();
+                typeSelector = null;
+            }
+        }
     }
 
     @Override
