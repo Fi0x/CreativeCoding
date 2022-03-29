@@ -11,8 +11,8 @@ import java.util.Map;
 public class TypeSelector
 {
     private final MainMixerWindow parent;
-    private final int originalX;
-    private final int originalY;
+    private int originalX;
+    private int originalY;
     private final ControlP5 control;
 
     private final Map<String, Class<? extends AbstractElement>> possibleElements = new HashMap<>(){{
@@ -30,6 +30,8 @@ public class TypeSelector
         control = new ControlP5(parent);
 
         createButtons();
+
+        control.hide();
     }
 
     public boolean selectElement(ControlEvent event)
@@ -38,7 +40,6 @@ public class TypeSelector
         {
             if(event.getController() == control.getController(entry.getKey()))
             {
-                MixerManager.changeBPM(1);
                 //TODO: Add new element if necessary to mainWindow
                 //TODO: Create specified element at currentCenter
                 //TODO: Remove this TypeSelector
@@ -53,6 +54,30 @@ public class TypeSelector
         }
 
         return false;
+    }
+
+    public void hide()
+    {
+        control.hide();
+    }
+    public void show(int xPos, int yPos)
+    {
+        originalX = xPos;
+        originalY = yPos;
+
+        int y = possibleElements.size() / 2 * -21;
+        for(String name : possibleElements.keySet())
+        {
+            control.getController(name)
+                    .setPosition(originalX - 50, originalY + y);
+
+            y += 21;
+        }
+
+        control.getController("Abort")
+                .setPosition(originalX - 50, originalY + y);
+
+        control.show();
     }
 
     private void createButtons()

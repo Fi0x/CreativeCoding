@@ -9,7 +9,7 @@ import java.util.ArrayList;
 @Deprecated
 public class OldMixerUIElement
 {
-    private final PApplet parent;
+    private final MainMixerWindow parent;
     protected int currentX;
     protected int currentY;
     private final int size = 100;
@@ -31,7 +31,7 @@ public class OldMixerUIElement
 
     private OldAbstractMixerElement linkedElement;
 
-    public OldMixerUIElement(PApplet parentScreen, int xCenter, int yCenter)
+    public OldMixerUIElement(MainMixerWindow parentScreen, int xCenter, int yCenter)
     {
         parent = parentScreen;
 
@@ -98,7 +98,7 @@ public class OldMixerUIElement
     public void sendPulse(OldMixerUIElement target, float travelTime)
     {
         int transferFrames = (int) (travelTime * parent.frameRate);
-        MainMixerWindow.addUISignal(new UISignal(parent, this, target, transferFrames, adjustableBackgroundColor));
+        parent.addUISignal(new UISignal(parent, this, target, transferFrames, adjustableBackgroundColor));
     }
 
     public boolean isAbove()
@@ -119,7 +119,7 @@ public class OldMixerUIElement
     }
     public void drop()
     {
-        for(OldMixerUIElement e : MainMixerWindow.uiElements)
+        for(OldMixerUIElement e : MainMixerWindow.oldUiElements)
             tryToConnect(e);
 
         pickedUp = false;
@@ -234,7 +234,7 @@ public class OldMixerUIElement
         parent.stroke(color);
         parent.strokeWeight(5);
 
-        for(OldMixerUIElement e : MainMixerWindow.uiElements)
+        for(OldMixerUIElement e : MainMixerWindow.oldUiElements)
             drawLine(e);
 
         parent.noStroke();

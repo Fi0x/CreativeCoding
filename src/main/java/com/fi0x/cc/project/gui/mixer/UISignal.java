@@ -5,7 +5,7 @@ import processing.core.PVector;
 
 public class UISignal
 {
-    private final PApplet parent;
+    private final MainMixerWindow parent;
     private final OldMixerUIElement source;
     private final OldMixerUIElement target;
     private final int color;
@@ -13,7 +13,7 @@ public class UISignal
     private final int stepCount;
     private int currentStep;
 
-    public UISignal(PApplet parentScreen, OldMixerUIElement src, OldMixerUIElement dest, int transferFrames, int baseColor)
+    public UISignal(MainMixerWindow parentScreen, OldMixerUIElement src, OldMixerUIElement dest, int transferFrames, int baseColor)
     {
         parent = parentScreen;
         source = src;
@@ -36,6 +36,6 @@ public class UISignal
 
         currentStep++;
         if(currentStep >= stepCount)
-            MainMixerWindow.removeUISignal(this);
+            parent.removeUISignal(this);
     }
 }

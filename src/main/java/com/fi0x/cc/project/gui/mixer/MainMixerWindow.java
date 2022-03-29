@@ -22,17 +22,17 @@ public class MainMixerWindow extends PApplet
     private Thread handler;
     private GlobalController controller;
     @Deprecated
-    public static final ArrayList<OldMixerUIElement> uiElements = new ArrayList<>();
-    private final ArrayList<ElementUI> uiElements1 = new ArrayList<>();
-    private static final ArrayList<UISignal> uiSignals = new ArrayList<>();
+    public static final ArrayList<OldMixerUIElement> oldUiElements = new ArrayList<>();
+    private final ArrayList<ElementUI> uiElements = new ArrayList<>();
+    private final ArrayList<UISignal> uiSignals = new ArrayList<>();
 
-    private TypeSelector openTypeSelector = null;
+    private TypeSelector typeSelector;
     @Deprecated
-    private OldMixerUIElement draggingElement = null;
+    private OldMixerUIElement oldDraggingElement = null;
     @Deprecated
-    private OldMixerUIElement selectedElement = null;
-    private ElementUI draggingElement1 = null;
-    private ElementUI selectedElement1 = null;
+    private OldMixerUIElement oldSelectedElement = null;
+    private ElementUI draggingElement = null;
+    private ElementUI selectedElement = null;
 
     @Override
     public void setup()
@@ -52,6 +52,7 @@ public class MainMixerWindow extends PApplet
         noStroke();
 
         controller = new GlobalController(this);
+        typeSelector = new TypeSelector(this, 0, 0);
 
         handler = new Thread(MixerManager.getInstance());
         handler.start();
@@ -68,7 +69,7 @@ public class MainMixerWindow extends PApplet
 
         controller.draw();
 
-        for(OldMixerUIElement mixerElement : uiElements)
+        for(OldMixerUIElement mixerElement : oldUiElements)
             mixerElement.drawLines(lineColor);
 
         try
@@ -79,7 +80,7 @@ public class MainMixerWindow extends PApplet
         {
         }
 
-        for(OldMixerUIElement mixerElement : uiElements)
+        for(OldMixerUIElement mixerElement : oldUiElements)
             mixerElement.drawElement();
     }
 
@@ -91,7 +92,7 @@ public class MainMixerWindow extends PApplet
             loadPixels();
             if(pixels[mouseY * width + mouseX] == lineColor)
             {
-                for(OldMixerUIElement e : uiElements)
+                for(OldMixerUIElement e : oldUiElements)
                 {
                     for(OldMixerUIElement e1 : e.getLinkedElement().getConnectedUIs())
                     {
@@ -109,12 +110,12 @@ public class MainMixerWindow extends PApplet
             }
 
             //TODO: Move to new drag-drop system
-            for(OldMixerUIElement e : uiElements)
+            for(OldMixerUIElement e : oldUiElements)
             {
                 if(!e.pickUp())
                     continue;
 
-                draggingElement = e;
+                oldDraggingElement = e;
 
                 selectElement(e);
                 break;
@@ -125,10 +126,10 @@ public class MainMixerWindow extends PApplet
     public void mouseReleased()
     {
         //TODO: Move to new drag-drop system
-        if(mouseButton == LEFT && draggingElement != null)
+        if(mouseButton == LEFT && oldDraggingElement != null)
         {
-            draggingElement.drop();
-            draggingElement = null;
+            oldDraggingElement.drop();
+            oldDraggingElement = null;
         }
     }
     @Override
@@ -136,17 +137,17 @@ public class MainMixerWindow extends PApplet
     {
         if(mouseButton == LEFT)
         {
-            openTypeSelector = null;
+            typeSelector.hide();
             loadPixels();
             if(pixels[mouseY * width + mouseX] == backgroundColor)
             {
-                if(selectedElement != null)
-                    selectedElement.select(false);
-                selectedElement = null;
+                if(oldSelectedElement != null)
+                    oldSelectedElement.select(false);
+                oldSelectedElement = null;
                 return;
             }
 
-            for(OldMixerUIElement e : uiElements)
+            for(OldMixerUIElement e : oldUiElements)
             {
                 if(!e.isAbove())
                     continue;
@@ -156,13 +157,13 @@ public class MainMixerWindow extends PApplet
             }
         } else if(mouseButton == RIGHT)
         {
-            openTypeSelector = new TypeSelector(this, mouseX, mouseY);
+            typeSelector.show(mouseX, mouseY);
         }
     }
     @Override
     public void mouseWheel(MouseEvent event)
     {
-        for(OldMixerUIElement e : uiElements)
+        for(OldMixerUIElement e : oldUiElements)
         {
             if(e.isAbove())
             {
@@ -176,21 +177,21 @@ public class MainMixerWindow extends PApplet
     {
         if(key == DELETE)
         {
-            if(selectedElement == null)
+            if(oldSelectedElement == null)
                 return;
 
-            uiElements.remove(selectedElement);
-            selectedElement.getLinkedElement().removeAllConnections();
-            selectedElement = null;
+            oldUiElements.remove(oldSelectedElement);
+            oldSelectedElement.getLinkedElement().removeAllConnections();
+            oldSelectedElement = null;
         } else if(key == ENTER)
         {
             OldMixerUIElement newControlElement = new OldMixerUIElement(this, mouseX, mouseY);
             newControlElement.init();
-            uiElements.add(newControlElement);
+            oldUiElements.add(newControlElement);
             newControlElement.drop();
         } else if(key == CODED && keyCode == UP)
         {
-            for(OldMixerUIElement e : uiElements)
+            for(OldMixerUIElement e : oldUiElements)
             {
                 if(e.isAbove())
                 {
@@ -200,7 +201,7 @@ public class MainMixerWindow extends PApplet
             }
         } else if(key == CODED && keyCode == DOWN)
         {
-            for(OldMixerUIElement e : uiElements)
+            for(OldMixerUIElement e : oldUiElements)
             {
                 if(e.isAbove())
                 {
@@ -210,14 +211,14 @@ public class MainMixerWindow extends PApplet
             }
         } else if(key == 'C' || key == 'c')
         {
-            if(selectedElement != null)
+            if(oldSelectedElement != null)
             {
-                for(OldMixerUIElement e : uiElements)
+                for(OldMixerUIElement e : oldUiElements)
                 {
                     if(e.isAbove())
                     {
-                        e.addElementToWhitelist(selectedElement);
-                        selectedElement.addElementToWhitelist(e);
+                        e.addElementToWhitelist(oldSelectedElement);
+                        oldSelectedElement.addElementToWhitelist(e);
                         break;
                     }
                 }
@@ -231,8 +232,8 @@ public class MainMixerWindow extends PApplet
             return;
 
         controller.buttonClicked(event);
-        if(openTypeSelector != null)
-            openTypeSelector.selectElement(event);
+        if(typeSelector != null)
+            typeSelector.selectElement(event);
     }
 
     @Override
@@ -251,21 +252,25 @@ public class MainMixerWindow extends PApplet
         return sur;
     }
 
-    public static void addUISignal(UISignal signal)
+    public void addNewElement(ElementUI element)
+    {
+        uiElements.add(element);
+    }
+    public void addUISignal(UISignal signal)
     {
         uiSignals.add(signal);
     }
-    public static void removeUISignal(UISignal signal)
+    public void removeUISignal(UISignal signal)
     {
         uiSignals.remove(signal);
     }
 
     private void selectElement(OldMixerUIElement element)
     {
-        if(selectedElement != null)
-            selectedElement.select(false);
+        if(oldSelectedElement != null)
+            oldSelectedElement.select(false);
 
-        selectedElement = element;
-        selectedElement.select(true);
+        oldSelectedElement = element;
+        oldSelectedElement.select(true);
     }
 }
