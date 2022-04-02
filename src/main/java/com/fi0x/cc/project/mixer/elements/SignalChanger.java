@@ -1,19 +1,18 @@
 package com.fi0x.cc.project.mixer.elements;
 
-import java.util.ArrayList;
+import com.fi0x.cc.project.gui.mixer.MainMixerWindow;
 
 public class SignalChanger extends AbstractElement implements ISignalModifier
 {
+    public SignalChanger(MainMixerWindow parentScreen, int x, int y)
+    {
+        super(parentScreen, x, y);
+    }
     //TODO: Change channel, volume, note or length of incoming signals and output them
     @Override
     public boolean hasFreeInputs()
     {
         return false;
-    }
-    @Override
-    public ArrayList<AbstractElement> getConnectedInputs()
-    {
-        return null;
     }
     @Override
     public AbstractElement getConnectedOutput()
@@ -23,6 +22,13 @@ public class SignalChanger extends AbstractElement implements ISignalModifier
     @Override
     public void updateFrame()
     {
-
+    }
+    @Override
+    public void removeAllConnections()
+    {
+    }
+    @Override
+    public void changeMainValue(int valueChange)
+    {
     }
 }

@@ -46,9 +46,8 @@ public class TypeSelector
             {
                 try
                 {
-                    Constructor<? extends AbstractElement> ctor = entry.getValue().getDeclaredConstructor();
-                    AbstractElement instance = ctor.newInstance();
-                    parent.addNewElement(new ElementUI(parent, instance, originalX, originalY));
+                    Constructor<? extends AbstractElement> ctor = entry.getValue().getDeclaredConstructor(MainMixerWindow.class, Integer.class, Integer.class);
+                    parent.addNewElement(ctor.newInstance(parent, originalX, originalY));
                 } catch(NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e)
                 {
                     Logger.log("Could not create element from type-selector", String.valueOf(LoggerManager.Template.DEBUG_WARNING));

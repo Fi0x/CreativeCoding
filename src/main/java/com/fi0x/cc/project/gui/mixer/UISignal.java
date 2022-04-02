@@ -1,19 +1,20 @@
 package com.fi0x.cc.project.gui.mixer;
 
-import processing.core.PApplet;
 import processing.core.PVector;
+
+import java.util.Vector;
 
 public class UISignal
 {
     private final MainMixerWindow parent;
-    private final OldMixerUIElement source;
-    private final OldMixerUIElement target;
+    private final PVector source;
+    private final PVector target;
     private final int color;
 
     private final int stepCount;
     private int currentStep;
 
-    public UISignal(MainMixerWindow parentScreen, OldMixerUIElement src, OldMixerUIElement dest, int transferFrames, int baseColor)
+    public UISignal(MainMixerWindow parentScreen, PVector src, PVector dest, int transferFrames, int baseColor)
     {
         parent = parentScreen;
         source = src;
@@ -27,9 +28,9 @@ public class UISignal
 
     public void draw()
     {
-        PVector vec = new PVector(source.currentX - target.currentX, source.currentY - target.currentY);
-        float x = source.currentX - vec.x * currentStep / stepCount;
-        float y = source.currentY - vec.y * currentStep / stepCount;
+        PVector vec = new PVector(source.x - target.x, source.y - target.y);
+        float x = source.x - vec.x * currentStep / stepCount;
+        float y = source.y - vec.y * currentStep / stepCount;
 
         parent.fill(color);
         parent.ellipse(x, y, 20, 20);

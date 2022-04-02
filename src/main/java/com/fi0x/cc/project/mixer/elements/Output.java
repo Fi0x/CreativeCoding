@@ -1,20 +1,20 @@
 package com.fi0x.cc.project.mixer.elements;
 
+import com.fi0x.cc.project.gui.mixer.MainMixerWindow;
+
 import javax.sound.midi.MidiDevice;
-import java.util.ArrayList;
 
 public class Output extends AbstractElement implements IMidiConnection
 {
+    public Output(MainMixerWindow parentScreen, int x, int y)
+    {
+        super(parentScreen, x, y);
+    }
     //TODO: Receive signals and output them to the correct midi device
     @Override
     public boolean hasFreeInputs()
     {
         return false;
-    }
-    @Override
-    public ArrayList<AbstractElement> getConnectedInputs()
-    {
-        return null;
     }
     @Override
     public AbstractElement getConnectedOutput()
@@ -24,7 +24,14 @@ public class Output extends AbstractElement implements IMidiConnection
     @Override
     public void updateFrame()
     {
-
+    }
+    @Override
+    public void removeAllConnections()
+    {
+    }
+    @Override
+    public void changeMainValue(int valueChange)
+    {
     }
     @Override
     public boolean isOutput()
