@@ -95,6 +95,9 @@ public class ElementUI
     }
     public void drop()
     {
+        //TODO: find closest output node
+        //TODO: find closest existing node with the same output node in 180° angle towards output node
+        //TODO: connect with that node
         for(AbstractElement e : parent.getActiveElements())
             tryToConnect(e);
 
@@ -113,17 +116,13 @@ public class ElementUI
         if(((AbstractElement) this).getConnectedOutput() != null || !otherElement.hasFreeInputs())
             return;
 
-        if(distance < UIConstants.MAX_CONNECTION_DIST && otherElement != this)
+        if(0 < UIConstants.MAX_CONNECTION_DIST && otherElement != this)
         {
-            otherElement.addConnectedElement(linkedElement);
-            linkedElement.addConnectedElement(otherElement);
+            //TODO: Add links
         }
     }
     private void drawLine(AbstractElement otherUI)
     {
-        if(!linkedElement.canConnectTo(otherUI))
-            return;
-
         float dist = PApplet.dist(currentX, currentY, otherUI.currentX, otherUI.currentY);
         if(dist < UIConstants.MAX_CONNECTION_DIST)
             parent.line(currentX, currentY, otherUI.currentX, otherUI.currentY);
