@@ -10,6 +10,8 @@ import java.util.Collections;
 
 public class SynthManager
 {
+    //TODO: Add option to select a specific midi device and only listen to than one
+
     private static ArrayList<ISynthesizer> synths;
     private static int nextSynthToLoad = 0;
 

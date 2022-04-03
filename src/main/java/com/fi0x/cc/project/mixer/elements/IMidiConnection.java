@@ -4,7 +4,5 @@ import javax.sound.midi.MidiDevice;
 
 public interface IMidiConnection
 {
-    boolean isOutput();
-    boolean isInput();
     MidiDevice getConnectedMidi();
 }

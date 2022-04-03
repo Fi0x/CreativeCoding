@@ -1,6 +1,7 @@
 package com.fi0x.cc.project.gui.mixer;
 
 import com.fi0x.cc.project.mixer.elements.AbstractElement;
+import com.fi0x.cc.project.mixer.elements.ISignalCreator;
 import com.fi0x.cc.project.mixer.elements.Output;
 import processing.core.PApplet;
 import processing.core.PConstants;
@@ -125,7 +126,7 @@ public class ElementUI
         float currentDist = 0;
         for(AbstractElement e : MainMixerWindow.getActiveElements())
         {
-            if(e == this || isLoop(e))
+            if(e == this || e instanceof ISignalCreator || isLoop(e))
                 continue;
 
             if(e instanceof Output || (desiredOutput != null && e.getFinalOutput() == desiredOutput))

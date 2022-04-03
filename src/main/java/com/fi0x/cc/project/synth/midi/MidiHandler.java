@@ -5,10 +5,13 @@ import com.fi0x.cc.project.synth.SynthManager;
 import io.fi0x.javalogger.logging.Logger;
 
 import javax.sound.midi.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MidiHandler
 {
+    public final static ArrayList<MidiDevice> devices = new ArrayList<>();
+
     public MidiHandler()
     {
         Logger.log("Loading MIDI-Devices", String.valueOf(LoggerManager.Template.DEBUG_INFO));
@@ -27,6 +30,7 @@ public class MidiHandler
                 trans.setReceiver(new MidiInputReceiver(device.getDeviceInfo().toString()));
 
                 device.open();
+                devices.add(device);
                 Logger.log("\tFound device: " + info, String.valueOf(LoggerManager.Template.DEBUG_INFO));
             } catch(MidiUnavailableException e)
             {
