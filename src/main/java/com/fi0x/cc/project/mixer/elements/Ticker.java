@@ -10,16 +10,6 @@ public class Ticker extends AbstractElement implements ISignalCreator
     }
     //TODO: Create new signals after x notes / beats
     @Override
-    public boolean hasFreeInputs()
-    {
-        return false;
-    }
-    @Override
-    public AbstractElement getConnectedOutput()
-    {
-        return null;
-    }
-    @Override
     public void updateFrame()
     {
     }

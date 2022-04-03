@@ -3,7 +3,6 @@ package com.fi0x.cc.project.gui.mixer;
 public class UIConstants
 {
     public static final int ELEMENT_SIZE = 100;
-    public static final int MAX_CONNECTION_DIST = 200;
 
     public static int DEFAULT_BACKGROUND = 0;
     public static int DEFAULT_TEXT = 0;

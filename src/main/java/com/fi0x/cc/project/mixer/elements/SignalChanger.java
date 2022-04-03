@@ -10,16 +10,6 @@ public class SignalChanger extends AbstractElement implements ISignalModifier
     }
     //TODO: Change channel, volume, note or length of incoming signals and output them
     @Override
-    public boolean hasFreeInputs()
-    {
-        return false;
-    }
-    @Override
-    public AbstractElement getConnectedOutput()
-    {
-        return null;
-    }
-    @Override
     public void updateFrame()
     {
     }

@@ -12,16 +12,6 @@ public class Input extends AbstractElement implements IMidiConnection, ISignalCr
     }
     //TODO: Receive midi signals and send them to other elements
     @Override
-    public boolean hasFreeInputs()
-    {
-        return false;
-    }
-    @Override
-    public AbstractElement getConnectedOutput()
-    {
-        return null;
-    }
-    @Override
     public void updateFrame()
     {
     }

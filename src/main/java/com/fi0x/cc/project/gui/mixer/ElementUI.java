@@ -1,6 +1,7 @@
 package com.fi0x.cc.project.gui.mixer;
 
 import com.fi0x.cc.project.mixer.elements.AbstractElement;
+import com.fi0x.cc.project.mixer.elements.Output;
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PVector;
@@ -57,8 +58,7 @@ public class ElementUI
         parent.stroke(color);
         parent.strokeWeight(5);
 
-        for(AbstractElement e : parent.getActiveElements())
-            drawLine(e);
+        drawOutputLine();
 
         parent.noStroke();
     }
@@ -95,36 +95,52 @@ public class ElementUI
     }
     public void drop()
     {
-        //TODO: find closest output node
-        //TODO: find closest existing node with the same output node in 180° angle towards output node
-        //TODO: connect with that node
-        for(AbstractElement e : parent.getActiveElements())
-            tryToConnect(e);
-
+        updateConnections();
         pickedUp = false;
+    }
+    public void updateConnections()
+    {
+        Output closestOutput = (Output) getClosestNode(null);
+        if(closestOutput != null)
+        {
+            AbstractElement closestNode = (AbstractElement) getClosestNode(closestOutput);
+            ((AbstractElement) this).connectToNode(closestNode);
+        }
     }
     public void sendPulse(ElementUI target, float travelTime)
     {
+        //TODO: Use this when midi signals are sent
         int transferFrames = (int) (travelTime * parent.frameRate);
         PVector src = new PVector(currentX, currentY);
         PVector dst = new PVector(target.currentX, target.currentY);
         parent.addUISignal(new UISignal(parent, src, dst, transferFrames, currentBackgroundColor));
     }
 
-    private void tryToConnect(AbstractElement otherElement)
+    private ElementUI getClosestNode(Output desiredOutput)
     {
-        if(((AbstractElement) this).getConnectedOutput() != null || !otherElement.hasFreeInputs())
+        ElementUI closest = null;
+        float currentDist = 0;
+        for(AbstractElement e : parent.getActiveElements())
+        {
+            if(e instanceof Output || (desiredOutput != null && e.getFinalOutput() == desiredOutput))
+            {
+                //TODO: Add check if node is within 180° angle towards output node direction
+                float dist = PApplet.dist(currentX, currentY, e.currentX, e.currentY);
+                if(dist < currentDist || currentDist == 0)
+                {
+                    closest = e;
+                    currentDist = dist;
+                }
+            }
+        }
+        return closest;
+    }
+    private void drawOutputLine()
+    {
+        AbstractElement nextNode = ((AbstractElement) this).getConnectedOutput();
+        if(nextNode == null)
             return;
 
-        if(0 < UIConstants.MAX_CONNECTION_DIST && otherElement != this)
-        {
-            //TODO: Add links
-        }
-    }
-    private void drawLine(AbstractElement otherUI)
-    {
-        float dist = PApplet.dist(currentX, currentY, otherUI.currentX, otherUI.currentY);
-        if(dist < UIConstants.MAX_CONNECTION_DIST)
-            parent.line(currentX, currentY, otherUI.currentX, otherUI.currentY);
+        parent.line(currentX, currentY, nextNode.currentX, nextNode.currentY);
     }
 }

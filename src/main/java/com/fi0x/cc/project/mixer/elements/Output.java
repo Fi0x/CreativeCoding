@@ -12,14 +12,9 @@ public class Output extends AbstractElement implements IMidiConnection
     }
     //TODO: Receive signals and output them to the correct midi device
     @Override
-    public boolean hasFreeInputs()
-    {
-        return false;
-    }
-    @Override
     public AbstractElement getConnectedOutput()
     {
-        return null;
+        return this;
     }
     @Override
     public void updateFrame()
