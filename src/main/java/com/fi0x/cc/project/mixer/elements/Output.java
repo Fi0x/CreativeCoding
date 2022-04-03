@@ -10,18 +10,9 @@ public class Output extends AbstractElement implements IMidiConnection
     {
         super(parentScreen, x, y);
     }
-    //TODO: Receive signals and output them to the correct midi device
-    @Override
-    public AbstractElement getConnectedOutput()
-    {
-        return this;
-    }
+    //TODO: Receive signals and output them to a selected midi device
     @Override
     public void updateFrame()
-    {
-    }
-    @Override
-    public void removeAllConnections()
     {
     }
     @Override
@@ -42,5 +33,10 @@ public class Output extends AbstractElement implements IMidiConnection
     public MidiDevice getConnectedMidi()
     {
         return null;
+    }
+    @Override
+    public Output getFinalOutput()
+    {
+        return this;
     }
 }

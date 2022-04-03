@@ -4,17 +4,13 @@ import com.fi0x.cc.project.gui.mixer.MainMixerWindow;
 
 public class Ticker extends AbstractElement implements ISignalCreator
 {
+    //TODO: Create pulses after x notes / beats that can be modified further
     public Ticker(MainMixerWindow parentScreen, int x, int y)
     {
         super(parentScreen, x, y);
     }
-    //TODO: Create new signals after x notes / beats
     @Override
     public void updateFrame()
-    {
-    }
-    @Override
-    public void removeAllConnections()
     {
     }
     @Override

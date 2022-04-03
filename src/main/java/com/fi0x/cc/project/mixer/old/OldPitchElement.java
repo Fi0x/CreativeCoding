@@ -47,7 +47,6 @@ public class OldPitchElement extends OldAbstractMixerElement implements IParamet
         int updatedPitch = Math.max(-128, Math.min(127, getUpdatedPitch()));
         try
         {
-            //TODO: Use correct values
             String value = Integer.toBinaryString((updatedPitch + 128) * 64);
             while(value.length() < 14)
                 value = "0" + value;

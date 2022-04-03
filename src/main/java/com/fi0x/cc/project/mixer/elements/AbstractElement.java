@@ -3,29 +3,48 @@ package com.fi0x.cc.project.mixer.elements;
 import com.fi0x.cc.project.gui.mixer.ElementUI;
 import com.fi0x.cc.project.gui.mixer.MainMixerWindow;
 
+import java.util.ArrayList;
+
 public abstract class AbstractElement extends ElementUI
 {
     private Output outputNode;
-    private AbstractElement outputLink;
+    private AbstractElement nextLink;
+    private final ArrayList<AbstractElement> inputs = new ArrayList<>();
 
     public AbstractElement(MainMixerWindow parentScreen, int x, int y)
     {
         super(parentScreen, x, y);
     }
 
-    public AbstractElement getConnectedOutput()
+    public AbstractElement getConnectedNode()
     {
-        return outputLink;
+        return nextLink;
     }
     public void connectToNode(AbstractElement nextNode)
     {
-        outputLink = nextNode;
+        nextLink = nextNode;
         outputNode = nextNode.getFinalOutput();
+
+        nextNode.addInputConnection(this);
+    }
+    public void disconnectFromOutputNode()
+    {
+        nextLink = null;
+        outputNode = null;
     }
 
     public abstract void updateFrame();
 
-    public abstract void removeAllConnections();
+    public void addInputConnection(AbstractElement incomingConnection)
+    {
+        inputs.add(incomingConnection);
+    }
+    public void removeAllConnections()
+    {
+        System.out.println("Removing inputs");
+        for(AbstractElement e : inputs)
+            e.disconnectFromOutputNode();
+    }
 
     public abstract void changeMainValue(int valueChange);
 

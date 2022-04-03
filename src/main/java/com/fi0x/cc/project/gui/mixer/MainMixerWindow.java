@@ -22,11 +22,11 @@ public class MainMixerWindow extends PApplet
 
     private Thread handler;
     private GlobalController controller;
-    private final ArrayList<AbstractElement> uiElements = new ArrayList<>();
+    private static final ArrayList<AbstractElement> uiElements = new ArrayList<>();
     private final ArrayList<UISignal> uiSignals = new ArrayList<>();
 
     private TypeSelector typeSelector;
-    private ElementUI draggingElement = null;
+    private AbstractElement draggingElement = null;
     private AbstractElement selectedElement = null;
 
     @Override
@@ -163,8 +163,8 @@ public class MainMixerWindow extends PApplet
             if(selectedElement == null)
                 return;
 
-            uiElements.remove(selectedElement);
             selectedElement.removeAllConnections();
+            uiElements.remove(selectedElement);
             selectedElement = null;
         }
     }
@@ -205,7 +205,7 @@ public class MainMixerWindow extends PApplet
     {
         uiElements.add(element);
     }
-    public ArrayList<AbstractElement> getActiveElements()
+    public static ArrayList<AbstractElement> getActiveElements()
     {
         return uiElements;
     }

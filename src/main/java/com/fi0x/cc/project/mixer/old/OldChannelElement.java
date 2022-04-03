@@ -100,7 +100,6 @@ public class OldChannelElement extends OldAbstractMixerElement
                 try
                 {
                     ShortMessage msg = new ShortMessage();
-                    //TODO: use correct volume
                     msg.setMessage(ShortMessage.NOTE_ON, currentChannel, note, volume);
                     SynthManager.handleMidiCommand(msg);
                 } catch(InvalidMidiDataException e)

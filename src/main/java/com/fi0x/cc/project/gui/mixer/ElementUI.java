@@ -84,6 +84,7 @@ public class ElementUI
     }
     public boolean pickUp()
     {
+        //TODO: Inform connected nodes: no more linked node; no more final output node
         float distance = PApplet.dist(parent.mouseX, parent.mouseY, currentX, currentY);
         if(distance > UIConstants.ELEMENT_SIZE / 2f)
             return false;
@@ -100,6 +101,9 @@ public class ElementUI
     }
     public void updateConnections()
     {
+        if(this instanceof Output)
+            return;
+
         Output closestOutput = (Output) getClosestNode(null);
         if(closestOutput != null)
         {
@@ -107,10 +111,10 @@ public class ElementUI
             ((AbstractElement) this).connectToNode(closestNode);
         }
     }
-    public void sendPulse(ElementUI target, float travelTime)
+    public void sendPulse(ElementUI target, float beatTravelFrames)
     {
         //TODO: Use this when midi signals are sent
-        int transferFrames = (int) (travelTime * parent.frameRate);
+        int transferFrames = (int) (beatTravelFrames * parent.frameRate);
         PVector src = new PVector(currentX, currentY);
         PVector dst = new PVector(target.currentX, target.currentY);
         parent.addUISignal(new UISignal(parent, src, dst, transferFrames, currentBackgroundColor));
@@ -120,8 +124,11 @@ public class ElementUI
     {
         ElementUI closest = null;
         float currentDist = 0;
-        for(AbstractElement e : parent.getActiveElements())
+        for(AbstractElement e : MainMixerWindow.getActiveElements())
         {
+            if(e == this || isLoop(e))
+                continue;
+
             if(e instanceof Output || (desiredOutput != null && e.getFinalOutput() == desiredOutput))
             {
                 //TODO: Add check if node is within 180° angle towards output node direction
@@ -135,9 +142,21 @@ public class ElementUI
         }
         return closest;
     }
+    private boolean isLoop(AbstractElement otherElement)
+    {
+        AbstractElement nextHop = otherElement;
+        while(nextHop != null)
+        {
+            if(nextHop == this)
+                return true;
+
+            nextHop = nextHop.getConnectedNode();
+        }
+        return false;
+    }
     private void drawOutputLine()
     {
-        AbstractElement nextNode = ((AbstractElement) this).getConnectedOutput();
+        AbstractElement nextNode = ((AbstractElement) this).getConnectedNode();
         if(nextNode == null)
             return;
 

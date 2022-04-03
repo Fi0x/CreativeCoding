@@ -1,6 +1,7 @@
 package com.fi0x.cc.project.gui.mixer;
 
 import com.fi0x.cc.project.LoggerManager;
+import com.fi0x.cc.project.mixer.MixerManager;
 import com.fi0x.cc.project.mixer.elements.*;
 import controlP5.ControlEvent;
 import controlP5.ControlP5;
@@ -49,6 +50,8 @@ public class TypeSelector
                     Constructor<? extends AbstractElement> ctor = entry.getValue().getDeclaredConstructor(MainMixerWindow.class, int.class, int.class);
                     AbstractElement inst = ctor.newInstance(parent, originalX, originalY);
                     parent.addNewElement(inst);
+                    if(inst instanceof ISignalCreator)
+                        MixerManager.getInstance().addBeatListener((ISignalCreator) inst);
                     inst.updateConnections();
                 } catch(NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e)
                 {
