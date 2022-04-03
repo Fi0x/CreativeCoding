@@ -84,7 +84,6 @@ public class ElementUI
     }
     public boolean pickUp()
     {
-        //TODO: Inform connected nodes: no more linked node; no more final output node
         float distance = PApplet.dist(parent.mouseX, parent.mouseY, currentX, currentY);
         if(distance > UIConstants.ELEMENT_SIZE / 2f)
             return false;
@@ -131,7 +130,9 @@ public class ElementUI
 
             if(e instanceof Output || (desiredOutput != null && e.getFinalOutput() == desiredOutput))
             {
-                //TODO: Add check if node is within 180° angle towards output node direction
+                if(!isInAngle(desiredOutput, e))
+                    continue;
+
                 float dist = PApplet.dist(currentX, currentY, e.currentX, e.currentY);
                 if(dist < currentDist || currentDist == 0)
                 {
@@ -153,6 +154,17 @@ public class ElementUI
             nextHop = nextHop.getConnectedNode();
         }
         return false;
+    }
+    private boolean isInAngle(ElementUI outputElement, ElementUI nextNodeElement)
+    {
+        if(outputElement == null || nextNodeElement instanceof Output)
+            return true;
+
+        PVector relativeOutNode = new PVector(currentX - outputElement.currentX, currentY - outputElement.currentY);
+        PVector relativeNextNode = new PVector(currentX - nextNodeElement.currentX, currentY - nextNodeElement.currentY);
+
+        float degrees = PApplet.degrees(PVector.angleBetween(relativeOutNode, relativeNextNode));
+        return degrees < UIConstants.MAX_CONNECTION_ANGLE;
     }
     private void drawOutputLine()
     {

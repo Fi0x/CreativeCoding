@@ -41,7 +41,6 @@ public abstract class AbstractElement extends ElementUI
     }
     public void removeAllConnections()
     {
-        System.out.println("Removing inputs");
         for(AbstractElement e : inputs)
             e.disconnectFromOutputNode();
     }

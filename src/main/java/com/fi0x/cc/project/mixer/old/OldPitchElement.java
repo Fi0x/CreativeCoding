@@ -51,8 +51,6 @@ public class OldPitchElement extends OldAbstractMixerElement implements IParamet
             while(value.length() < 14)
                 value = "0" + value;
 
-            System.out.println(value);
-
             int lsb = Integer.parseInt(value.substring(6, 7), 2);
             int msb = Integer.parseInt(value.substring(0, 7), 2);
 
