@@ -27,7 +27,7 @@ public class MainSynthWindow extends PApplet
     @Override
     public void setup()
     {
-        surface.setResizable(false);
+        surface.setResizable(true);
         surface.setIcon(icon);
         surface.setTitle("Computer-Grafik-Projekt ~Main~");
         surface.setSize(displayWidth / 4 * 3, displayHeight / 4 * 3);

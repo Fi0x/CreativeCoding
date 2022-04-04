@@ -3,6 +3,8 @@ package com.fi0x.cc.project.mixer.elements;
 import com.fi0x.cc.project.LoggerManager;
 import com.fi0x.cc.project.gui.mixer.MainMixerWindow;
 import com.fi0x.cc.project.mixer.MixerManager;
+import com.fi0x.cc.project.mixer.TimeCalculator;
+import com.fi0x.cc.project.synth.SynthManager;
 import io.fi0x.javalogger.logging.Logger;
 
 import javax.sound.midi.InvalidMidiDataException;
@@ -11,8 +13,11 @@ import java.util.ArrayList;
 
 public class Ticker extends AbstractElement implements ISignalCreator, ISecondaryValues
 {
-    private int channel;
     private int notesPerBeat = 1;
+    private int channel;
+    private int note = 60;
+    private int volume = 80;
+    private int noteLength = 1;
 
     public Ticker(MainMixerWindow parentScreen, int x, int y)
     {
@@ -26,12 +31,12 @@ public class Ticker extends AbstractElement implements ISignalCreator, ISecondar
     @Override
     public void changeMainValue(int valueChange)
     {
-        channel += valueChange;
+        notesPerBeat += valueChange;
 
-        if(channel < 0)
-            channel = 0;
-        else if(channel > 15)
-            channel = 15;
+        if(notesPerBeat < 1)
+            notesPerBeat = 1;
+        else if(notesPerBeat > MixerManager.getNotesPerBeat())
+            notesPerBeat = MixerManager.getNotesPerBeat();
     }
     @Override
     public void beatUpdate(long frame)
@@ -41,16 +46,7 @@ public class Ticker extends AbstractElement implements ISignalCreator, ISecondar
         if(frame % (MixerManager.getNotesPerBeat() / notesPerBeat) != 0)
             return;
 
-        ShortMessage msg = new ShortMessage();
-        try
-        {
-            msg.setMessage(ShortMessage.NOTE_ON, 0, 60, 30);
-            //TODO: Turn off notes after certain time (Check OldChannelElement)
-        } catch(InvalidMidiDataException ignored)
-        {
-        }
-        nextLink.receiveMidi(msg);
-
+        generateAndSendOnOffSignal();
         sendPulse(nextLink, 1);
     }
     @Override
@@ -58,26 +54,85 @@ public class Ticker extends AbstractElement implements ISignalCreator, ISecondar
     {
         ArrayList<String> varNames = new ArrayList<>();
 
-        varNames.add("Notes / Beat");
+        varNames.add("Channel");
+        varNames.add("Note");
+        varNames.add("Volume");
+        varNames.add("Note Length");
 
         return varNames;
     }
     @Override
     public void updateSecondaryValue(String valueName, int valueChange)
     {
-        if(valueName.equals("Notes / Beat"))
+        switch (valueName)
         {
-            notesPerBeat += valueChange;
-
-            if(notesPerBeat < 1)
-                notesPerBeat = 1;
-            else if(notesPerBeat > MixerManager.getNotesPerBeat())
-                notesPerBeat = MixerManager.getNotesPerBeat();
+            case "Channel":
+                channel += valueChange;
+                if(channel < 0)
+                    channel = 0;
+                else if(channel > 15)
+                    channel = 15;
+                break;
+            case "Note":
+                note += valueChange;
+                if(note < 0)
+                    note = 0;
+                else if(note > 127)
+                    note = 127;
+                break;
+            case "Volume":
+                volume += valueChange;
+                if(volume < 0)
+                    volume = 0;
+                else if(volume > 127)
+                    volume = 127;
+                break;
+            case "Note Length":
+                noteLength += valueChange;
+                if(noteLength < 0)
+                    noteLength = 0;
+                break;
         }
     }
     @Override
     public String getDisplayString()
     {
         return "Ticker\n" + notesPerBeat;
+    }
+
+    private void generateAndSendOnOffSignal()
+    {
+        new Thread(() ->
+        {
+            AbstractElement currentNext = nextLink;
+            int currentChannel = channel;
+            try
+            {
+                ShortMessage msg = new ShortMessage();
+                msg.setMessage(ShortMessage.NOTE_ON, currentChannel, note, volume);
+                currentNext.receiveMidi(msg);
+            } catch(InvalidMidiDataException e)
+            {
+                return;
+            }
+
+            int delay = TimeCalculator.getMillisFromBeat(noteLength);
+            try
+            {
+                Thread.sleep(delay);
+            } catch(InterruptedException ignored)
+            {
+            }
+
+            try
+            {
+                ShortMessage msg = new ShortMessage();
+                msg.setMessage(ShortMessage.NOTE_OFF, currentChannel, note, 0);
+                currentNext.receiveMidi(msg);
+            } catch(InvalidMidiDataException e)
+            {
+                Logger.log("Could not stop midi note", String.valueOf(LoggerManager.Template.DEBUG_WARNING));
+            }
+        }).start();
     }
 }
