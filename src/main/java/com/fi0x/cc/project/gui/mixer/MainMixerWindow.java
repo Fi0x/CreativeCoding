@@ -2,6 +2,7 @@ package com.fi0x.cc.project.gui.mixer;
 
 import com.fi0x.cc.project.mixer.MixerManager;
 import com.fi0x.cc.project.mixer.elements.AbstractElement;
+import com.fi0x.cc.project.mixer.elements.ISignalCreator;
 import controlP5.ControlEvent;
 import processing.awt.PSurfaceAWT;
 import processing.core.PApplet;
@@ -165,6 +166,8 @@ public class MainMixerWindow extends PApplet
 
             selectedElement.removeAllConnections();
             uiElements.remove(selectedElement);
+            if(selectedElement instanceof ISignalCreator)
+                MixerManager.getInstance().removeBeatListener((ISignalCreator) selectedElement);
             selectedElement = null;
         }
     }

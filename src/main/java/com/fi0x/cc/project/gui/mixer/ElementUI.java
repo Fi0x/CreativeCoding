@@ -49,7 +49,7 @@ public class ElementUI
         parent.fill(UIConstants.DEFAULT_TEXT);
         parent.textSize(14);
         parent.textAlign(PConstants.CENTER, PConstants.CENTER);
-        parent.text("Not\nfinished", currentX, currentY);
+        parent.text(((AbstractElement) this).getDisplayString(), currentX, currentY);
 
         currentStrokeColor = parent.lerpColor(currentStrokeColor, UIConstants.DEFAULT_STROKE, colorReverseRate);
         currentBackgroundColor = parent.lerpColor(currentBackgroundColor, UIConstants.DEFAULT_BACKGROUND, colorReverseRate);
@@ -113,7 +113,6 @@ public class ElementUI
     }
     public void sendPulse(ElementUI target, float beatTravelFrames)
     {
-        //TODO: Use this when midi signals are sent
         int transferFrames = (int) (beatTravelFrames * parent.frameRate);
         PVector src = new PVector(currentX, currentY);
         PVector dst = new PVector(target.currentX, target.currentY);

@@ -3,6 +3,7 @@ package com.fi0x.cc.project.mixer;
 import com.fi0x.cc.project.gui.mixer.ElementUI;
 import com.fi0x.cc.project.gui.mixer.MainMixerWindow;
 import com.fi0x.cc.project.mixer.elements.ISignalCreator;
+import com.fi0x.cc.project.mixer.elements.Input;
 
 import java.util.ArrayList;
 
@@ -54,6 +55,9 @@ public class MixerManager implements Runnable
 
     public void addBeatListener(ISignalCreator listener)
     {
+        if(listener instanceof Input)
+            return;
+
         beatListeners.add(listener);
     }
 

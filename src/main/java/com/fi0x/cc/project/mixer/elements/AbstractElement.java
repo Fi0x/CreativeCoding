@@ -52,4 +52,9 @@ public abstract class AbstractElement extends ElementUI
     {
         return outputNode;
     }
+
+    public String getDisplayString()
+    {
+        return "Not \n finished";
+    }
 }
