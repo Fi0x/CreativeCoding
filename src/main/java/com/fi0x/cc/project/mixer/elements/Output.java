@@ -10,7 +10,7 @@ import javax.sound.midi.ShortMessage;
 
 public class Output extends AbstractElement implements IMidiConnection
 {
-    private int outputMidiDevice;
+    private int outputMidiDevice = -1;
 
     public Output(MainMixerWindow parentScreen, int x, int y)
     {
@@ -19,6 +19,12 @@ public class Output extends AbstractElement implements IMidiConnection
     @Override
     public void receiveMidi(ShortMessage msg)
     {
+        if(outputMidiDevice == -1)
+        {
+            SynthManager.handleMidiCommand(msg);
+            return;
+        }
+
         if(getConnectedMidi() == null)
             return;
 
@@ -41,15 +47,15 @@ public class Output extends AbstractElement implements IMidiConnection
     {
         outputMidiDevice += valueChange;
 
-        if(outputMidiDevice < 0)
-            outputMidiDevice = 0;
+        if(outputMidiDevice < -1)
+            outputMidiDevice = -1;
         else if(outputMidiDevice >= MidiHandler.devices.size())
             outputMidiDevice = MidiHandler.devices.size() - 1;
     }
     @Override
     public MidiDevice getConnectedMidi()
     {
-        if(MidiHandler.devices.size() > outputMidiDevice)
+        if(outputMidiDevice > -1)
             return MidiHandler.devices.get(outputMidiDevice);
         else
             return null;
@@ -62,6 +68,7 @@ public class Output extends AbstractElement implements IMidiConnection
     @Override
     public String getDisplayString()
     {
-        return "Output\n" + getConnectedMidi().getDeviceInfo();
+        String midiInfo = getConnectedMidi() == null ? "Internal" : getConnectedMidi().getDeviceInfo().toString();
+        return "Output\n" + midiInfo;
     }
 }

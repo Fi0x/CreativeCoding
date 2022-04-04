@@ -22,6 +22,8 @@ public class MainSynthWindow extends PApplet
 
     private boolean reDrawNeeded = true;
 
+    private int initialized = 0;
+
     @Override
     public void setup()
     {
@@ -61,6 +63,12 @@ public class MainSynthWindow extends PApplet
             }
         }
         reDrawNeeded = false;
+
+        if(initialized < 100)
+        {
+            surface.setSize(displayWidth / 4 * 3, displayHeight / 4 * 3);
+            initialized++;
+        }
     }
 
     @Override
