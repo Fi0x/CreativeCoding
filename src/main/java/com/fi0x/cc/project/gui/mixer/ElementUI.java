@@ -113,6 +113,9 @@ public class ElementUI
     }
     public void sendPulse(ElementUI target, float beatTravelFrames)
     {
+        if(target == null)
+            return;
+
         int transferFrames = (int) (beatTravelFrames * parent.frameRate);
         PVector src = new PVector(currentX, currentY);
         PVector dst = new PVector(target.currentX, target.currentY);

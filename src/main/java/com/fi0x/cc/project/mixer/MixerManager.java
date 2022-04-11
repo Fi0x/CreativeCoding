@@ -2,6 +2,7 @@ package com.fi0x.cc.project.mixer;
 
 import com.fi0x.cc.project.gui.mixer.ElementUI;
 import com.fi0x.cc.project.gui.mixer.MainMixerWindow;
+import com.fi0x.cc.project.mixer.elements.AbstractElement;
 import com.fi0x.cc.project.mixer.elements.ISignalCreator;
 import com.fi0x.cc.project.mixer.elements.Input;
 
@@ -27,8 +28,11 @@ public class MixerManager implements Runnable
         {
             if(globalFrame % notesPerBeat == 0)
             {
-                for(ElementUI e : MainMixerWindow.getActiveElements())
+                for(AbstractElement e : MainMixerWindow.getActiveElements())
+                {
                     e.updateConnections();
+                    e.sendPulse(e.getConnectedNode(), 1);
+                }
             }
             for(ISignalCreator s : beatListeners)
                 s.beatUpdate(globalFrame);

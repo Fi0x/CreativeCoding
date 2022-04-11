@@ -17,8 +17,6 @@ public class SignalChanger extends AbstractElement implements ISignalModifier
             return;
 
         nextLink.receiveMidi(changeMidiMessage(msg));
-
-        sendPulse(nextLink, 1);
     }
     @Override
     public void changeMainValue(int valueChange)

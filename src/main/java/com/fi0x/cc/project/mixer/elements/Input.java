@@ -23,8 +23,6 @@ public class Input extends AbstractElement implements IMidiConnection, ISignalCr
             return;
 
         //TODO: Receive midi signals from external devices and send signals to next UI-element
-
-        sendPulse(nextLink, 1);
     }
     @Override
     public void changeMainValue(int valueChange)
