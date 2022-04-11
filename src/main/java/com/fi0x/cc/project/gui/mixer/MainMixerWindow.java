@@ -130,6 +130,7 @@ public class MainMixerWindow extends PApplet
             }
         } else if(mouseButton == RIGHT)
         {
+            //TODO: Check if mouse is above element and open element change-ui if true, else open type-selector
             if(typeSelector == null)
                 typeSelector = new TypeSelector(this, mouseX, mouseY);
             typeSelector.show(mouseX, mouseY);

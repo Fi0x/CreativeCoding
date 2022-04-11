@@ -47,6 +47,8 @@ public class Ticker extends AbstractElement implements ISignalCreator, ISecondar
             return;
 
         generateAndSendOnOffSignal();
+
+        this.noteUpdate(-1000, 0.1f);
     }
     @Override
     public ArrayList<String> getSecondaryValueNames()

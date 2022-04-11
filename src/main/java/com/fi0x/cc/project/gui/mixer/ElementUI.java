@@ -63,16 +63,6 @@ public class ElementUI
 
         parent.noStroke();
     }
-    public void blinkColor(int blinkColor, float resetRate)
-    {
-        colorReverseRate = resetRate;
-        currentBackgroundColor = blinkColor;
-    }
-    public void blinkStroke(int blinkColor, float resetRate)
-    {
-        colorReverseRate = resetRate;
-        currentStrokeColor = blinkColor;
-    }
 
     public boolean isAbove(float x, float y)
     {
@@ -120,6 +110,18 @@ public class ElementUI
         PVector src = new PVector(currentX, currentY);
         PVector dst = new PVector(target.currentX, target.currentY);
         parent.addUISignal(new UISignal(parent, src, dst, transferFrames, currentBackgroundColor));
+    }
+    public void noteUpdate(int blinkColor, float resetRate)
+    {
+        colorReverseRate = resetRate;
+        currentBackgroundColor = blinkColor;
+        currentStrokeColor = blinkColor;
+
+        //TODO: Create pulse animation on element size
+    }
+    public void startColorAnimation()
+    {
+        //TODO: Create color animation (hue shift)
     }
 
     private ElementUI getClosestNode(Output desiredOutput)
