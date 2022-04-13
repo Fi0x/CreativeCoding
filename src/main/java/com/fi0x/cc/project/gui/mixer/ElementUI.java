@@ -2,6 +2,7 @@ package com.fi0x.cc.project.gui.mixer;
 
 import com.fi0x.cc.project.mixer.elements.AbstractElement;
 import com.fi0x.cc.project.mixer.elements.ISignalCreator;
+import com.fi0x.cc.project.mixer.elements.ISignalModifier;
 import com.fi0x.cc.project.mixer.elements.Output;
 import processing.core.PApplet;
 import processing.core.PConstants;
@@ -19,6 +20,10 @@ public class ElementUI
     private int currentBackgroundColor;
     private int currentStrokeColor;
     private float colorReverseRate;
+    private int currentHueShift;
+    private int hueOffset;
+    private boolean shouldUseHSB;
+    private boolean reverseColor;
 
     public ElementUI(MainMixerWindow parentScreen, int x, int y)
     {
@@ -42,7 +47,27 @@ public class ElementUI
 
         parent.stroke(isSelected ? UIConstants.SELECTED_STROKE_COLOR : currentStrokeColor);
         parent.strokeWeight(5);
-        parent.fill(currentBackgroundColor);
+
+        int bgc = currentBackgroundColor;
+        if(shouldUseHSB)
+        {
+            parent.colorMode(PConstants.HSB, 1000);
+            bgc = parent.color(currentHueShift + hueOffset, 1000, 1000);
+            parent.colorMode(PConstants.RGB, 255);
+            if(reverseColor)
+            {
+                currentHueShift--;
+                if(currentHueShift <= 0)
+                    reverseColor = false;
+            }
+            else
+            {
+                currentHueShift ++;
+                if(currentHueShift >= 200)
+                    reverseColor = true;
+            }
+        }
+        parent.fill(bgc);
         parent.ellipse(currentX, currentY, UIConstants.ELEMENT_SIZE, UIConstants.ELEMENT_SIZE);
         parent.noStroke();
 
@@ -109,7 +134,7 @@ public class ElementUI
         int transferFrames = (int) (beatTravelFrames * parent.frameRate);
         PVector src = new PVector(currentX, currentY);
         PVector dst = new PVector(target.currentX, target.currentY);
-        parent.addUISignal(new UISignal(parent, src, dst, transferFrames, currentBackgroundColor));
+        parent.addUISignal(new UISignal(parent, src, dst, transferFrames));
     }
     public void noteUpdate(int blinkColor, float resetRate)
     {
@@ -121,7 +146,8 @@ public class ElementUI
     }
     public void startColorAnimation()
     {
-        //TODO: Create color animation (hue shift)
+        shouldUseHSB = true;
+        hueOffset = this instanceof ISignalModifier ? 700 : 200;
     }
 
     private ElementUI getClosestNode(Output desiredOutput)

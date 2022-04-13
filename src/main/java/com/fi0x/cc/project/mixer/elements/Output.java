@@ -15,6 +15,8 @@ public class Output extends AbstractElement implements IMidiConnection
     public Output(MainMixerWindow parentScreen, int x, int y)
     {
         super(parentScreen, x, y);
+
+        startColorAnimation();
     }
     @Override
     public void receiveMidi(ShortMessage msg)

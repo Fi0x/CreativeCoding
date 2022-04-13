@@ -9,6 +9,8 @@ public class SignalChanger extends AbstractElement implements ISignalModifier
     public SignalChanger(MainMixerWindow parentScreen, int x, int y)
     {
         super(parentScreen, x, y);
+
+        startColorAnimation();
     }
     @Override
     public void receiveMidi(ShortMessage msg)

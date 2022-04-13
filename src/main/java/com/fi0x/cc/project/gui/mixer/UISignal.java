@@ -14,13 +14,13 @@ public class UISignal
     private final int stepCount;
     private int currentStep;
 
-    public UISignal(MainMixerWindow parentScreen, PVector src, PVector dest, int transferFrames, int baseColor)
+    public UISignal(MainMixerWindow parentScreen, PVector src, PVector dest, int transferFrames)
     {
         parent = parentScreen;
         source = src;
         target = dest;
 
-        color = parent.lerpColor(baseColor, parent.color(parent.random(255), parent.random(255), parent.random(255)), 0.3f);
+        color = parent.color(0, 200, 0);
 
         stepCount = transferFrames;
         currentStep = 0;

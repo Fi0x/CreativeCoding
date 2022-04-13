@@ -31,7 +31,7 @@ public class MixerManager implements Runnable
                 for(AbstractElement e : MainMixerWindow.getActiveElements())
                 {
                     e.updateConnections();
-                    e.sendPulse(e.getConnectedNode(), 1);
+                    e.sendPulse(e.getConnectedNode(), 2);
                 }
             }
             for(ISignalCreator s : beatListeners)
