@@ -49,4 +49,11 @@ public class Input extends AbstractElement implements IMidiConnection, ISignalCr
     {
         Logger.log("Input should not send beat signals and wait instead for midi-inputs from other devices", String.valueOf(LoggerManager.Template.DEBUG_WARNING));
     }
+
+    @Override
+    public String getDisplayString()
+    {
+        String midiInfo = getConnectedMidi() == null ? "Internal" : getConnectedMidi().getDeviceInfo().toString();
+        return "Input\n" + midiInfo;
+    }
 }

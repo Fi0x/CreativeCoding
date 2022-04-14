@@ -12,11 +12,9 @@ public class ElementSettings
     private int originalX;
     private int originalY;
     private final ControlP5 control;
+    private final AbstractElement link;
 
-    private final Map<CommandObject, ICommand> possibleElements = new HashMap<>(){{
-        put(new CommandObject("IncreaseMain"), new ChangeValue());
-        put(new CommandObject("DecreaseMain"), new ChangeValue());
-    }};
+    private final Map<CommandObject, ICommand> possibleElements = new HashMap<>();
 
     public ElementSettings(MainMixerWindow parentScreen, int x, int y, AbstractElement linkedElement)
     {
@@ -24,8 +22,16 @@ public class ElementSettings
         originalY = y;
         control = new ControlP5(parentScreen);
         control.setPosition(0, 0);
+        link = linkedElement;
 
-        //TODO: Fill possibleElements according to the linked element type
+        if(linkedElement instanceof ISecondaryValues)
+        {
+            for(String name : ((ISecondaryValues) linkedElement).getSecondaryValueNames())
+            {
+                possibleElements.put(new CommandObject(name + "-", name, -1), new ChangeValue());
+                possibleElements.put(new CommandObject(name + "+", name, 1), new ChangeValue());
+            }
+        }
 
         createButtons();
 
@@ -108,17 +114,20 @@ public class ElementSettings
         @Override
         public void execute(CommandObject data)
         {
-            //TODO: Perform action according to the data
+            ((ISecondaryValues) link).updateSecondaryValue(data.valueName, data.valueChange);
         }
     }
     private class CommandObject
     {
         private final String buttonName;
-        private String valueName;
+        private final String valueName;
+        private final int valueChange;
 
-        private CommandObject(String buttonName)
+        private CommandObject(String buttonName, String valueName, int valueChange)
         {
             this.buttonName = buttonName;
+            this.valueName = valueName;
+            this.valueChange = valueChange;
         }
     }
 }

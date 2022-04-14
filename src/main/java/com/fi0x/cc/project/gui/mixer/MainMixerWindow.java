@@ -105,18 +105,19 @@ public class MainMixerWindow extends PApplet
     @Override
     public void mouseClicked()
     {
+        if(typeSelector != null)
+        {
+            typeSelector.hide();
+            typeSelector = null;
+        }
+        if(elementSettings != null)
+        {
+            elementSettings.hide();
+            elementSettings = null;
+        }
+
         if(mouseButton == LEFT)
         {
-            if(typeSelector != null)
-            {
-                typeSelector.hide();
-                typeSelector = null;
-            }
-            if(elementSettings != null)
-            {
-                elementSettings.hide();
-                elementSettings = null;
-            }
             loadPixels();
             if(pixels[mouseY * width + mouseX] == backgroundColor)
             {
@@ -140,15 +141,13 @@ public class MainMixerWindow extends PApplet
             {
                 if(e.isAbove(mouseX, mouseY))
                 {
-                    if(elementSettings == null)
-                        elementSettings = new ElementSettings(this, e.currentX, e.currentY, e);
+                    elementSettings = new ElementSettings(this, e.currentX, e.currentY, e);
                     elementSettings.show(e.currentX, e.currentY);
                     return;
                 }
             }
             
-            if(typeSelector == null)
-                typeSelector = new TypeSelector(this, mouseX, mouseY);
+            typeSelector = new TypeSelector(this, mouseX, mouseY);
             typeSelector.show(mouseX, mouseY);
         }
     }

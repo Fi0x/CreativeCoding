@@ -32,4 +32,11 @@ public class SignalChanger extends AbstractElement implements ISignalModifier
         //TODO: Change channel, volume, note or length of originalMsg and return result
         return originalMsg;
     }
+
+    @Override
+    public String getDisplayString()
+    {
+        String additionalInfo = "Missing infos";
+        return "Signal Changer\n" + additionalInfo;
+    }
 }
