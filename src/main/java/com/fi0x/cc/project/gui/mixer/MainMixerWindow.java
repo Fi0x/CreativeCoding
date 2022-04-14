@@ -27,6 +27,7 @@ public class MainMixerWindow extends PApplet
     private final ArrayList<UISignal> uiSignals = new ArrayList<>();
 
     private TypeSelector typeSelector;
+    private ElementSettings elementSettings;
     private AbstractElement draggingElement = null;
     private AbstractElement selectedElement = null;
 
@@ -111,6 +112,11 @@ public class MainMixerWindow extends PApplet
                 typeSelector.hide();
                 typeSelector = null;
             }
+            if(elementSettings != null)
+            {
+                elementSettings.hide();
+                elementSettings = null;
+            }
             loadPixels();
             if(pixels[mouseY * width + mouseX] == backgroundColor)
             {
@@ -130,11 +136,13 @@ public class MainMixerWindow extends PApplet
             }
         } else if(mouseButton == RIGHT)
         {
-            for(ElementUI e : uiElements)
+            for(AbstractElement e : uiElements)
             {
                 if(e.isAbove(mouseX, mouseY))
                 {
-                    //TODO: open element change-ui
+                    if(elementSettings == null)
+                        elementSettings = new ElementSettings(this, e.currentX, e.currentY, e);
+                    elementSettings.show(e.currentX, e.currentY);
                     return;
                 }
             }
@@ -193,7 +201,20 @@ public class MainMixerWindow extends PApplet
             {
                 typeSelector.hide();
                 typeSelector = null;
+                return;
             }
+        }
+
+        if(elementSettings != null)
+        {
+            int success = elementSettings.clickButton(event);
+            if(success == 0)
+            {
+                elementSettings.hide();
+                elementSettings = null;
+                return;
+            } else if(success > 0)
+                return;
         }
     }
 
