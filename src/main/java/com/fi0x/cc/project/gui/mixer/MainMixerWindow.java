@@ -6,6 +6,7 @@ import com.fi0x.cc.project.mixer.elements.ISignalCreator;
 import controlP5.ControlEvent;
 import processing.awt.PSurfaceAWT;
 import processing.core.PApplet;
+import processing.core.PConstants;
 import processing.core.PImage;
 import processing.core.PSurface;
 import processing.event.MouseEvent;
@@ -47,13 +48,16 @@ public class MainMixerWindow extends PApplet
         frameRate(120);
         background(backgroundColor);
         noStroke();
+        textSize(14);
+        textAlign(PConstants.CENTER, PConstants.CENTER);
 
         controller = new GlobalController(this);
 
-        UIConstants.DEFAULT_BACKGROUND = color(255, 0, 0);
+        UIConstants.DEFAULT_ELEMENT_BACKGROUND = color(181, 25, 25);
+        UIConstants.SETTINGS_ELEMENT_BACKGROUND = color(219, 141, 46);
         UIConstants.DEFAULT_TEXT = color(0);
         UIConstants.DEFAULT_STROKE = color(0, 0, 0, 0);
-        UIConstants.SELECTED_STROKE_COLOR = color(0, 0, 255);
+        UIConstants.SELECTED_STROKE_COLOR = color(18, 43, 201);
 
         handler = new Thread(MixerManager.getInstance());
         handler.start();
@@ -83,6 +87,9 @@ public class MainMixerWindow extends PApplet
 
         for(ElementUI element : uiElements)
             element.draw();
+
+        if(elementSettings != null)
+            elementSettings.draw();
     }
 
     @Override
@@ -95,6 +102,11 @@ public class MainMixerWindow extends PApplet
                 if(!e.pickUp())
                     continue;
 
+                if(elementSettings != null)
+                {
+                    elementSettings.hide();
+                    elementSettings = null;
+                }
                 draggingElement = e;
 
                 selectElement(e);
@@ -105,8 +117,20 @@ public class MainMixerWindow extends PApplet
     @Override
     public void mouseClicked()
     {
+        if(typeSelector != null)
+        {
+            typeSelector.hide();
+            typeSelector = null;
+        }
+
         if(mouseButton == LEFT)
         {
+            if(elementSettings != null)
+            {
+                elementSettings.hide();
+                elementSettings = null;
+            }
+
             loadPixels();
             if(pixels[mouseY * width + mouseX] == backgroundColor)
             {
@@ -126,23 +150,25 @@ public class MainMixerWindow extends PApplet
             }
         } else if(mouseButton == RIGHT)
         {
-            if(typeSelector != null)
-            {
-                typeSelector.hide();
-                typeSelector = null;
-            }
-            if(elementSettings != null)
-            {
-                elementSettings.hide();
-                elementSettings = null;
-            }
-
             for(AbstractElement e : uiElements)
             {
                 if(e.isAbove(mouseX, mouseY))
                 {
-                    elementSettings = new ElementSettings(this, e.currentX, e.currentY, e);
-                    elementSettings.show(e.currentX, e.currentY);
+                    boolean same = false;
+                    if(elementSettings != null)
+                    {
+                        if(elementSettings.getLinkedElement() == e)
+                            same = true;
+
+                        elementSettings.hide();
+                        elementSettings = null;
+                    }
+
+                    if(!same)
+                    {
+                        elementSettings = new ElementSettings(this, e.currentX, e.currentY, e);
+                        elementSettings.show(e.currentX, e.currentY);
+                    }
                     return;
                 }
             }
@@ -200,16 +226,6 @@ public class MainMixerWindow extends PApplet
             {
                 typeSelector.hide();
                 typeSelector = null;
-                return;
-            }
-        }
-
-        if(elementSettings != null)
-        {
-            if(elementSettings.clickButton(event))
-            {
-                elementSettings.hide();
-                elementSettings = null;
             }
         }
     }

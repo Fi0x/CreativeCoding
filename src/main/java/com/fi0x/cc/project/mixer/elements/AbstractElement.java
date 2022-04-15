@@ -47,6 +47,7 @@ public abstract class AbstractElement extends ElementUI
     }
 
     public abstract void changeMainValue(int valueChange);
+    public abstract String getMainValueName();
 
     public Output getFinalOutput()
     {

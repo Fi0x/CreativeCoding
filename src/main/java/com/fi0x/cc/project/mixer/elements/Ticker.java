@@ -40,6 +40,11 @@ public class Ticker extends AbstractElement implements ISignalCreator, ISecondar
             notesPerBeat = MixerManager.getNotesPerBeat();
     }
     @Override
+    public String getMainValueName()
+    {
+        return "Notes/Beat";
+    }
+    @Override
     public void beatUpdate(long frame)
     {
         if(nextLink == null)

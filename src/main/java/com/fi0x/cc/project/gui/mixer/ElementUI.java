@@ -34,7 +34,7 @@ public class ElementUI
         currentY = y;
         isSelected = false;
 
-        currentBackgroundColor = UIConstants.DEFAULT_BACKGROUND;
+        currentBackgroundColor = UIConstants.DEFAULT_ELEMENT_BACKGROUND;
         currentStrokeColor = UIConstants.DEFAULT_STROKE;
     }
 
@@ -73,12 +73,10 @@ public class ElementUI
         parent.noStroke();
 
         parent.fill(UIConstants.DEFAULT_TEXT);
-        parent.textSize(14);
-        parent.textAlign(PConstants.CENTER, PConstants.CENTER);
         parent.text(((AbstractElement) this).getDisplayString(), currentX, currentY);
 
         currentStrokeColor = parent.lerpColor(currentStrokeColor, UIConstants.DEFAULT_STROKE, colorReverseRate);
-        currentBackgroundColor = parent.lerpColor(currentBackgroundColor, UIConstants.DEFAULT_BACKGROUND, colorReverseRate);
+        currentBackgroundColor = parent.lerpColor(currentBackgroundColor, UIConstants.DEFAULT_ELEMENT_BACKGROUND, colorReverseRate);
     }
     public void drawConnectionLines(int color)
     {
@@ -103,14 +101,15 @@ public class ElementUI
         if(settings == null)
             ((AbstractElement) this).changeMainValue(increment);
         else
-        {
-            //TODO: Check which setting to update and change correct value
-        }
+            settings.updateSetting(parent.mouseX, parent.mouseY, increment);
     }
 
     public boolean isAbove(float x, float y)
     {
         float distance = PApplet.dist(x, y, currentX, currentY);
+        if(settings != null)
+            return !(distance > settings.getUpdatedSize() / 2f);
+
         return !(distance > UIConstants.ELEMENT_SIZE / 2f);
     }
     public void select(boolean selected)
@@ -119,9 +118,6 @@ public class ElementUI
     }
     public boolean pickUp()
     {
-        if(settings != null)
-            return false;
-
         float distance = PApplet.dist(parent.mouseX, parent.mouseY, currentX, currentY);
         if(distance > UIConstants.ELEMENT_SIZE / 2f)
             return false;

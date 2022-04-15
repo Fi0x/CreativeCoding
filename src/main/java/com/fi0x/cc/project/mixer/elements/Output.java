@@ -55,6 +55,11 @@ public class Output extends AbstractElement implements IMidiConnection
             outputMidiDevice = MidiHandler.devices.size() - 1;
     }
     @Override
+    public String getMainValueName()
+    {
+        return "Midi-Device";
+    }
+    @Override
     public MidiDevice getConnectedMidi()
     {
         if(outputMidiDevice > -1)

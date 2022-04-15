@@ -37,6 +37,11 @@ public class Input extends AbstractElement implements IMidiConnection, ISignalCr
             inputMidiDevice = MidiHandler.devices.size() - 1;
     }
     @Override
+    public String getMainValueName()
+    {
+        return "Midi-Device";
+    }
+    @Override
     public MidiDevice getConnectedMidi()
     {
         if(MidiHandler.devices.size() > inputMidiDevice)

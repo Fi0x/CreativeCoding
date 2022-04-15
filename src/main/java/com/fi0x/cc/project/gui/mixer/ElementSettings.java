@@ -1,137 +1,106 @@
 package com.fi0x.cc.project.gui.mixer;
 
 import com.fi0x.cc.project.mixer.elements.*;
-import controlP5.ControlEvent;
-import controlP5.ControlP5;
+import processing.core.PApplet;
+import processing.core.PConstants;
+import processing.core.PVector;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
 
 public class ElementSettings
 {
+    PApplet parent;
     private int originalX;
     private int originalY;
-    private final ControlP5 control;
     private final AbstractElement link;
 
-    private final Map<CommandObject, ICommand> possibleElements = new HashMap<>();
+    private int updatedSize = UIConstants.ELEMENT_SIZE;
+
+    private final ArrayList<SettingsCircle> circles = new ArrayList<>();
 
     //TODO: Expand the element circle and display sub-circles inside with the different settings
     public ElementSettings(MainMixerWindow parentScreen, int x, int y, AbstractElement linkedElement)
     {
+        parent = parentScreen;
         originalX = x;
         originalY = y;
-        control = new ControlP5(parentScreen);
-        control.setPosition(0, 0);
         link = linkedElement;
 
-        if(linkedElement instanceof ISecondaryValues)
-        {
-            for(String name : ((ISecondaryValues) linkedElement).getSecondaryValueNames())
-            {
-                possibleElements.put(new CommandObject(name + "-", name, -1), new ChangeValue());
-                possibleElements.put(new CommandObject(name + "+", name, 1), new ChangeValue());
-            }
-        }
-
-        createButtons();
-
-        control.hide();
-    }
-
-    public boolean clickButton(ControlEvent event)
-    {
-        for(Map.Entry<CommandObject, ICommand> entry : possibleElements.entrySet())
-        {
-            if(event.getController() == control.getController(entry.getKey().buttonName))
-            {
-                entry.getValue().execute(entry.getKey());
-                return false;
-            }
-        }
-
-        return event.getController() == control.getController("Back");
+        //TODO: Think of a solution to close the menu again
+        createCircles();
     }
 
     public void hide()
     {
-        control.hide();
         link.closeMenu();
-
-        new Thread(() ->
-        {
-            try
-            {
-                Thread.sleep(50);
-            } catch(InterruptedException ignored)
-            {
-            }
-            control.dispose();
-        }).start();
     }
     public void show(int xPos, int yPos)
     {
         originalX = xPos;
         originalY = yPos;
 
-        int y = possibleElements.size() / 2 * -21;
-        for(CommandObject name : possibleElements.keySet())
-        {
-            control.getController(name.buttonName)
-                    .setPosition(originalX - 50, originalY + y);
-
-            y += 21;
-        }
-
-        control.getController("Back")
-                .setPosition(originalX - 50, originalY + y);
-
-        control.show();
         link.openMenu(this);
     }
-
-    private void createButtons()
+    public void draw()
     {
-        int y = possibleElements.size() / 2 * -21;
-        for(CommandObject name : possibleElements.keySet())
-        {
-            control.addButton(name.buttonName)
-                    .setSize(100, 20)
-                    .setPosition(originalX - 50, originalY + y)
-                    .setValue(0);
+        parent.translate(originalX, originalY);
 
-            y += 21;
+        for(SettingsCircle c : circles)
+            c.drawCircle();
+
+        parent.translate(-originalX, -originalY);
+    }
+
+    public int getUpdatedSize()
+    {
+        return updatedSize;
+    }
+    public void updateSetting(int xPos, int yPos, int valueChange)
+    {
+        //TODO: Check which setting is at mouse position and change correct value
+    }
+    public AbstractElement getLinkedElement()
+    {
+        return link;
+    }
+
+    private void createCircles()
+    {
+        ArrayList<String> valueNames = new ArrayList<>();
+        valueNames.add(link.getMainValueName());
+        if(link instanceof ISecondaryValues)
+            valueNames.addAll(((ISecondaryValues) link).getSecondaryValueNames());
+
+        float circlePis = 2f / valueNames.size();
+        PVector circleOffset = new PVector(0, -UIConstants.SETTINGS_ELEMENT_SIZE);
+        updatedSize = UIConstants.ELEMENT_SIZE + UIConstants.SETTINGS_ELEMENT_SIZE;
+
+        for(String name : valueNames)
+        {
+            circles.add(new SettingsCircle(name, circleOffset));
+            circleOffset.rotate(PConstants.PI * circlePis);
+        }
+    }
+
+    private class SettingsCircle
+    {
+        private String name;
+        private int xOffset;
+        private int yOffset;
+
+        private SettingsCircle(String valueName, PVector offset)
+        {
+            name = valueName;
+            xOffset = (int) offset.x;
+            yOffset = (int) offset.y;
         }
 
-        control.addButton("Back")
-                .setSize(100, 20)
-                .setPosition(originalX - 50, originalY + y)
-                .setValue(0);
-    }
-
-    private interface ICommand
-    {
-        void execute(CommandObject data);
-    }
-    private class ChangeValue implements ICommand
-    {
-        @Override
-        public void execute(CommandObject data)
+        private void drawCircle()
         {
-            ((ISecondaryValues) link).updateSecondaryValue(data.valueName, data.valueChange);
-        }
-    }
-    private class CommandObject
-    {
-        private final String buttonName;
-        private final String valueName;
-        private final int valueChange;
-
-        private CommandObject(String buttonName, String valueName, int valueChange)
-        {
-            this.buttonName = buttonName;
-            this.valueName = valueName;
-            this.valueChange = valueChange;
+            parent.fill(UIConstants.SETTINGS_ELEMENT_BACKGROUND);
+            parent.ellipse(xOffset, yOffset, UIConstants.SETTINGS_ELEMENT_SIZE, UIConstants.SETTINGS_ELEMENT_SIZE);
+            parent.fill(UIConstants.DEFAULT_TEXT);
+            parent.text(name, xOffset, yOffset);
         }
     }
 }
