@@ -69,7 +69,8 @@ public class ElementUI
             }
         }
         parent.fill(bgc);
-        parent.ellipse(currentX, currentY, UIConstants.ELEMENT_SIZE, UIConstants.ELEMENT_SIZE);
+        int size = settings == null ? UIConstants.ELEMENT_SIZE : settings.getUpdatedSize();
+        parent.ellipse(currentX, currentY, size, size);
         parent.noStroke();
 
         parent.fill(UIConstants.DEFAULT_TEXT);
@@ -108,7 +109,7 @@ public class ElementUI
     {
         float distance = PApplet.dist(x, y, currentX, currentY);
         if(settings != null)
-            return !(distance > settings.getUpdatedSize() / 2f);
+            return !(distance > settings.getUpdatedSize());
 
         return !(distance > UIConstants.ELEMENT_SIZE / 2f);
     }

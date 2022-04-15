@@ -31,6 +31,12 @@ public class SignalChanger extends AbstractElement implements ISignalModifier
         //TODO: Create a main value
         return null;
     }
+    @Override
+    public String getMainValue()
+    {
+        //TODO: Use the main value
+        return "";
+    }
     //TODO: Add secondary value to determine the amount to change
 
     private ShortMessage changeMidiMessage(ShortMessage originalMsg)

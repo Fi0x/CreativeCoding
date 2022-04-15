@@ -4,6 +4,7 @@ import com.fi0x.cc.project.LoggerManager;
 import com.fi0x.cc.project.gui.mixer.MainMixerWindow;
 import com.fi0x.cc.project.mixer.MixerManager;
 import com.fi0x.cc.project.mixer.TimeCalculator;
+import com.fi0x.cc.project.synth.synthesizers.MusicConverter;
 import io.fi0x.javalogger.logging.Logger;
 
 import javax.sound.midi.InvalidMidiDataException;
@@ -43,6 +44,11 @@ public class Ticker extends AbstractElement implements ISignalCreator, ISecondar
     public String getMainValueName()
     {
         return "Notes/Beat";
+    }
+    @Override
+    public String getMainValue()
+    {
+        return String.valueOf(notesPerBeat);
     }
     @Override
     public void beatUpdate(long frame)
@@ -102,9 +108,25 @@ public class Ticker extends AbstractElement implements ISignalCreator, ISecondar
         }
     }
     @Override
+    public String getSecondaryValue(String valueName)
+    {
+        switch (valueName)
+        {
+            case "Channel":
+                return String.valueOf(channel);
+            case "Note":
+                return "" + MusicConverter.getOctave(note) + MusicConverter.getNoteName(note);
+            case "Volume":
+                return String.valueOf(volume);
+            case "Note Length":
+                return String.valueOf(noteLength);
+        }
+        return "";
+    }
+    @Override
     public String getDisplayString()
     {
-        return "Ticker\n" + notesPerBeat;
+        return "Ticker\n" + notesPerBeat + (notesPerBeat > 1 ? "Notes" : "Note") + "/Beat";
     }
 
     private void generateAndSendOnOffSignal()

@@ -60,6 +60,11 @@ public class Output extends AbstractElement implements IMidiConnection
         return "Midi-Device";
     }
     @Override
+    public String getMainValue()
+    {
+        return getConnectedMidi() == null ? "Internal" : getConnectedMidi().getDeviceInfo().toString();
+    }
+    @Override
     public MidiDevice getConnectedMidi()
     {
         if(outputMidiDevice > -1)

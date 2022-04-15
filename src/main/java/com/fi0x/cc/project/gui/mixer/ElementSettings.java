@@ -6,6 +6,8 @@ import processing.core.PConstants;
 import processing.core.PVector;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ElementSettings
 {
@@ -18,7 +20,6 @@ public class ElementSettings
 
     private final ArrayList<SettingsCircle> circles = new ArrayList<>();
 
-    //TODO: Expand the element circle and display sub-circles inside with the different settings
     public ElementSettings(MainMixerWindow parentScreen, int x, int y, AbstractElement linkedElement)
     {
         parent = parentScreen;
@@ -26,7 +27,6 @@ public class ElementSettings
         originalY = y;
         link = linkedElement;
 
-        //TODO: Think of a solution to close the menu again
         createCircles();
     }
 
@@ -55,9 +55,19 @@ public class ElementSettings
     {
         return updatedSize;
     }
-    public void updateSetting(int xPos, int yPos, int valueChange)
+    public void updateSetting(int mouseX, int mouseY, int valueChange)
     {
-        //TODO: Check which setting is at mouse position and change correct value
+        for(SettingsCircle c : circles)
+        {
+            if(c.isAbove(mouseX, mouseY))
+            {
+                if(c.type == SettingType.MainValue)
+                    link.changeMainValue(valueChange);
+                else if(c.type == SettingType.SecondaryValue)
+                    ((ISecondaryValues) link).updateSecondaryValue(c.name, valueChange);
+                break;
+            }
+        }
     }
     public AbstractElement getLinkedElement()
     {
@@ -66,41 +76,65 @@ public class ElementSettings
 
     private void createCircles()
     {
-        ArrayList<String> valueNames = new ArrayList<>();
-        valueNames.add(link.getMainValueName());
+        Map<String, SettingType> valueNames = new HashMap<>();
+        valueNames.put(link.getMainValueName(), SettingType.MainValue);
         if(link instanceof ISecondaryValues)
-            valueNames.addAll(((ISecondaryValues) link).getSecondaryValueNames());
+        {
+            for(String name : ((ISecondaryValues) link).getSecondaryValueNames())
+                valueNames.put(name, SettingType.SecondaryValue);
+        }
 
         float circlePis = 2f / valueNames.size();
-        PVector circleOffset = new PVector(0, -UIConstants.SETTINGS_ELEMENT_SIZE);
-        updatedSize = UIConstants.ELEMENT_SIZE + UIConstants.SETTINGS_ELEMENT_SIZE;
+        PVector circleOffset = new PVector(0, -(float) (UIConstants.ELEMENT_SIZE + UIConstants.SETTINGS_ELEMENT_SIZE) / 2);
+        updatedSize = (int) (UIConstants.ELEMENT_SIZE + UIConstants.SETTINGS_ELEMENT_SIZE * 1.5);
 
-        for(String name : valueNames)
+        for(Map.Entry<String, SettingType> setting : valueNames.entrySet())
         {
-            circles.add(new SettingsCircle(name, circleOffset));
+            circles.add(new SettingsCircle(setting.getKey(), circleOffset, setting.getValue()));
             circleOffset.rotate(PConstants.PI * circlePis);
         }
     }
 
     private class SettingsCircle
     {
-        private String name;
-        private int xOffset;
-        private int yOffset;
+        private final String name;
+        private final SettingType type;
+        private final int xOffset;
+        private final int yOffset;
 
-        private SettingsCircle(String valueName, PVector offset)
+        private SettingsCircle(String valueName, PVector offset, SettingType type)
         {
             name = valueName;
             xOffset = (int) offset.x;
             yOffset = (int) offset.y;
+            this.type = type;
         }
 
         private void drawCircle()
         {
             parent.fill(UIConstants.SETTINGS_ELEMENT_BACKGROUND);
             parent.ellipse(xOffset, yOffset, UIConstants.SETTINGS_ELEMENT_SIZE, UIConstants.SETTINGS_ELEMENT_SIZE);
+
+            String text = name;
+            if(type == SettingType.MainValue)
+                text += "\n" + link.getMainValue();
+            else if(type == SettingType.SecondaryValue)
+                text += "\n" + ((ISecondaryValues) link).getSecondaryValue(name);
+
             parent.fill(UIConstants.DEFAULT_TEXT);
-            parent.text(name, xOffset, yOffset);
+            parent.text(text, xOffset, yOffset);
         }
+
+        private boolean isAbove(int x, int y)
+        {
+            float distance = PApplet.dist(x, y, originalX + xOffset, originalY + yOffset);
+
+            return !(distance > UIConstants.SETTINGS_ELEMENT_SIZE / 2f);
+        }
+    }
+    private enum SettingType
+    {
+        MainValue,
+        SecondaryValue
     }
 }

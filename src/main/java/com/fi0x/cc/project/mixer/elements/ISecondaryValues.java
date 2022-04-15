@@ -6,4 +6,5 @@ public interface ISecondaryValues
 {
     ArrayList<String> getSecondaryValueNames();
     void updateSecondaryValue(String valueName, int valueChange);
+    String getSecondaryValue(String valueName);
 }
