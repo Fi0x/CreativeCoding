@@ -105,17 +105,6 @@ public class MainMixerWindow extends PApplet
     @Override
     public void mouseClicked()
     {
-        if(typeSelector != null)
-        {
-            typeSelector.hide();
-            typeSelector = null;
-        }
-        if(elementSettings != null)
-        {
-            elementSettings.hide();
-            elementSettings = null;
-        }
-
         if(mouseButton == LEFT)
         {
             loadPixels();
@@ -137,6 +126,17 @@ public class MainMixerWindow extends PApplet
             }
         } else if(mouseButton == RIGHT)
         {
+            if(typeSelector != null)
+            {
+                typeSelector.hide();
+                typeSelector = null;
+            }
+            if(elementSettings != null)
+            {
+                elementSettings.hide();
+                elementSettings = null;
+            }
+
             for(AbstractElement e : uiElements)
             {
                 if(e.isAbove(mouseX, mouseY))
@@ -167,7 +167,7 @@ public class MainMixerWindow extends PApplet
         {
             if(e.isAbove(mouseX, mouseY))
             {
-                e.changeMainValue(-event.getCount());
+                e.updateValue(-event.getCount());
                 break;
             }
         }
@@ -206,14 +206,11 @@ public class MainMixerWindow extends PApplet
 
         if(elementSettings != null)
         {
-            int success = elementSettings.clickButton(event);
-            if(success == 0)
+            if(elementSettings.clickButton(event))
             {
                 elementSettings.hide();
                 elementSettings = null;
-                return;
-            } else if(success > 0)
-                return;
+            }
         }
     }
 

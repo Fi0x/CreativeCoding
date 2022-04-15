@@ -16,6 +16,7 @@ public class ElementSettings
 
     private final Map<CommandObject, ICommand> possibleElements = new HashMap<>();
 
+    //TODO: Expand the element circle and display sub-circles inside with the different settings
     public ElementSettings(MainMixerWindow parentScreen, int x, int y, AbstractElement linkedElement)
     {
         originalX = x;
@@ -38,23 +39,25 @@ public class ElementSettings
         control.hide();
     }
 
-    public int clickButton(ControlEvent event)
+    public boolean clickButton(ControlEvent event)
     {
         for(Map.Entry<CommandObject, ICommand> entry : possibleElements.entrySet())
         {
             if(event.getController() == control.getController(entry.getKey().buttonName))
             {
                 entry.getValue().execute(entry.getKey());
-                return 1;
+                return false;
             }
         }
 
-        return event.getController() == control.getController("Back") ? 0 : -1;
+        return event.getController() == control.getController("Back");
     }
 
     public void hide()
     {
         control.hide();
+        link.closeMenu();
+
         new Thread(() ->
         {
             try
@@ -84,6 +87,7 @@ public class ElementSettings
                 .setPosition(originalX - 50, originalY + y);
 
         control.show();
+        link.openMenu(this);
     }
 
     private void createButtons()

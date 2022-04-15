@@ -16,6 +16,7 @@ public class ElementUI
 
     private boolean isSelected;
     private boolean pickedUp = false;
+    private ElementSettings settings = null;
 
     private int currentBackgroundColor;
     private int currentStrokeColor;
@@ -89,6 +90,24 @@ public class ElementUI
         parent.noStroke();
     }
 
+    public void openMenu(ElementSettings settingsElement)
+    {
+        settings = settingsElement;
+    }
+    public void closeMenu()
+    {
+        settings = null;
+    }
+    public void updateValue(int increment)
+    {
+        if(settings == null)
+            ((AbstractElement) this).changeMainValue(increment);
+        else
+        {
+            //TODO: Check which setting to update and change correct value
+        }
+    }
+
     public boolean isAbove(float x, float y)
     {
         float distance = PApplet.dist(x, y, currentX, currentY);
@@ -100,6 +119,9 @@ public class ElementUI
     }
     public boolean pickUp()
     {
+        if(settings != null)
+            return false;
+
         float distance = PApplet.dist(parent.mouseX, parent.mouseY, currentX, currentY);
         if(distance > UIConstants.ELEMENT_SIZE / 2f)
             return false;

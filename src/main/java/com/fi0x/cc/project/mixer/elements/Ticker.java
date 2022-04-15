@@ -18,6 +18,8 @@ public class Ticker extends AbstractElement implements ISignalCreator, ISecondar
     private int volume = 80;
     private int noteLength = 1;
 
+    private long lastNotePlayed = 0;
+
     public Ticker(MainMixerWindow parentScreen, int x, int y)
     {
         super(parentScreen, x, y);
@@ -102,6 +104,8 @@ public class Ticker extends AbstractElement implements ISignalCreator, ISecondar
 
     private void generateAndSendOnOffSignal()
     {
+        lastNotePlayed = System.currentTimeMillis();
+
         new Thread(() ->
         {
             AbstractElement currentNext = nextLink;
@@ -123,6 +127,9 @@ public class Ticker extends AbstractElement implements ISignalCreator, ISecondar
             } catch(InterruptedException ignored)
             {
             }
+
+            if(lastNotePlayed > System.currentTimeMillis() - delay && currentChannel == channel)
+                return;
 
             try
             {
