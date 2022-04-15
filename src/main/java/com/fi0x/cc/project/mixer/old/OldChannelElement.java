@@ -18,8 +18,8 @@ public class OldChannelElement extends OldAbstractMixerElement
 
     private int channel = 0;
     private final ArrayList<Integer> notes = new ArrayList<>();
-    private int volume = 30;
-    private int noteLength = 2 * MixerManager.getNotesPerBeat() / 8;
+    private final int volume = 30;
+    private final int noteLength = 2 * MixerManager.getNotesPerBeat() / 8;
 
     public OldChannelElement(OldMixerUIElement uiPart)
     {
@@ -36,26 +36,6 @@ public class OldChannelElement extends OldAbstractMixerElement
         super.updateElement(sender, globalFrame, bpm);
 
         notes.clear();
-        for(OldAbstractMixerElement e : connectedElements)
-        {
-            if(e instanceof OldNoteElement)
-            {
-                e.updateElement(this, globalFrame, bpm);
-                notes.add(((OldNoteElement) e).getNote());
-            } else if(e instanceof OldPitchElement)
-            {
-                e.updateElement(this, globalFrame, bpm);
-                ((OldPitchElement) e).updateChannelPitch(getUpdatedChannel());
-            } else if(e instanceof OldVolumeElement)
-            {
-                e.updateElement(this, globalFrame, bpm);
-                volume = ((OldVolumeElement) e).getVolume();
-            } else if(e instanceof OldLengthElement)
-            {
-                e.updateElement(this, globalFrame, bpm);
-                noteLength = ((OldLengthElement) e).getLength();
-            }
-        }
 
         playNotes();
     }
@@ -67,25 +47,6 @@ public class OldChannelElement extends OldAbstractMixerElement
             channel = 15;
         if(channel > 15)
             channel = 0;
-    }
-    @Override
-    public void changeSecondaryValue(int valueChange)
-    {
-    }
-    @Override
-    public void syncClock(int timerFrame)
-    {
-    }
-    @Override
-    public boolean canConnectTo(OldAbstractMixerElement otherElement)
-    {
-        return true;
-    }
-
-    @Override
-    public String getDisplayName()
-    {
-        return "Channel: " + getUpdatedChannel() + "(" + channel + ")";
     }
 
     private void playNotes()

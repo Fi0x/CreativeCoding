@@ -38,9 +38,7 @@ public class SoundVisualizer extends AbstractSoundVisualizer
             for(Map.Entry<Integer, Integer> note : activeNotes.entrySet())
             {
                 float volumePercent = (float) note.getValue() / 128;
-                area.stroke(volumePercent * 255, 255, 255);
-                area.strokeWeight(volumePercent * 2);
-                area.fill(volumePercent * 255, 255, 255);
+                adjustNoteDesign(volumePercent);
 
                 int xPos = (int) (((float) note.getKey()) / 128f * xSize);
                 area.line(xPos, ySize, xPos, 0);

@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class SoundVisualizer2 extends AbstractSoundVisualizer
 {
-    private ArrayList<Map<Integer, Integer>> noteHistory = new ArrayList<>();
+    private final ArrayList<Map<Integer, Integer>> noteHistory = new ArrayList<>();
 
     public SoundVisualizer2(PApplet parent, ISynthesizer synthesizer, int w, int h)
     {
@@ -55,9 +55,7 @@ public class SoundVisualizer2 extends AbstractSoundVisualizer
                 for(Map.Entry<Integer, Integer> note : noteHistory.get(y).entrySet())
                 {
                     float volumePercent = (float) note.getValue() / 128;
-                    area.stroke(volumePercent * 255, 255, 255);
-                    area.strokeWeight(volumePercent * 2);
-                    area.fill(volumePercent * 255, 255, 255);
+                    adjustNoteDesign(volumePercent);
 
                     int xPos = (int) (((float) note.getKey()) / 128f * xSize);
                     area.ellipse(xPos, y, 1, 1);

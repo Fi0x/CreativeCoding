@@ -1,6 +1,5 @@
 package com.fi0x.cc.exercises.week1;
 
-import com.fi0x.cc.exercises.CustomMath;
 import com.fi0x.cc.exercises.Startup;
 import io.fi0x.javalogger.logging.Logger;
 import processing.core.PApplet;
@@ -9,8 +8,6 @@ import java.awt.*;
 
 public class Exercise3Different extends PApplet
 {
-    private final int sizeX = 800;
-    private final int sizeY = 800;
     private static final int colorRandomness = 50;
     private static final int alphaRandomness = 100;
     private static final int sizeRandomness = 10;
@@ -20,7 +17,7 @@ public class Exercise3Different extends PApplet
     @Override
     public void setup()
     {
-        mainTheme = getRandomColor();
+        mainTheme = Exercise3.getRandomColor();
         background(mainTheme.getRed(), mainTheme.getGreen(), mainTheme.getBlue());
         stroke(0, 0);
         frameRate(500);
@@ -28,6 +25,8 @@ public class Exercise3Different extends PApplet
     @Override
     public void settings()
     {
+        int sizeX = 800;
+        int sizeY = 800;
         size(sizeX, sizeY);
     }
 
@@ -36,18 +35,18 @@ public class Exercise3Different extends PApplet
     {
         if(key == ' ')
         {
-            mainTheme = getRandomColor();
+            mainTheme = Exercise3.getRandomColor();
             background(mainTheme.getRed(), mainTheme.getGreen(), mainTheme.getBlue());
         }
     }
     @Override
     public void draw()
     {
-        int x = getRandAxisPos(sizeX, 5);
-        int y = getRandAxisPos(sizeY, 5);
+        int x = getRandAxisPos();
+        int y = getRandAxisPos();
         int rad = (int) (Math.random() * sizeRandomness) + 10;
 
-        Color c = getThemedColor();
+        Color c = Exercise3.getThemedColor();
         fill(c.getRed(), c.getGreen(), c.getBlue(), 255);
 
         ellipse(x, y, rad, rad);
@@ -55,39 +54,15 @@ public class Exercise3Different extends PApplet
         if(frameCount % 2500 == 0)
         {
             saveFrame("frames/exercise3/exercise3-####.png");
-            Logger.getInstance().log("Frame saved", String.valueOf(Startup.LogTemplate.INFO_WHITE));
+            Logger.log("Frame saved", String.valueOf(Startup.LogTemplate.INFO_WHITE));
         }
     }
 
-    private static int getRandAxisPos(int axisSize, int variationChance)
+    private static int getRandAxisPos()
     {
         float returnValue = 0;
-        for(int i = 0; i < variationChance; i++)
-            returnValue += Math.random() * axisSize / variationChance;
+        for(int i = 0; i < 5; i++)
+            returnValue += Math.random() * 800 / 5;
         return (int) returnValue;
-    }
-
-    private static Color getRandomColor()
-    {
-        int r = (int)(Math.random() * 256);
-        int g = (int)(Math.random() * 256);
-        int b = (int)(Math.random() * 256);
-        int a = (int)(Math.random() * 256);
-        return new Color(r, g, b, a);
-    }
-
-    private static Color getThemedColor()
-    {
-        int r = (int) (Math.random() * colorRandomness) - colorRandomness / 2 + mainTheme.getRed();
-        int g = (int) (Math.random() * colorRandomness) - colorRandomness / 2 + mainTheme.getGreen();
-        int b = (int) (Math.random() * colorRandomness) - colorRandomness / 2 + mainTheme.getBlue();
-        int a = (int) (Math.random() * alphaRandomness) - alphaRandomness / 2 + mainTheme.getAlpha();
-
-        return new Color(
-                CustomMath.clamp(r, 0, 255),
-                CustomMath.clamp(g, 0, 255),
-                CustomMath.clamp(b, 0, 255),
-                CustomMath.clamp(a, 0, 255)
-        );
     }
 }

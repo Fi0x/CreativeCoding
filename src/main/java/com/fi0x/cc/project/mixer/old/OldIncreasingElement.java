@@ -3,25 +3,14 @@ package com.fi0x.cc.project.mixer.old;
 import com.fi0x.cc.project.gui.mixer.OldMixerUIElement;
 
 @Deprecated
-public class OldIncreasingElement extends OldAbstractMixerElement implements INumberElement
+public class OldIncreasingElement extends OldAbstractMixerElement
 {
     private int valueCount = 16;
     private int increase = 0;
-    private int stepSize = 1;
 
     public OldIncreasingElement(OldMixerUIElement uiPart)
     {
         super(uiPart);
-
-        allowedConnections.add(OldChannelElement.class);
-        allowedConnections.add(OldLengthElement.class);
-        allowedConnections.add(OldNoteElement.class);
-        allowedConnections.add(OldPitchElement.class);
-        allowedConnections.add(OldVolumeElement.class);
-        allowedConnections.add(OldDelayElement.class);
-        allowedConnections.add(OldIntervalElement.class);
-        allowedConnections.add(OldTickElement.class);
-        allowedConnections.add(OldTimerElement.class);
     }
 
     @Override
@@ -33,6 +22,7 @@ public class OldIncreasingElement extends OldAbstractMixerElement implements INu
 
         super.updateElement(sender, globalFrame, bpm);
 
+        int stepSize = 1;
         increase += stepSize;
         if(increase >= valueCount)
             increase = 0;
@@ -42,24 +32,10 @@ public class OldIncreasingElement extends OldAbstractMixerElement implements INu
     {
         valueCount += valueChange;
     }
-    @Override
-    public void changeSecondaryValue(int valueChange)
-    {
-        stepSize += valueChange;
-    }
-    @Override
-    public void syncClock(int timerFrame)
-    {
-    }
 
     public int getCurrentIncrease()
     {
         return increase;
     }
 
-    @Override
-    public String getDisplayName()
-    {
-        return "Iterate: " + valueCount + "\nStep: " + stepSize;
-    }
 }

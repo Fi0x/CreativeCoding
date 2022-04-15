@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class ElementSettings
 {
-    PApplet parent;
+    private final PApplet parent;
     private int originalX;
     private int originalY;
     private final AbstractElement link;

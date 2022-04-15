@@ -1,7 +1,7 @@
 package com.fi0x.cc.project.gui.synth;
 
 import com.fi0x.cc.project.LoggerManager;
-import com.fi0x.cc.project.synth.UDP.UDPProcessor;
+import com.fi0x.cc.project.synth.udp.UDPProcessor;
 import com.fi0x.cc.project.synth.midi.MidiHandler;
 import controlP5.ControlEvent;
 import io.fi0x.javalogger.logging.Logger;
@@ -32,7 +32,7 @@ public class MainSynthWindow extends PApplet
         noStroke();
 
         initializeSynths();
-        new MidiHandler();
+        new MidiHandler().initialize();
         new Thread(() -> UDPProcessor.getInstance().run()).start();
     }
     @Override

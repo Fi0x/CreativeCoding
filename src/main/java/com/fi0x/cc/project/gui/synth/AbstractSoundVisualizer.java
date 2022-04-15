@@ -47,4 +47,10 @@ public abstract class AbstractSoundVisualizer
         parentScreen.rect(0, 0, xSize, ySize);
         parentScreen.noStroke();
     }
+    protected void adjustNoteDesign(float volumePercent)
+    {
+        area.stroke(volumePercent * 255, 255, 255);
+        area.strokeWeight(volumePercent * 2);
+        area.fill(volumePercent * 255, 255, 255);
+    }
 }

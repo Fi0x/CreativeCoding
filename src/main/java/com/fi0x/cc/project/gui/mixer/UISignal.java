@@ -2,8 +2,6 @@ package com.fi0x.cc.project.gui.mixer;
 
 import processing.core.PVector;
 
-import java.util.Vector;
-
 public class UISignal
 {
     private final MainMixerWindow parent;

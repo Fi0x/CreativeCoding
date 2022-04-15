@@ -7,17 +7,7 @@ public class OldMixerUIElement
 {
     private OldAbstractMixerElement linkedElement;
 
-    public OldMixerUIElement(MainMixerWindow parentScreen, int xCenter, int yCenter)
-    {
-    }
-
-    public void blinkColor(float resetRate)
-    {
-    }
-    public void blinkStroke(float resetRate)
-    {
-    }
-    public void sendPulse(OldMixerUIElement target, float travelTime)
+    public OldMixerUIElement()
     {
     }
 }

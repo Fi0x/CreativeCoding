@@ -3,22 +3,15 @@ package com.fi0x.cc.project.mixer.old;
 import com.fi0x.cc.project.gui.mixer.OldMixerUIElement;
 
 @Deprecated
-public class OldTimerElement extends OldAbstractMixerElement implements ISignalSenderElement
+public class OldTimerElement extends OldAbstractMixerElement
 {
     private int bpm = 60;
-    private int notesPerBeat = 8;
 
     private int currentFrame = 0;
 
     public OldTimerElement(OldMixerUIElement uiPart)
     {
         super(uiPart);
-
-        allowedConnections.add(OldChannelElement.class);
-        allowedConnections.add(OldDelayElement.class);
-        allowedConnections.add(OldIncreasingElement.class);
-        allowedConnections.add(OldIntervalElement.class);
-        allowedConnections.add(OldTickElement.class);
     }
 
     @Override
@@ -29,10 +22,10 @@ public class OldTimerElement extends OldAbstractMixerElement implements ISignalS
         updatedFrames.add(globalFrame);
 
         currentFrame++;
+        int notesPerBeat = 8;
         if(currentFrame % notesPerBeat == 0)
         {
             currentFrame = 0;
-            linkedUI.blinkColor(0.03f * bpm / 60);
         }
 
         for(OldAbstractMixerElement e : connectedElements)
@@ -40,7 +33,6 @@ public class OldTimerElement extends OldAbstractMixerElement implements ISignalS
             if(e == sender)
                 continue;
             e.updateElement(this, globalFrame, bpm);
-            linkedUI.sendPulse(e.getLinkedUI(), 1);
         }
     }
     @Override
@@ -52,47 +44,5 @@ public class OldTimerElement extends OldAbstractMixerElement implements ISignalS
         if(bpm > 1000)
             bpm = 1000;
     }
-    @Override
-    public void changeSecondaryValue(int valueChange)
-    {
-        notesPerBeat += valueChange;
-        if(notesPerBeat < 1)
-            notesPerBeat = 1;
-        if(notesPerBeat > 128)
-            notesPerBeat = 128;
-    }
-    @Override
-    public void syncClock(int timerFrame)
-    {
-    }
 
-    public int getCurrentBPM()
-    {
-        return getUpdatedBpm();
-    }
-    public int getNotesPerBeat()
-    {
-        return notesPerBeat;
-    }
-    public int getCurrentFrame()
-    {
-        return currentFrame;
-    }
-
-    private int getUpdatedBpm()
-    {
-        int newValue = bpm;
-        for(OldAbstractMixerElement e : connectedElements)
-        {
-            if(e instanceof OldIncreasingElement)
-                newValue += ((OldIncreasingElement) e).getCurrentIncrease();
-        }
-        return Math.min(Math.max(newValue, 1), 1000);
-    }
-
-    @Override
-    public String getDisplayName()
-    {
-        return "BPM: " + getUpdatedBpm() + "(" + bpm + ")\nNPB: " + notesPerBeat;
-    }
 }
