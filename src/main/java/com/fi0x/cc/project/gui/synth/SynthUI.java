@@ -159,7 +159,8 @@ public class SynthUI
         if(event.getController() == control.getController("Open Mixer"))
         {
             PApplet.main("com.fi0x.cc.project.gui.mixer.MainMixerWindow");
-            control.remove("Open Mixer");//TODO: Make it disappear correctly
+            control.remove("Open Mixer");
+            display();
         }
     }
 

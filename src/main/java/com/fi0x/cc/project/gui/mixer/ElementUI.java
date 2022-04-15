@@ -20,6 +20,7 @@ public class ElementUI
 
     private int currentBackgroundColor;
     private int currentStrokeColor;
+    private float currentSize;
     private float colorReverseRate;
     private int currentHueShift;
     private int hueOffset;
@@ -36,6 +37,7 @@ public class ElementUI
 
         currentBackgroundColor = UIConstants.DEFAULT_ELEMENT_BACKGROUND;
         currentStrokeColor = UIConstants.DEFAULT_STROKE;
+        currentSize = UIConstants.ELEMENT_SIZE;
     }
 
     public void draw()
@@ -69,7 +71,7 @@ public class ElementUI
             }
         }
         parent.fill(bgc);
-        int size = settings == null ? UIConstants.ELEMENT_SIZE : settings.getUpdatedSize();
+        int size = settings == null ? (int) currentSize : settings.getUpdatedSize();
         parent.ellipse(currentX, currentY, size, size);
         parent.noStroke();
 
@@ -78,6 +80,8 @@ public class ElementUI
 
         currentStrokeColor = parent.lerpColor(currentStrokeColor, UIConstants.DEFAULT_STROKE, colorReverseRate);
         currentBackgroundColor = parent.lerpColor(currentBackgroundColor, UIConstants.DEFAULT_ELEMENT_BACKGROUND, colorReverseRate);
+        if(currentSize > UIConstants.ELEMENT_SIZE)
+            currentSize -= 0.3f;
     }
     public void drawConnectionLines(int color)
     {
@@ -161,7 +165,7 @@ public class ElementUI
         currentBackgroundColor = blinkColor;
         currentStrokeColor = blinkColor;
 
-        //TODO: Create pulse animation on element size
+        currentSize = UIConstants.ELEMENT_SIZE * 1.1f;
     }
     public void startColorAnimation()
     {

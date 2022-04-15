@@ -5,12 +5,8 @@ import com.fi0x.cc.project.synth.UDP.UDPProcessor;
 import com.fi0x.cc.project.synth.midi.MidiHandler;
 import controlP5.ControlEvent;
 import io.fi0x.javalogger.logging.Logger;
-import processing.awt.PSurfaceAWT;
 import processing.core.PApplet;
 import processing.core.PImage;
-
-import javax.swing.*;
-import java.awt.*;
 
 public class MainSynthWindow extends PApplet
 {
@@ -19,8 +15,6 @@ public class MainSynthWindow extends PApplet
     private final int xSynths = 4;
     private final int ySynths = 4;
     private final SynthUI[] synths = new SynthUI[xSynths * ySynths];
-
-    private boolean reDrawNeeded = true;
 
     private int initialized = 0;
 
@@ -56,13 +50,10 @@ public class MainSynthWindow extends PApplet
             {
                 synths[x * ySynths + y].updateSize(x * width / xSynths, y * height / ySynths, width / xSynths, height / ySynths);
 
-                if(reDrawNeeded)
-                    synths[x * ySynths + y].display();
-
+                synths[x * ySynths + y].display();
                 synths[x * ySynths + y].updateDisplay();
             }
         }
-        reDrawNeeded = false;
 
         if(initialized < 100)
         {
@@ -71,12 +62,6 @@ public class MainSynthWindow extends PApplet
         }
     }
 
-    @Override
-    public void frameResized(int w, int h)
-    {
-        super.frameResized(w, h);
-        reDrawNeeded = true;
-    }
     public void controlEvent(ControlEvent event)
     {
         if(!event.isController())
