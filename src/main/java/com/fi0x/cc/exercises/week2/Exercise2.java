@@ -54,16 +54,16 @@ public class Exercise2 extends PApplet
             for(int y = 0; y < INVADER_SIZE; y++)
             {
                 float colorChance = random(100);
-                int chosenColor = background;
+                int choosenColor = background;
                 if(colorChance < 10)
-                    chosenColor = accent;
+                    choosenColor = accent;
                 else if(colorChance < 30)
-                    chosenColor = secondary;
-                else if(chosenColor < 60)
-                    chosenColor = primary;
+                    choosenColor = secondary;
+                else if(choosenColor < 60)
+                    choosenColor = primary;
 
-                img.pixels[y * INVADER_SIZE + x] = chosenColor;
-                img.pixels[y * INVADER_SIZE + INVADER_SIZE - x - 1] = chosenColor;
+                img.pixels[y * INVADER_SIZE + x] = choosenColor;
+                img.pixels[y * INVADER_SIZE + INVADER_SIZE - x - 1] = choosenColor;
             }
         }
         img.updatePixels();

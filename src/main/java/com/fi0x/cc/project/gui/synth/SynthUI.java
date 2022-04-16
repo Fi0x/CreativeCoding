@@ -42,10 +42,7 @@ public class SynthUI
             throw new IllegalStateException("No Synths loaded that could be linked.");
 
         linkedSynth.linkUI(this);
-        if(Math.random() > 0.5)
-            visualizer = new SoundVisualizer2(parent, linkedSynth, w / 2, h / 2);
-        else
-            visualizer = new SoundVisualizer(parent, linkedSynth, w / 2, h / 2);
+        visualizer = new SoundVisualizer2(parent, linkedSynth, w / 2, h / 2);
 
         if(((AbstractSynth) linkedSynth).channelNumber == 9)
         {
@@ -76,7 +73,9 @@ public class SynthUI
         parentScreen.text("Playing", 10, 85, 75, 20);
         parentScreen.text("Muted", 10, 110, 75, 20);
 
-        updateVisualizer();
+        parentScreen.translate((float) xSize / 2 - 10, (float) ySize / 2 - 10);
+        visualizer.display();
+        parentScreen.translate((float) -xSize / 2 + 10, (float) -ySize / 2 + 10);
 
         parentScreen.translate(-x, -y);
     }
@@ -99,7 +98,9 @@ public class SynthUI
             parentScreen.fill(0);
         parentScreen.ellipse(100, 120, 20, 20);
 
-        updateVisualizer();
+        parentScreen.translate((float) xSize / 2 - 10, (float) ySize / 2 - 10);
+        visualizer.display();
+        parentScreen.translate((float) -xSize / 2 + 10, (float) -ySize / 2 + 10);
 
         parentScreen.translate(-x, -y);
     }
@@ -229,11 +230,5 @@ public class SynthUI
         } catch(Exception ignored)
         {
         }
-    }
-    private void updateVisualizer()
-    {
-        parentScreen.translate((float) xSize / 2 - 10, (float) ySize / 2 - 10);
-        visualizer.display();
-        parentScreen.translate((float) -xSize / 2 + 10, (float) -ySize / 2 + 10);
     }
 }

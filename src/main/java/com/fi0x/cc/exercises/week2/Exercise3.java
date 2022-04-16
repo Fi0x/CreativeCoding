@@ -1,6 +1,7 @@
 package com.fi0x.cc.exercises.week2;
 
 import processing.core.PApplet;
+import processing.core.PImage;
 
 public class Exercise3 extends PApplet
 {

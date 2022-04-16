@@ -1,6 +1,7 @@
 package com.fi0x.cc.project.synth.midi;
 
 import javax.sound.midi.MidiDevice;
+import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
 import javax.sound.midi.Transmitter;
 import java.util.List;
@@ -13,13 +14,13 @@ public class CustomMidi implements MidiDevice
     }
 
     @Override
-    public void open()
-    {
+    public void open() throws MidiUnavailableException {
+
     }
 
     @Override
-    public void close()
-    {
+    public void close() {
+
     }
 
     @Override
@@ -43,8 +44,7 @@ public class CustomMidi implements MidiDevice
     }
 
     @Override
-    public Receiver getReceiver()
-    {
+    public Receiver getReceiver() throws MidiUnavailableException {
         return null;
     }
 
@@ -54,8 +54,7 @@ public class CustomMidi implements MidiDevice
     }
 
     @Override
-    public Transmitter getTransmitter()
-    {
+    public Transmitter getTransmitter() throws MidiUnavailableException {
         return null;
     }
 

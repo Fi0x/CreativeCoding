@@ -18,8 +18,8 @@ public class OldChannelElement extends OldAbstractMixerElement
 
     private int channel = 0;
     private final ArrayList<Integer> notes = new ArrayList<>();
-    private final int volume = 30;
-    private final int noteLength = 2 * MixerManager.getNotesPerBeat() / 8;
+    private int volume = 30;
+    private int noteLength = 2 * MixerManager.getNotesPerBeat() / 8;
 
     public OldChannelElement(OldMixerUIElement uiPart)
     {
@@ -47,6 +47,20 @@ public class OldChannelElement extends OldAbstractMixerElement
             channel = 15;
         if(channel > 15)
             channel = 0;
+    }
+    @Override
+    public void changeSecondaryValue(int valueChange)
+    {
+    }
+    @Override
+    public void syncClock(int timerFrame)
+    {
+    }
+
+    @Override
+    public String getDisplayName()
+    {
+        return "Channel: " + getUpdatedChannel() + "(" + channel + ")";
     }
 
     private void playNotes()

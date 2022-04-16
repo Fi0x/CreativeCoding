@@ -1,4 +1,4 @@
-package com.fi0x.cc.project.synth.udp;
+package com.fi0x.cc.project.synth.UDP;
 
 import com.fi0x.cc.exercises.Startup;
 import com.fi0x.cc.project.synth.SynthManager;

@@ -82,7 +82,7 @@ public class MusicConverter
             case 10:
                 return 'a';
             default:
-                return '?';
+                return 'C';
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.fi0x.cc.project.mixer;
 
+import com.fi0x.cc.project.gui.mixer.ElementUI;
 import com.fi0x.cc.project.gui.mixer.MainMixerWindow;
 import com.fi0x.cc.project.mixer.elements.AbstractElement;
 import com.fi0x.cc.project.mixer.elements.ISignalCreator;
@@ -36,8 +37,13 @@ public class MixerManager implements Runnable
             for(ISignalCreator s : beatListeners)
                 s.beatUpdate(globalFrame);
 
-            if(!waitMillis(60000 / bpm / notesPerBeat))
+            try
+            {
+                Thread.sleep(60000 / bpm / notesPerBeat);
+            } catch(InterruptedException ignored)
+            {
                 break;
+            }
 
             globalFrame++;
         }
@@ -83,17 +89,5 @@ public class MixerManager implements Runnable
         notesPerBeat += npbChange;
         if(notesPerBeat < 1)
             notesPerBeat = 1;
-    }
-
-    private boolean waitMillis(long time)
-    {
-        try
-        {
-            Thread.sleep(time);
-        } catch(InterruptedException ignored)
-        {
-            return true;
-        }
-        return false;
     }
 }

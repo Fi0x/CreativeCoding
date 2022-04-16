@@ -1,5 +1,6 @@
-package com.fi0x.cc.project.synth.udp;
+package com.fi0x.cc.project.synth.UDP;
 
+import com.fi0x.cc.exercises.Startup;
 import com.fi0x.cc.project.LoggerManager;
 import io.fi0x.javalogger.logging.Logger;
 
@@ -31,7 +32,7 @@ public class UDPListener implements Runnable
     public void run()
     {
         Logger.log("Listening for UDP Packets on port " + UDPDefinitions.UDP_PORT, String.valueOf(LoggerManager.Template.DEBUG_INFO));
-        while(!Thread.interrupted())
+        while(true)
         {
             DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
             try

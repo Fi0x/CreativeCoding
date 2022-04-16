@@ -5,6 +5,7 @@ import processing.core.PApplet;
 public class Exercise4 extends PApplet
 {
     private final int EDGE_LENGTH = 20;
+    private final int INNER_CIRCLE_SIZE = 10;
     private final int OUTER_CIRCLE_SIZE = 20;
 
     @Override
@@ -46,7 +47,6 @@ public class Exercise4 extends PApplet
     }
     private void drawInner(int x, int y)
     {
-        int INNER_CIRCLE_SIZE = 10;
         ellipse(x, y, INNER_CIRCLE_SIZE, INNER_CIRCLE_SIZE);
     }
 }

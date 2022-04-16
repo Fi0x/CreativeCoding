@@ -50,7 +50,7 @@ public class Exercise3 extends PApplet
         iterations++;
     }
 
-    public static Color getRandomColor()
+    private static Color getRandomColor()
     {
         int r = (int)(Math.random() * 256);
         int g = (int)(Math.random() * 256);
@@ -59,7 +59,7 @@ public class Exercise3 extends PApplet
         return new Color(r, g, b, a);
     }
 
-    public static Color getThemedColor()
+    private static Color getThemedColor()
     {
         int r = (int) (Math.random() * colorRandomness) - colorRandomness / 2 + mainTheme.getRed();
         int g = (int) (Math.random() * colorRandomness) - colorRandomness / 2 + mainTheme.getGreen();

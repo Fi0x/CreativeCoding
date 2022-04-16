@@ -7,6 +7,7 @@ public class OldIncreasingElement extends OldAbstractMixerElement
 {
     private int valueCount = 16;
     private int increase = 0;
+    private int stepSize = 1;
 
     public OldIncreasingElement(OldMixerUIElement uiPart)
     {
@@ -22,7 +23,6 @@ public class OldIncreasingElement extends OldAbstractMixerElement
 
         super.updateElement(sender, globalFrame, bpm);
 
-        int stepSize = 1;
         increase += stepSize;
         if(increase >= valueCount)
             increase = 0;
@@ -32,10 +32,24 @@ public class OldIncreasingElement extends OldAbstractMixerElement
     {
         valueCount += valueChange;
     }
+    @Override
+    public void changeSecondaryValue(int valueChange)
+    {
+        stepSize += valueChange;
+    }
+    @Override
+    public void syncClock(int timerFrame)
+    {
+    }
 
     public int getCurrentIncrease()
     {
         return increase;
     }
 
+    @Override
+    public String getDisplayName()
+    {
+        return "Iterate: " + valueCount + "\nStep: " + stepSize;
+    }
 }

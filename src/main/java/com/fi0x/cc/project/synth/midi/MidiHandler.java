@@ -12,7 +12,7 @@ public class MidiHandler
 {
     public final static ArrayList<MidiDevice> devices = new ArrayList<>();
 
-    public void initialize()
+    public MidiHandler()
     {
         Logger.log("Loading MIDI-Devices", String.valueOf(LoggerManager.Template.DEBUG_INFO));
         MidiDevice.Info[] infos = MidiSystem.getMidiDeviceInfo();
@@ -39,9 +39,9 @@ public class MidiHandler
         }
     }
 
-    private static class MidiInputReceiver implements Receiver
+    public static class MidiInputReceiver implements Receiver
     {
-        public final String name;
+        public String name;
         public MidiInputReceiver(String name)
         {
             this.name = name;
