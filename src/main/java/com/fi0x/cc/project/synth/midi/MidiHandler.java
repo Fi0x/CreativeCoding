@@ -65,7 +65,10 @@ public class MidiHandler
             SynthManager.handleMidiCommand(name, msg);
 
             for(Input i : inputElements)
-                i.receiveMidi((ShortMessage) msg);
+            {
+                if(i.getConnectedMidiName().equals(name))
+                    i.receiveMidi((ShortMessage) msg);
+            }
         }
 
         public void close()

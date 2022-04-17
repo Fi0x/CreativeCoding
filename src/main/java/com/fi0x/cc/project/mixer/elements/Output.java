@@ -5,7 +5,6 @@ import com.fi0x.cc.project.synth.SynthManager;
 import com.fi0x.cc.project.synth.midi.MidiHandler;
 
 import javax.sound.midi.MidiDevice;
-import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.ShortMessage;
 
 public class Output extends AbstractElement implements IMidiConnection
@@ -33,14 +32,7 @@ public class Output extends AbstractElement implements IMidiConnection
         MidiDevice device = getConnectedMidi();
         if(device != null)
         {
-            try
-            {
-                device.getReceiver().send(msg, System.currentTimeMillis());//FIXME: Midi unavailable?
-            } catch(MidiUnavailableException e)
-            {
-                System.out.println("Sending midi to '" + device.getDeviceInfo() + "' did not work");
-                e.printStackTrace();
-            }
+            device.getTransmitters().get(0).getReceiver().send(msg, System.currentTimeMillis());
         } else
             SynthManager.handleMidiCommand(getConnectedMidiName(), msg);
     }

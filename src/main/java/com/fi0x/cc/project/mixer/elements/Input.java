@@ -68,4 +68,9 @@ public class Input extends AbstractElement implements IMidiConnection, ISignalCr
         String midiInfo = getConnectedMidi() == null ? "Internal" : getConnectedMidi().getDeviceInfo().toString();
         return "Input\n" + midiInfo;
     }
+
+    public String getConnectedMidiName()
+    {
+        return MidiHandler.devices.get(inputMidiDevice).getDeviceInfo().toString();
+    }
 }
