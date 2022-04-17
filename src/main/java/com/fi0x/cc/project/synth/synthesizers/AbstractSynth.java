@@ -65,8 +65,7 @@ public abstract class AbstractSynth implements ISynthesizer
                 channel.setChannelPressure(data[1]);
                 break;
             case "1110":
-                //TODO: Fix length of binary numbers
-                String binary = Integer.toBinaryString(data[1]) + Integer.toBinaryString(data[2]);
+                String binary = expandSmallBytes(data[1]) + expandSmallBytes(data[2]);
                 channel.setPitchBend(Integer.parseInt(binary, 2));
                 soundVisualizer.pitchBendPercent = ((float) Integer.parseInt(binary, 2)) / 16383;
                 break;
@@ -136,5 +135,14 @@ public abstract class AbstractSynth implements ISynthesizer
     public void linkVisualizer(AbstractSoundVisualizer visualizer)
     {
         soundVisualizer = visualizer;
+    }
+
+    private static String expandSmallBytes(int originalByte)
+    {
+        StringBuilder originalByteRepresentation = new StringBuilder(Integer.toBinaryString(originalByte));
+        while(originalByteRepresentation.length() < 7)
+            originalByteRepresentation.insert(0, "0");
+
+        return originalByteRepresentation.toString();
     }
 }
