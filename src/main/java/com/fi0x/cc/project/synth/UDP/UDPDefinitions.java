@@ -1,4 +1,4 @@
-package com.fi0x.cc.project.synth.UDP;
+package com.fi0x.cc.project.synth.udp;
 
 public class UDPDefinitions
 {

@@ -15,6 +15,7 @@ public class Input extends AbstractElement implements IMidiConnection, ISignalCr
     public Input(MainMixerWindow parentScreen, int x, int y)
     {
         super(parentScreen, x, y);
+        MidiHandler.inputElements.add(this);
     }
     @Override
     public void receiveMidi(ShortMessage msg)
@@ -22,9 +23,10 @@ public class Input extends AbstractElement implements IMidiConnection, ISignalCr
         if(nextLink == null)
             return;
 
-        //TODO: Receive midi signals from external devices and send signals to next UI-element
+        nextLink.receiveMidi(msg);
 
-        this.noteUpdate(-1000, 0.1f);
+        if(Integer.toBinaryString(msg.getStatus()).startsWith("1000"))
+            this.noteUpdate(-1000, 0.1f);
     }
     @Override
     public void changeMainValue(int valueChange)

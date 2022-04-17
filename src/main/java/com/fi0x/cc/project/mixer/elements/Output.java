@@ -35,7 +35,7 @@ public class Output extends AbstractElement implements IMidiConnection
         {
             try
             {
-                device.getReceiver().send(msg, System.currentTimeMillis());
+                device.getReceiver().send(msg, System.currentTimeMillis());//FIXME: Midi unavailable?
             } catch(MidiUnavailableException e)
             {
                 System.out.println("Sending midi to '" + device.getDeviceInfo() + "' did not work");

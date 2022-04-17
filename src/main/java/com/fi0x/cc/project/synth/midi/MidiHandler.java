@@ -1,6 +1,7 @@
 package com.fi0x.cc.project.synth.midi;
 
 import com.fi0x.cc.project.LoggerManager;
+import com.fi0x.cc.project.mixer.elements.Input;
 import com.fi0x.cc.project.synth.SynthManager;
 import io.fi0x.javalogger.logging.Logger;
 
@@ -11,6 +12,7 @@ import java.util.List;
 public class MidiHandler
 {
     public final static ArrayList<MidiDevice> devices = new ArrayList<>();
+    public final static ArrayList<Input> inputElements = new ArrayList<>();
 
     public MidiHandler()
     {
@@ -61,6 +63,9 @@ public class MidiHandler
         public void send(MidiMessage msg, long timeStamp)
         {
             SynthManager.handleMidiCommand(name, msg);
+
+            for(Input i : inputElements)
+                i.receiveMidi((ShortMessage) msg);
         }
 
         public void close()
