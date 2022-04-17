@@ -23,7 +23,7 @@ public class Output extends AbstractElement implements IMidiConnection
     {
         if(outputMidiDevice == -1)
         {
-            SynthManager.handleMidiCommand(msg);
+            SynthManager.handleMidiCommand(getConnectedMidiName(), msg);
             return;
         }
 
@@ -42,7 +42,7 @@ public class Output extends AbstractElement implements IMidiConnection
                 e.printStackTrace();
             }
         } else
-            SynthManager.handleMidiCommand(msg);
+            SynthManager.handleMidiCommand(getConnectedMidiName(), msg);
     }
     @Override
     public void changeMainValue(int valueChange)
@@ -62,7 +62,7 @@ public class Output extends AbstractElement implements IMidiConnection
     @Override
     public String getMainValue()
     {
-        return getConnectedMidi() == null ? "Internal" : getConnectedMidi().getDeviceInfo().toString();
+        return getConnectedMidiName();
     }
     @Override
     public MidiDevice getConnectedMidi()
@@ -80,7 +80,11 @@ public class Output extends AbstractElement implements IMidiConnection
     @Override
     public String getDisplayString()
     {
-        String midiInfo = getConnectedMidi() == null ? "Internal" : getConnectedMidi().getDeviceInfo().toString();
-        return "Output\n" + midiInfo;
+        return "Output\n" + getConnectedMidiName();
+    }
+
+    private String getConnectedMidiName()
+    {
+        return getConnectedMidi() == null ? "Internal" : getConnectedMidi().getDeviceInfo().toString();
     }
 }

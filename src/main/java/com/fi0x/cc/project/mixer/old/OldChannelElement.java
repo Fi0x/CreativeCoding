@@ -76,7 +76,7 @@ public class OldChannelElement extends OldAbstractMixerElement
                 {
                     ShortMessage msg = new ShortMessage();
                     msg.setMessage(ShortMessage.NOTE_ON, currentChannel, note, volume);
-                    SynthManager.handleMidiCommand(msg);
+                    SynthManager.handleMidiCommand("", msg);
                 } catch(InvalidMidiDataException e)
                 {
                     return;
@@ -97,7 +97,7 @@ public class OldChannelElement extends OldAbstractMixerElement
                 {
                     ShortMessage msg = new ShortMessage();
                     msg.setMessage(ShortMessage.NOTE_OFF, currentChannel, note, 0);
-                    SynthManager.handleMidiCommand(msg);
+                    SynthManager.handleMidiCommand("", msg);
                 } catch(InvalidMidiDataException e)
                 {
                     Logger.log("Could not stop midi note", String.valueOf(LoggerManager.Template.DEBUG_WARNING));

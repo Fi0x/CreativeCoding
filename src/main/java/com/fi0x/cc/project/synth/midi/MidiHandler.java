@@ -39,6 +39,17 @@ public class MidiHandler
         }
     }
 
+    public static String[] getDeviceNames()
+    {
+        ArrayList<String> deviceNames = new ArrayList<>();
+
+        for(MidiDevice device : devices)
+            deviceNames.add(device.getDeviceInfo().toString());
+        deviceNames.add("Internal");
+
+        return deviceNames.toArray(new String[0]);
+    }
+
     public static class MidiInputReceiver implements Receiver
     {
         public String name;
@@ -49,7 +60,7 @@ public class MidiHandler
 
         public void send(MidiMessage msg, long timeStamp)
         {
-            SynthManager.handleMidiCommand(msg);
+            SynthManager.handleMidiCommand(name, msg);
         }
 
         public void close()

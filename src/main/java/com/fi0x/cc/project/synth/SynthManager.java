@@ -10,10 +10,9 @@ import java.util.Collections;
 
 public class SynthManager
 {
-    //TODO: Add option to select a specific midi device and only listen to than one
-
     private static ArrayList<ISynthesizer> synths;
     private static int nextSynthToLoad = 0;
+    private static String acceptedMidiDevice;
 
     private static Instrument[] instruments;
     private static MidiChannel[] channels;
@@ -82,8 +81,11 @@ public class SynthManager
 
         new Thread(() -> synth.playNote(octave, note, volume, length)).start();
     }
-    public static void handleMidiCommand(MidiMessage msg)
+    public static void handleMidiCommand(String originDeviceName, MidiMessage msg)
     {
+        if(!originDeviceName.equals(acceptedMidiDevice))
+            return;
+
         String status = Integer.toBinaryString(msg.getStatus());
         int midiChannel = Integer.parseInt(status.substring(4), 2);
         if(midiChannel >= synths.size())
@@ -98,6 +100,9 @@ public class SynthManager
     public static String[] getAllInstrumentNames()
     {
         ArrayList<String> list = new ArrayList<>();
+        if(instruments == null)
+            return list.toArray(new String[0]);
+
         for(Instrument i : instruments)
         {
             if(i.toString().startsWith("Drumkit"))
@@ -135,5 +140,9 @@ public class SynthManager
             number = getProgramNumber(nextName);
         }
         return number;
+    }
+    public static void setAcceptedMidi(String midiName)
+    {
+        acceptedMidiDevice = midiName;
     }
 }

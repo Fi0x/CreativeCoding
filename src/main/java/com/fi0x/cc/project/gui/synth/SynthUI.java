@@ -1,20 +1,12 @@
 package com.fi0x.cc.project.gui.synth;
 
-import com.fi0x.cc.project.LoggerManager;
 import com.fi0x.cc.project.synth.SynthManager;
 import com.fi0x.cc.project.synth.synthesizers.AbstractSynth;
 import com.fi0x.cc.project.synth.synthesizers.ISynthesizer;
 import controlP5.ControlEvent;
 import controlP5.ControlP5;
 import controlP5.DropdownList;
-import io.fi0x.javalogger.logging.LogEntry;
-import io.fi0x.javalogger.logging.Logger;
 import processing.core.PApplet;
-
-import java.awt.*;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 
 public class SynthUI
 {
@@ -124,44 +116,25 @@ public class SynthUI
         muteStatus = isMuted;
     }
 
-    public void buttonClicked(ControlEvent event)
+    public boolean buttonClicked(ControlEvent event)
     {
         if(event.getController() == control.getController("Previous Synth"))
+        {
             linkedSynth.previousInstrument();
+            return true;
+        }
         if(event.getController() == control.getController("Next Synth"))
+        {
             linkedSynth.nextInstrument();
+            return true;
+        }
         if(event.getController() == control.getController("DDL"))
+        {
             linkedSynth.setInstrument(SynthManager.getAllInstrumentNames()[(int) event.getValue()]);
-        if(event.getController() == control.getController("Open Orca"))
-        {
-            try
-            {
-                new ProcessBuilder("E:\\Users\\Fi0x\\Documents\\Programmieren\\ORCA\\Orca Tool\\Orca.exe").start();
-            } catch(IOException e)
-            {
-                Logger.log(new LogEntry("Could not open ORCA in Windows location, trying Linux instead", String.valueOf(LoggerManager.Template.DEBUG_WARNING)).EXCEPTION(e));
-                try
-                {
-                    Runtime.getRuntime().exec("/home/fi0x/Documents/ORCA/Orca");
-                } catch(IOException e1)
-                {
-                    Logger.log(new LogEntry("Could not open ORCA in Linux location, trying browser instead", String.valueOf(LoggerManager.Template.DEBUG_WARNING)).EXCEPTION(e1));
-                    try
-                    {
-                        Desktop.getDesktop().browse(new URI("https://hundredrabbits.github.io/Orca/"));
-                    } catch(IOException | URISyntaxException e2)
-                    {
-                        Logger.log(new LogEntry("Could not open ORCA", String.valueOf(LoggerManager.Template.DEBUG_WARNING)).EXCEPTION(e2));
-                    }
-                }
-            }
+            return true;
         }
-        if(event.getController() == control.getController("Open Mixer"))
-        {
-            PApplet.main("com.fi0x.cc.project.gui.mixer.MainMixerWindow");
-            control.remove("Open Mixer");
-            display();
-        }
+
+        return false;
     }
 
     private void addButtons()
@@ -187,18 +160,6 @@ public class SynthUI
                     .addItems(SynthManager.getAllInstrumentNames());
         }
 
-        if(x + y == 0)
-        {
-            control.addButton("Open Orca")
-                    .setSize(100, 30)
-                    .setValue(0)
-                    .setColorBackground(parentScreen.color(200, 0, 0));
-            control.addButton("Open Mixer")
-                    .setSize(100, 30)
-                    .setValue(0)
-                    .setColorBackground(parentScreen.color(200, 0, 0));
-        }
-
         updateButtonPositions();
     }
     private void updateButtonPositions()
@@ -218,14 +179,6 @@ public class SynthUI
                 DropdownList ddl = (DropdownList) control.getController("DDL")
                         .setPosition(x + (float) xSize / 2 - 100, y + 10 + 35);
                 ddl.setSize(200, ySize - 10 - 10 - 35);
-            }
-
-            if(x + y == 0)
-            {
-                control.getController("Open Orca")
-                        .setPosition(x + 10, y + ySize - 30 - 10);
-                control.getController("Open Mixer")
-                        .setPosition(x + 10, y + ySize - 10 - 35 - 30);
             }
         } catch(Exception ignored)
         {
