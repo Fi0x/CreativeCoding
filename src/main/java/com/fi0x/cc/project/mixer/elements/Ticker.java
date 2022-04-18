@@ -3,6 +3,7 @@ package com.fi0x.cc.project.mixer.elements;
 import com.fi0x.cc.project.LoggerManager;
 import com.fi0x.cc.project.gui.mixer.MainMixerWindow;
 import com.fi0x.cc.project.mixer.MixerManager;
+import com.fi0x.cc.project.mixer.MixerSignal;
 import com.fi0x.cc.project.mixer.TimeCalculator;
 import com.fi0x.cc.project.mixer.abstractinterfaces.AbstractElement;
 import com.fi0x.cc.project.mixer.abstractinterfaces.ISecondaryValues;
@@ -13,6 +14,7 @@ import io.fi0x.javalogger.logging.Logger;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.ShortMessage;
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class Ticker extends AbstractElement implements ISignalCreator, ISecondaryValues
 {
@@ -30,7 +32,7 @@ public class Ticker extends AbstractElement implements ISignalCreator, ISecondar
         super(parentScreen, x, y);
     }
     @Override
-    public void receiveMidi(ShortMessage msg)
+    public void receiveMidi(MixerSignal msg)
     {
         Logger.log("Ticker received a midi message, but should not have any input connections", String.valueOf(LoggerManager.Template.DEBUG_WARNING));
     }
@@ -164,11 +166,16 @@ public class Ticker extends AbstractElement implements ISignalCreator, ISecondar
 
             this.noteUpdate(-1000, 0.1f);
 
+            UUID multiSignalID = UUID.randomUUID();
             try
             {
                 ShortMessage msg = new ShortMessage();
                 msg.setMessage(ShortMessage.NOTE_ON, currentChannel, note, volume);
-                currentNext.receiveMidi(msg);
+                MixerSignal signal = new MixerSignal();
+                signal.id = multiSignalID;
+                signal.hasMore = true;
+                signal.midiMessage = msg;
+                currentNext.receiveMidi(signal);
             } catch(InvalidMidiDataException e)
             {
                 return;
@@ -183,13 +190,21 @@ public class Ticker extends AbstractElement implements ISignalCreator, ISecondar
             }
 
             if(lastNotePlayed > System.currentTimeMillis() - delay && currentChannel == channel)
+            {
+                MixerSignal signal = new MixerSignal();
+                signal.id = multiSignalID;
+                currentNext.receiveMidi(signal);
                 return;
+            }
 
             try
             {
                 ShortMessage msg = new ShortMessage();
                 msg.setMessage(ShortMessage.NOTE_OFF, currentChannel, note, 0);
-                currentNext.receiveMidi(msg);
+                MixerSignal signal = new MixerSignal();
+                signal.id = multiSignalID;
+                signal.midiMessage = msg;
+                currentNext.receiveMidi(signal);
             } catch(InvalidMidiDataException e)
             {
                 Logger.log("Could not stop midi note", String.valueOf(LoggerManager.Template.DEBUG_WARNING));

@@ -3,6 +3,7 @@ package com.fi0x.cc.project.mixer.elements;
 import com.fi0x.cc.project.gui.mixer.MainMixerWindow;
 import com.fi0x.cc.project.midi.MidiSignalHelper;
 import com.fi0x.cc.project.midi.MidiSignalInfo;
+import com.fi0x.cc.project.mixer.MixerSignal;
 import com.fi0x.cc.project.mixer.TimeCalculator;
 import com.fi0x.cc.project.mixer.abstractinterfaces.AbstractElement;
 import com.fi0x.cc.project.mixer.abstractinterfaces.INumberProvider;
@@ -10,14 +11,15 @@ import com.fi0x.cc.project.mixer.abstractinterfaces.ISecondaryValues;
 import com.fi0x.cc.project.mixer.abstractinterfaces.ISignalModifier;
 
 import javax.sound.midi.ShortMessage;
-import java.util.ArrayList;
-import java.util.Objects;
+import java.util.*;
 
 public class SignalChanger extends AbstractElement implements ISignalModifier, ISecondaryValues
 {
     private MidiSignalParts valueToChange = MidiSignalParts.Channel;
-    private boolean increment = false;
+    private boolean increment = true;
     private int changeAmount = 0;
+
+    private final Map<UUID, Status> handledSignals = new HashMap<>();
 
     private final ArrayList<INumberProvider> connectedNumberProviders = new ArrayList<>();
 
@@ -28,27 +30,36 @@ public class SignalChanger extends AbstractElement implements ISignalModifier, I
         startColorAnimation();
     }
     @Override
-    public void receiveMidi(ShortMessage msg)
+    public void receiveMidi(MixerSignal msg)
     {
         if(nextLink == null)
             return;
 
+        if(connectedNumberProviders.size() > 0)
+            updateChangeAmount();
+
+        final MixerSignal threadSafeSignal = msg;
+
         new Thread(() ->
         {
-            ShortMessage updatedMessage = changeMidiMessage(msg);
-            if(valueToChange == MidiSignalParts.Length)
+            if(!handledSignals.containsKey(threadSafeSignal.id))
+                handledSignals.put(threadSafeSignal.id, new Status());
+
+            Status correctStatus = handledSignals.get(threadSafeSignal.id);
+            threadSafeSignal.midiMessage = changeMidiMessage(threadSafeSignal);
+            if(correctStatus.part == MidiSignalParts.Length)
             {
-                if(Objects.requireNonNull(MidiSignalInfo.getSignalType(msg.getStatus())).NAME == MidiSignalInfo.MidiSignalName.NoteOff)
+                if(Objects.requireNonNull(MidiSignalInfo.getSignalType(threadSafeSignal.midiMessage.getStatus())).NAME == MidiSignalInfo.MidiSignalName.NoteOff)
                 {
                     try
                     {
-                        Thread.sleep(TimeCalculator.getMillisFromBeat(changeAmount));
+                        Thread.sleep(TimeCalculator.getMillisFromBeat(correctStatus.amount));
                     } catch(InterruptedException ignored)
                     {
                     }
                 }
             }
-            nextLink.receiveMidi(updatedMessage);
+            nextLink.receiveMidi(threadSafeSignal);
         }).start();
     }
     @Override
@@ -118,7 +129,8 @@ public class SignalChanger extends AbstractElement implements ISignalModifier, I
     @Override
     public void addNumberProvider(INumberProvider provider)
     {
-        connectedNumberProviders.add(provider);
+        if(!connectedNumberProviders.contains(provider))
+            connectedNumberProviders.add(provider);
     }
     @Override
     public void removeNumberProvider(INumberProvider provider)
@@ -126,32 +138,30 @@ public class SignalChanger extends AbstractElement implements ISignalModifier, I
         connectedNumberProviders.remove(provider);
     }
 
-    private ShortMessage changeMidiMessage(ShortMessage originalMsg)
+    private ShortMessage changeMidiMessage(MixerSignal originalMsg)
     {
-        if(connectedNumberProviders.size() > 0)
-            updateChangeAmount();
-
-        MidiSignalInfo messageInfo = MidiSignalInfo.getSignalType(originalMsg.getStatus());
+        MidiSignalInfo messageInfo = MidiSignalInfo.getSignalType(originalMsg.midiMessage.getStatus());
         assert messageInfo != null;
         if(messageInfo.NAME == MidiSignalInfo.MidiSignalName.ProgramChange || messageInfo.NAME == MidiSignalInfo.MidiSignalName.ControlChange)
-            return originalMsg;
+            return originalMsg.midiMessage;
 
-        switch(valueToChange)
+        Status originalStatus = handledSignals.get(originalMsg.id);
+        switch(originalStatus.part)
         {
             case Channel:
-                MidiSignalHelper.changeChannel(originalMsg, changeAmount, increment);
+                MidiSignalHelper.changeChannel(originalMsg.midiMessage, originalStatus.amount, originalStatus.inc);
                 break;
             case Note:
-                MidiSignalHelper.changeNote(originalMsg, changeAmount, increment);
+                MidiSignalHelper.changeNote(originalMsg.midiMessage, originalStatus.amount, originalStatus.inc);
                 break;
             case Volume:
-                MidiSignalHelper.changeVolume(originalMsg, changeAmount, increment);
+                MidiSignalHelper.changeVolume(originalMsg.midiMessage, originalStatus.amount, originalStatus.inc);
                 break;
             case CombinedData:
-                MidiSignalHelper.changeAllData(originalMsg, changeAmount, increment);
+                MidiSignalHelper.changeAllData(originalMsg.midiMessage, originalStatus.amount, originalStatus.inc);
                 break;
         }
-        return originalMsg;
+        return originalMsg.midiMessage;
     }
     private void updateChangeAmount()
     {
@@ -167,5 +177,18 @@ public class SignalChanger extends AbstractElement implements ISignalModifier, I
         Volume,
         CombinedData,
         Length
+    }
+    private class Status
+    {
+        private final MidiSignalParts part;
+        private final boolean inc;
+        private final int amount;
+
+        private Status()
+        {
+            part = valueToChange;
+            inc = increment;
+            amount = changeAmount;
+        }
     }
 }

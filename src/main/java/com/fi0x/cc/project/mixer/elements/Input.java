@@ -3,13 +3,13 @@ package com.fi0x.cc.project.mixer.elements;
 import com.fi0x.cc.project.LoggerManager;
 import com.fi0x.cc.project.gui.mixer.MainMixerWindow;
 import com.fi0x.cc.project.midi.MidiHandler;
+import com.fi0x.cc.project.mixer.MixerSignal;
 import com.fi0x.cc.project.mixer.abstractinterfaces.AbstractElement;
 import com.fi0x.cc.project.mixer.abstractinterfaces.IMidiConnection;
 import com.fi0x.cc.project.mixer.abstractinterfaces.ISignalCreator;
 import io.fi0x.javalogger.logging.Logger;
 
 import javax.sound.midi.MidiDevice;
-import javax.sound.midi.ShortMessage;
 
 public class Input extends AbstractElement implements IMidiConnection, ISignalCreator
 {
@@ -21,14 +21,14 @@ public class Input extends AbstractElement implements IMidiConnection, ISignalCr
         MidiHandler.inputElements.add(this);
     }
     @Override
-    public void receiveMidi(ShortMessage msg)
+    public void receiveMidi(MixerSignal msg)
     {
         if(nextLink == null)
             return;
 
         nextLink.receiveMidi(msg);
 
-        if(Integer.toBinaryString(msg.getStatus()).startsWith("1000"))
+        if(Integer.toBinaryString(msg.midiMessage.getStatus()).startsWith("1000"))
             this.noteUpdate(-1000, 0.1f);
     }
     @Override

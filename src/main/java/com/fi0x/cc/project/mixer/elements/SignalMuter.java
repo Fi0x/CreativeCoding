@@ -1,16 +1,21 @@
 package com.fi0x.cc.project.mixer.elements;
 
 import com.fi0x.cc.project.gui.mixer.MainMixerWindow;
+import com.fi0x.cc.project.mixer.MixerSignal;
 import com.fi0x.cc.project.mixer.abstractinterfaces.AbstractElement;
 import com.fi0x.cc.project.mixer.abstractinterfaces.INumberProvider;
 import com.fi0x.cc.project.mixer.abstractinterfaces.ISignalModifier;
 
-import javax.sound.midi.ShortMessage;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class SignalMuter extends AbstractElement implements ISignalModifier
 {
     private boolean allowPass = true;
+
+    private final Map<UUID, Boolean> handledSignals = new HashMap<>();
 
     private final ArrayList<INumberProvider> connectedNumberProviders = new ArrayList<>();
 
@@ -22,7 +27,7 @@ public class SignalMuter extends AbstractElement implements ISignalModifier
     }
 
     @Override
-    public void receiveMidi(ShortMessage msg)
+    public void receiveMidi(MixerSignal msg)
     {
         if(nextLink == null)
             return;
@@ -35,8 +40,13 @@ public class SignalMuter extends AbstractElement implements ISignalModifier
             allowPass = num > 0;
         }
 
-        if(allowPass)
+        handledSignals.put(msg.id, allowPass);
+        if(handledSignals.get(msg.id))
+        {
             nextLink.receiveMidi(msg);
+            if(!msg.hasMore)
+                handledSignals.remove(msg.id);
+        }
     }
     @Override
     public void changeMainValue(int valueChange)

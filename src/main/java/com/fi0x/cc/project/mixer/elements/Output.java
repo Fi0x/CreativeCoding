@@ -1,13 +1,13 @@
 package com.fi0x.cc.project.mixer.elements;
 
 import com.fi0x.cc.project.gui.mixer.MainMixerWindow;
+import com.fi0x.cc.project.mixer.MixerSignal;
 import com.fi0x.cc.project.mixer.abstractinterfaces.AbstractElement;
 import com.fi0x.cc.project.mixer.abstractinterfaces.IMidiConnection;
 import com.fi0x.cc.project.synth.SynthManager;
 import com.fi0x.cc.project.midi.MidiHandler;
 
 import javax.sound.midi.MidiDevice;
-import javax.sound.midi.ShortMessage;
 
 public class Output extends AbstractElement implements IMidiConnection
 {
@@ -20,11 +20,14 @@ public class Output extends AbstractElement implements IMidiConnection
         startColorAnimation();
     }
     @Override
-    public void receiveMidi(ShortMessage msg)
+    public void receiveMidi(MixerSignal msg)
     {
+        if(msg.midiMessage == null)
+            return;
+
         if(outputMidiDevice == -1)
         {
-            SynthManager.handleMidiCommand(getConnectedMidiName(), msg);
+            SynthManager.handleMidiCommand(getConnectedMidiName(), msg.midiMessage);
             return;
         }
 
@@ -34,9 +37,9 @@ public class Output extends AbstractElement implements IMidiConnection
         MidiDevice device = getConnectedMidi();
         if(device != null)
         {
-            device.getTransmitters().get(0).getReceiver().send(msg, System.currentTimeMillis());
+            device.getTransmitters().get(0).getReceiver().send(msg.midiMessage, System.currentTimeMillis());
         } else
-            SynthManager.handleMidiCommand(getConnectedMidiName(), msg);
+            SynthManager.handleMidiCommand(getConnectedMidiName(), msg.midiMessage);
     }
     @Override
     public void changeMainValue(int valueChange)

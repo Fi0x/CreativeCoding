@@ -2,9 +2,9 @@ package com.fi0x.cc.project.mixer.abstractinterfaces;
 
 import com.fi0x.cc.project.gui.mixer.ElementUI;
 import com.fi0x.cc.project.gui.mixer.MainMixerWindow;
+import com.fi0x.cc.project.mixer.MixerSignal;
 import com.fi0x.cc.project.mixer.elements.Output;
 
-import javax.sound.midi.ShortMessage;
 import java.util.ArrayList;
 
 public abstract class AbstractElement extends ElementUI
@@ -35,7 +35,7 @@ public abstract class AbstractElement extends ElementUI
         outputNode = null;
     }
 
-    public abstract void receiveMidi(ShortMessage msg);
+    public abstract void receiveMidi(MixerSignal msg);
 
     public void addInputConnection(AbstractElement incomingConnection)
     {

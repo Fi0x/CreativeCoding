@@ -2,12 +2,12 @@ package com.fi0x.cc.project.mixer.elements;
 
 import com.fi0x.cc.project.LoggerManager;
 import com.fi0x.cc.project.gui.mixer.MainMixerWindow;
+import com.fi0x.cc.project.mixer.MixerSignal;
 import com.fi0x.cc.project.mixer.abstractinterfaces.AbstractElement;
 import com.fi0x.cc.project.mixer.abstractinterfaces.INumberProvider;
 import com.fi0x.cc.project.mixer.abstractinterfaces.ISecondaryValues;
 import io.fi0x.javalogger.logging.Logger;
 
-import javax.sound.midi.ShortMessage;
 import java.util.ArrayList;
 
 public class ClockCounter extends AbstractElement implements INumberProvider, ISecondaryValues
@@ -29,7 +29,7 @@ public class ClockCounter extends AbstractElement implements INumberProvider, IS
     }
 
     @Override
-    public void receiveMidi(ShortMessage msg)
+    public void receiveMidi(MixerSignal msg)
     {
         Logger.log("A Clock counter should not receive midi signals", String.valueOf(LoggerManager.Template.DEBUG_WARNING));
     }

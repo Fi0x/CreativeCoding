@@ -1,6 +1,7 @@
 package com.fi0x.cc.project.midi;
 
 import com.fi0x.cc.project.LoggerManager;
+import com.fi0x.cc.project.mixer.MixerSignal;
 import com.fi0x.cc.project.mixer.elements.Input;
 import com.fi0x.cc.project.synth.SynthManager;
 import io.fi0x.javalogger.logging.Logger;
@@ -64,10 +65,12 @@ public class MidiHandler
         {
             SynthManager.handleMidiCommand(name, msg);
 
+            MixerSignal mxs = new MixerSignal();
+            mxs.midiMessage = (ShortMessage) msg;
             for(Input i : inputElements)
             {
                 if(i.getConnectedMidiName().equals(name))
-                    i.receiveMidi((ShortMessage) msg);
+                    i.receiveMidi(mxs);
             }
         }
 
