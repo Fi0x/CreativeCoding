@@ -6,9 +6,14 @@ import com.fi0x.cc.project.mixer.abstractinterfaces.INumberProvider;
 import com.fi0x.cc.project.mixer.abstractinterfaces.ISignalModifier;
 
 import javax.sound.midi.ShortMessage;
+import java.util.ArrayList;
 
 public class SignalMuter extends AbstractElement implements ISignalModifier
 {
+    private boolean allowPass = true;
+
+    private final ArrayList<INumberProvider> connectedNumberProviders = new ArrayList<>();
+
     public SignalMuter(MainMixerWindow parentScreen, int x, int y)
     {
         super(parentScreen, x, y);
@@ -19,32 +24,48 @@ public class SignalMuter extends AbstractElement implements ISignalModifier
     @Override
     public void receiveMidi(ShortMessage msg)
     {
+        if(nextLink == null)
+            return;
 
+        if(connectedNumberProviders.size() > 0)
+        {
+            int num = 0;
+            for(INumberProvider np : connectedNumberProviders)
+                num += np.getCurrentNumber();
+            allowPass = num > 0;
+        }
+
+        if(allowPass)
+            nextLink.receiveMidi(msg);
     }
     @Override
     public void changeMainValue(int valueChange)
     {
-
+        allowPass = valueChange > 0;
     }
     @Override
     public String getMainValueName()
     {
-        return null;
+        return "Passable";
     }
     @Override
     public String getMainValue()
     {
-        return null;
+        return String.valueOf(allowPass);
     }
     @Override
     public void addNumberProvider(INumberProvider provider)
     {
-
+        connectedNumberProviders.add(provider);
     }
     @Override
     public void removeNumberProvider(INumberProvider provider)
     {
-
+        connectedNumberProviders.remove(provider);
     }
-    //TODO: Implement functions to mute a signal when this element is active and otherwise pass it through
+    @Override
+    public String getDisplayString()
+    {
+        return "Signal Muter\n" + (allowPass ? "Open" : "Muted");
+    }
 }
