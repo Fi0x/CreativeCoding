@@ -18,6 +18,7 @@ public class Ticker extends AbstractElement implements ISignalCreator, ISecondar
     private int note = 60;
     private int volume = 80;
     private int noteLength = 1;
+    private int noteShift = 0;
 
     private long lastNotePlayed = 0;
 
@@ -59,8 +60,6 @@ public class Ticker extends AbstractElement implements ISignalCreator, ISecondar
             return;
 
         generateAndSendOnOffSignal();
-
-        this.noteUpdate(-1000, 0.1f);
     }
     @Override
     public ArrayList<String> getSecondaryValueNames()
@@ -71,6 +70,7 @@ public class Ticker extends AbstractElement implements ISignalCreator, ISecondar
         varNames.add("Note");
         varNames.add("Volume");
         varNames.add("Note Length");
+        varNames.add("Note Shift");
 
         return varNames;
     }
@@ -105,6 +105,13 @@ public class Ticker extends AbstractElement implements ISignalCreator, ISecondar
                 if(noteLength < 0)
                     noteLength = 0;
                 break;
+            case "Note Shift":
+                noteShift += valueChange;
+                if(noteShift < 0)
+                    noteShift = 0;
+                else if(noteShift >= MixerManager.getNotesPerBeat())
+                    noteShift = MixerManager.getNotesPerBeat() - 1;
+                break;
         }
     }
     @Override
@@ -120,6 +127,8 @@ public class Ticker extends AbstractElement implements ISignalCreator, ISecondar
                 return String.valueOf(volume);
             case "Note Length":
                 return String.valueOf(noteLength);
+            case "Note Shift":
+                return String.valueOf(noteShift);
         }
         return "";
     }
@@ -137,6 +146,16 @@ public class Ticker extends AbstractElement implements ISignalCreator, ISecondar
         {
             AbstractElement currentNext = nextLink;
             int currentChannel = channel;
+
+            try
+            {
+                Thread.sleep(TimeCalculator.getMillisFromBeat(noteShift));
+            } catch(InterruptedException ignored)
+            {
+            }
+
+            this.noteUpdate(-1000, 0.1f);
+
             try
             {
                 ShortMessage msg = new ShortMessage();
