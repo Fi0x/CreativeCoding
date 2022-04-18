@@ -34,12 +34,17 @@ public class Ticker extends AbstractElement implements ISignalCreator, ISecondar
     @Override
     public void changeMainValue(int valueChange)
     {
-        notesPerBeat += valueChange;
+        int notesPerBeatPower = (int) (Math.log(MixerManager.getNotesPerBeat()) / Math.log(2));
+        int currentPower = (int) (Math.log(notesPerBeat) / Math.log(2));
 
-        if(notesPerBeat < 1)
-            notesPerBeat = 1;
-        else if(notesPerBeat > MixerManager.getNotesPerBeat())
-            notesPerBeat = MixerManager.getNotesPerBeat();
+        currentPower += valueChange;
+
+        if(currentPower < 0)
+            currentPower = 0;
+        else if(currentPower > notesPerBeatPower)
+            currentPower = notesPerBeatPower;
+
+        notesPerBeat = (int) Math.pow(2, currentPower);
     }
     @Override
     public String getMainValueName()
@@ -52,7 +57,7 @@ public class Ticker extends AbstractElement implements ISignalCreator, ISecondar
         return String.valueOf(notesPerBeat);
     }
     @Override
-    public void beatUpdate(long frame)
+    public void noteUpdate(long frame)
     {
         if(nextLink == null)
             return;

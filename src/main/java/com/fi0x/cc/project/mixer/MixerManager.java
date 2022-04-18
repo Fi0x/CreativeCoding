@@ -1,6 +1,5 @@
 package com.fi0x.cc.project.mixer;
 
-import com.fi0x.cc.project.gui.mixer.ElementUI;
 import com.fi0x.cc.project.gui.mixer.MainMixerWindow;
 import com.fi0x.cc.project.mixer.elements.AbstractElement;
 import com.fi0x.cc.project.mixer.elements.ISignalCreator;
@@ -35,7 +34,7 @@ public class MixerManager implements Runnable
                 }
             }
             for(ISignalCreator s : beatListeners)
-                s.beatUpdate(globalFrame);
+                s.noteUpdate(globalFrame);
 
             try
             {
@@ -86,8 +85,11 @@ public class MixerManager implements Runnable
     }
     public static void changeNPB(int npbChange)
     {
-        notesPerBeat += npbChange;
-        if(notesPerBeat < 1)
-            notesPerBeat = 1;
+        int currentPower = (int) (Math.log(notesPerBeat) / Math.log(2));
+        currentPower += npbChange;
+        if(currentPower < 0)
+            currentPower = 0;
+
+        notesPerBeat = (int) Math.pow(2, currentPower);
     }
 }

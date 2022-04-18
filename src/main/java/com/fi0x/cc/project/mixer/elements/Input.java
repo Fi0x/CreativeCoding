@@ -57,7 +57,7 @@ public class Input extends AbstractElement implements IMidiConnection, ISignalCr
             return null;
     }
     @Override
-    public void beatUpdate(long frame)
+    public void noteUpdate(long frame)
     {
         Logger.log("Input should not send beat signals and wait instead for midi-inputs from other devices", String.valueOf(LoggerManager.Template.DEBUG_WARNING));
     }

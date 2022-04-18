@@ -24,6 +24,7 @@ public class TypeSelector
         put("Output", Output.class);
         put("SignalChanger", SignalChanger.class);
         put("Ticker", Ticker.class);
+        put("ClockCounter", ClockCounter.class);
     }};
 
     public TypeSelector(MainMixerWindow parentScreen, int x, int y)
