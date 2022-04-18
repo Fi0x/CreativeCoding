@@ -21,12 +21,12 @@ public class MidiSignalHelper
         return originalByteRepresentation.toString();
     }
 
-    public static void changeChannel(ShortMessage originalMsg, int newChannel)
+    public static void changeChannel(ShortMessage originalMsg, int newChannel, boolean isIncrement)
     {
         MidiSignalInfo info = MidiSignalInfo.getSignalType(originalMsg.getStatus());
         assert info != null;
-        info.channel = newChannel;
 
+        info.channel = isIncrement ? originalMsg.getChannel() + newChannel : newChannel;
         try
         {
             originalMsg.setMessage(info.getStatusByte(), originalMsg.getData1(), originalMsg.getData2());
@@ -35,31 +35,40 @@ public class MidiSignalHelper
             Logger.log("Could not change the channel of a midi message", String.valueOf(LoggerManager.Template.DEBUG_WARNING));
         }
     }
-    public static void changeNote(ShortMessage originalMsg, int newNote)
+    public static void changeNote(ShortMessage originalMsg, int newNote, boolean isIncrement)
     {
+        int updatedNote = isIncrement ? originalMsg.getData1() + newNote : newNote;
         try
         {
-            originalMsg.setMessage(originalMsg.getStatus(), newNote, originalMsg.getData2());
+            originalMsg.setMessage(originalMsg.getStatus(), updatedNote, originalMsg.getData2());
         } catch(InvalidMidiDataException ignored)
         {
             Logger.log("Could not change the note of a midi message", String.valueOf(LoggerManager.Template.DEBUG_WARNING));
         }
     }
-    public static void changeVolume(ShortMessage originalMsg, int newVolume)
+    public static void changeVolume(ShortMessage originalMsg, int newVolume, boolean isIncrement)
     {
+        int updatedVolume = isIncrement ? originalMsg.getData2() + newVolume : newVolume;
         try
         {
-            originalMsg.setMessage(originalMsg.getStatus(), originalMsg.getData1(), newVolume);
+            originalMsg.setMessage(originalMsg.getStatus(), originalMsg.getData1(), updatedVolume);
         } catch(InvalidMidiDataException ignored)
         {
             Logger.log("Could not change the volume of a midi message", String.valueOf(LoggerManager.Template.DEBUG_WARNING));
         }
     }
-    public static void changeAllData(ShortMessage originalMsg, int newData)
+    public static void changeAllData(ShortMessage originalMsg, int newData, boolean isIncrement)
     {
         String expanded = expandSmallByte(newData, 14);
         int firstData = Integer.parseInt(expanded.substring(0, 4), 2);
         int secondData = Integer.parseInt(expanded.substring(4), 2);
+
+        if(isIncrement)
+        {
+            firstData += originalMsg.getData1();
+            secondData += originalMsg.getData2();
+        }
+
         try
         {
             originalMsg.setMessage(originalMsg.getStatus(), firstData, secondData);

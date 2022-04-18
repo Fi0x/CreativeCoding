@@ -5,10 +5,13 @@ import com.fi0x.cc.project.midi.MidiSignalHelper;
 import com.fi0x.cc.project.midi.MidiSignalInfo;
 
 import javax.sound.midi.ShortMessage;
+import java.util.ArrayList;
 
-public class SignalChanger extends AbstractElement implements ISignalModifier
+public class SignalChanger extends AbstractElement implements ISignalModifier, ISecondaryValues
 {
     private MidiSignalHelper.MidiSignalParts valueToChange = MidiSignalHelper.MidiSignalParts.Channel;
+    private boolean increment = false;
+    private int changeAmount = 0;
 
     public SignalChanger(MainMixerWindow parentScreen, int x, int y)
     {
@@ -46,7 +49,6 @@ public class SignalChanger extends AbstractElement implements ISignalModifier
     {
         return valueToChange.toString();
     }
-    //TODO: Add secondary value to determine the amount to change
 
     private ShortMessage changeMidiMessage(ShortMessage originalMsg)
     {
@@ -57,18 +59,17 @@ public class SignalChanger extends AbstractElement implements ISignalModifier
 
         switch(valueToChange)
         {
-            //TODO: Use correct values instead of 0
             case Channel:
-                MidiSignalHelper.changeChannel(originalMsg, 0);
+                MidiSignalHelper.changeChannel(originalMsg, changeAmount, increment);
                 break;
             case Note:
-                MidiSignalHelper.changeNote(originalMsg, 0);
+                MidiSignalHelper.changeNote(originalMsg, changeAmount, increment);
                 break;
             case Volume:
-                MidiSignalHelper.changeVolume(originalMsg, 0);
+                MidiSignalHelper.changeVolume(originalMsg, changeAmount, increment);
                 break;
             case CombinedData:
-                MidiSignalHelper.changeAllData(originalMsg, 0);
+                MidiSignalHelper.changeAllData(originalMsg, changeAmount, increment);
                 break;
         }
         return originalMsg;
@@ -79,5 +80,40 @@ public class SignalChanger extends AbstractElement implements ISignalModifier
     {
         String additionalInfo = valueToChange.toString();
         return "Signal Changer\n" + additionalInfo;
+    }
+    @Override
+    public ArrayList<String> getSecondaryValueNames()
+    {
+        ArrayList<String> varNames = new ArrayList<>();
+
+        varNames.add("Behaviour");
+        varNames.add("Amount");
+
+        return varNames;
+    }
+    @Override
+    public void updateSecondaryValue(String valueName, int valueChange)
+    {
+        switch (valueName)
+        {
+            case "Behaviour":
+                increment = valueChange > 0;
+                break;
+            case "Amount":
+                changeAmount += valueChange;
+                break;
+        }
+    }
+    @Override
+    public String getSecondaryValue(String valueName)
+    {
+        switch (valueName)
+        {
+            case "Behaviour":
+                return increment ? "Incremental" : "Absolute";
+            case "Amount":
+                return String.valueOf(changeAmount);
+        }
+        return "";
     }
 }

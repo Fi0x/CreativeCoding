@@ -41,7 +41,7 @@ public class MidiSignalInfo
 
     public int getStatusByte()
     {
-        return Integer.parseInt(bitMapping.get(NAME) + MidiSignalHelper.expandSmallByte(this.channel, 4), 2);
+        return Integer.parseInt(bitMapping.get(NAME) + MidiSignalHelper.expandSmallByte(this.channel % 16, 4), 2);
     }
 
     public enum MidiSignalName
