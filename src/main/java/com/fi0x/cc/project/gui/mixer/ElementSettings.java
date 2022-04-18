@@ -1,6 +1,7 @@
 package com.fi0x.cc.project.gui.mixer;
 
-import com.fi0x.cc.project.mixer.elements.*;
+import com.fi0x.cc.project.mixer.abstractinterfaces.AbstractElement;
+import com.fi0x.cc.project.mixer.abstractinterfaces.ISecondaryValues;
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PVector;

@@ -1,4 +1,4 @@
-package com.fi0x.cc.project.mixer.elements;
+package com.fi0x.cc.project.mixer.abstractinterfaces;
 
 public interface INumberProvider extends ISignalCreator
 {

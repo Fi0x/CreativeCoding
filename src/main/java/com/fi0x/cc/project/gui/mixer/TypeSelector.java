@@ -2,6 +2,8 @@ package com.fi0x.cc.project.gui.mixer;
 
 import com.fi0x.cc.project.LoggerManager;
 import com.fi0x.cc.project.mixer.MixerManager;
+import com.fi0x.cc.project.mixer.abstractinterfaces.AbstractElement;
+import com.fi0x.cc.project.mixer.abstractinterfaces.ISignalCreator;
 import com.fi0x.cc.project.mixer.elements.*;
 import controlP5.ControlEvent;
 import controlP5.ControlP5;
@@ -25,6 +27,7 @@ public class TypeSelector
         put("SignalChanger", SignalChanger.class);
         put("Ticker", Ticker.class);
         put("ClockCounter", ClockCounter.class);
+        put("SignalMuter", SignalMuter.class);
     }};
 
     public TypeSelector(MainMixerWindow parentScreen, int x, int y)
@@ -84,13 +87,13 @@ public class TypeSelector
         originalX = xPos;
         originalY = yPos;
 
-        int y = possibleElements.size() / 2 * -21;
+        int y = possibleElements.size() / 2 * -31;
         for(String name : possibleElements.keySet())
         {
             control.getController(name)
                     .setPosition(originalX - 50, originalY + y);
 
-            y += 21;
+            y += 31;
         }
 
         control.getController("Abort")
@@ -101,19 +104,19 @@ public class TypeSelector
 
     private void createButtons()
     {
-        int y = possibleElements.size() / 2 * -21;
+        int y = possibleElements.size() / 2 * -31;
         for(String name : possibleElements.keySet())
         {
             control.addButton(name)
-                    .setSize(100, 20)
+                    .setSize(100, 30)
                     .setPosition(originalX - 50, originalY + y)
                     .setValue(0);
 
-            y += 21;
+            y += 31;
         }
 
         control.addButton("Abort")
-                .setSize(100, 20)
+                .setSize(100, 30)
                 .setPosition(originalX - 50, originalY + y)
                 .setValue(0);
     }

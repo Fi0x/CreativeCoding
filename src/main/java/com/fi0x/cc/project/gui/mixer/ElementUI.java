@@ -1,5 +1,9 @@
 package com.fi0x.cc.project.gui.mixer;
 
+import com.fi0x.cc.project.mixer.abstractinterfaces.AbstractElement;
+import com.fi0x.cc.project.mixer.abstractinterfaces.INumberProvider;
+import com.fi0x.cc.project.mixer.abstractinterfaces.ISignalCreator;
+import com.fi0x.cc.project.mixer.abstractinterfaces.ISignalModifier;
 import com.fi0x.cc.project.mixer.elements.*;
 import processing.core.PApplet;
 import processing.core.PConstants;
@@ -136,7 +140,6 @@ public class ElementUI
     }
     public void updateConnections()
     {
-        //TODO: Adjust for INumberProviders
         if(this instanceof Output)
             return;
 

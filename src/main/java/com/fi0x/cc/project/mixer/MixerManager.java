@@ -1,8 +1,8 @@
 package com.fi0x.cc.project.mixer;
 
 import com.fi0x.cc.project.gui.mixer.MainMixerWindow;
-import com.fi0x.cc.project.mixer.elements.AbstractElement;
-import com.fi0x.cc.project.mixer.elements.ISignalCreator;
+import com.fi0x.cc.project.mixer.abstractinterfaces.AbstractElement;
+import com.fi0x.cc.project.mixer.abstractinterfaces.ISignalCreator;
 import com.fi0x.cc.project.mixer.elements.Input;
 
 import java.util.ArrayList;

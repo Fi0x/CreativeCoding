@@ -1,7 +1,8 @@
-package com.fi0x.cc.project.mixer.elements;
+package com.fi0x.cc.project.mixer.abstractinterfaces;
 
 import com.fi0x.cc.project.gui.mixer.ElementUI;
 import com.fi0x.cc.project.gui.mixer.MainMixerWindow;
+import com.fi0x.cc.project.mixer.elements.Output;
 
 import javax.sound.midi.ShortMessage;
 import java.util.ArrayList;
@@ -39,11 +40,16 @@ public abstract class AbstractElement extends ElementUI
     public void addInputConnection(AbstractElement incomingConnection)
     {
         inputs.add(incomingConnection);
+        if(this instanceof ISignalModifier && incomingConnection instanceof INumberProvider)
+            ((ISignalModifier) this).addNumberProvider((INumberProvider) incomingConnection);
     }
     public void removeAllConnections()
     {
         for(AbstractElement e : inputs)
             e.disconnectFromOutputNode();
+
+        if(this instanceof INumberProvider && nextLink != null)
+            ((ISignalModifier) nextLink).removeNumberProvider((INumberProvider) this);
     }
 
     public abstract void changeMainValue(int valueChange);

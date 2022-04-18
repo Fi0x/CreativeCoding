@@ -4,6 +4,9 @@ import com.fi0x.cc.project.LoggerManager;
 import com.fi0x.cc.project.gui.mixer.MainMixerWindow;
 import com.fi0x.cc.project.mixer.MixerManager;
 import com.fi0x.cc.project.mixer.TimeCalculator;
+import com.fi0x.cc.project.mixer.abstractinterfaces.AbstractElement;
+import com.fi0x.cc.project.mixer.abstractinterfaces.ISecondaryValues;
+import com.fi0x.cc.project.mixer.abstractinterfaces.ISignalCreator;
 import com.fi0x.cc.project.synth.synthesizers.MusicConverter;
 import io.fi0x.javalogger.logging.Logger;
 

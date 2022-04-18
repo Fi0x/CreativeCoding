@@ -2,6 +2,9 @@ package com.fi0x.cc.project.mixer.elements;
 
 import com.fi0x.cc.project.LoggerManager;
 import com.fi0x.cc.project.gui.mixer.MainMixerWindow;
+import com.fi0x.cc.project.mixer.abstractinterfaces.AbstractElement;
+import com.fi0x.cc.project.mixer.abstractinterfaces.INumberProvider;
+import com.fi0x.cc.project.mixer.abstractinterfaces.ISecondaryValues;
 import io.fi0x.javalogger.logging.Logger;
 
 import javax.sound.midi.ShortMessage;
@@ -13,8 +16,10 @@ public class ClockCounter extends AbstractElement implements INumberProvider, IS
     private int minNumber = 0;
     private int maxNumber = 7;
     private int stepIncrease = 1;
+    private boolean bounceOnEdges = false;
 
     private int currentNumber;
+    private boolean inverted;
 
     public ClockCounter(MainMixerWindow parentScreen, int x, int y)
     {
@@ -56,11 +61,14 @@ public class ClockCounter extends AbstractElement implements INumberProvider, IS
         if(frame % notesBetweenUpdates != 0)
             return;
 
-        currentNumber += stepIncrease;
+        if((currentNumber == maxNumber || currentNumber == minNumber) && bounceOnEdges)
+            inverted = !inverted;
+
+        currentNumber += inverted ? -stepIncrease : stepIncrease;
         if(currentNumber > maxNumber)
-            currentNumber = minNumber + (currentNumber - maxNumber) - 1;
+                currentNumber = minNumber + (currentNumber - maxNumber) - 1;
         else if(currentNumber < minNumber)
-            currentNumber = maxNumber - (minNumber - currentNumber);
+                currentNumber = maxNumber - (minNumber - currentNumber) + 1;
     }
     @Override
     public ArrayList<String> getSecondaryValueNames()
@@ -70,6 +78,7 @@ public class ClockCounter extends AbstractElement implements INumberProvider, IS
         varNames.add("Min");
         varNames.add("Max");
         varNames.add("Step-size");
+        varNames.add("Mode");
 
         return varNames;
     }
@@ -91,6 +100,9 @@ public class ClockCounter extends AbstractElement implements INumberProvider, IS
             case "Step-size":
                 stepIncrease += valueChange;
                 break;
+            case "Mode":
+                bounceOnEdges = valueChange > 0;
+                break;
         }
     }
     @Override
@@ -104,6 +116,8 @@ public class ClockCounter extends AbstractElement implements INumberProvider, IS
                 return String.valueOf(maxNumber);
             case "Step-size":
                 return String.valueOf(stepIncrease);
+            case "Mode":
+                return bounceOnEdges ? "Bounce" : "Clock";
         }
         return "";
     }
