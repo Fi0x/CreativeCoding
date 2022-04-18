@@ -140,11 +140,12 @@ public class ElementUI
         if(this instanceof Output)
             return;
 
-        Output closestOutput = (Output) getClosestNode(null);
-        if(closestOutput != null)
+        Output closestOutput = (Output) getClosestNode(null, true);
+        if(closestOutput != null || this instanceof INumberProvider)
         {
-            AbstractElement closestNode = (AbstractElement) getClosestNode(closestOutput);
-            ((AbstractElement) this).connectToNode(closestNode);
+            AbstractElement closestNode = (AbstractElement) getClosestNode(closestOutput, false);
+            if(closestNode != null)
+                ((AbstractElement) this).connectToNode(closestNode);
         }
     }
     public void sendPulse(ElementUI target, float beatTravelFrames)
@@ -155,7 +156,7 @@ public class ElementUI
         int transferFrames = (int) (beatTravelFrames * parent.frameRate);
         PVector src = new PVector(currentX, currentY);
         PVector dst = new PVector(target.currentX, target.currentY);
-        parent.addUISignal(new UISignal(parent, src, dst, transferFrames));
+        parent.addUISignal(new UISignal(parent, src, dst, transferFrames, !(this instanceof INumberProvider)));
     }
     public void noteUpdate(int blinkColor, float resetRate)
     {
@@ -168,10 +169,10 @@ public class ElementUI
     public void startColorAnimation()
     {
         shouldUseHSB = true;
-        hueOffset = this instanceof ISignalModifier ? 700 : 200;
+        hueOffset = this instanceof ISignalModifier || this instanceof INumberProvider ? 700 : 200;
     }
 
-    private ElementUI getClosestNode(Output desiredOutput)
+    private ElementUI getClosestNode(Output desiredOutput, boolean outputRequired)
     {
         ElementUI closest = null;
         float currentDist = 0;
@@ -180,9 +181,9 @@ public class ElementUI
             if(e == this || e instanceof ISignalCreator || isLoop(e))
                 continue;
 
-            if(e instanceof Output || (desiredOutput != null && e.getFinalOutput() == desiredOutput))
+            if(e instanceof Output || (desiredOutput != null && e.getFinalOutput() == desiredOutput) || (this instanceof INumberProvider && !outputRequired))
             {
-                if(!isInAngle(desiredOutput, e))
+                if(!isInAngle(desiredOutput, e) || (this instanceof INumberProvider && !(e instanceof ISignalModifier)))
                     continue;
 
                 float dist = PApplet.dist(currentX, currentY, e.currentX, e.currentY);
@@ -209,7 +210,7 @@ public class ElementUI
     }
     private boolean isInAngle(ElementUI outputElement, ElementUI nextNodeElement)
     {
-        if(outputElement == null || nextNodeElement instanceof Output)
+        if(outputElement == null || this instanceof INumberProvider || nextNodeElement instanceof Output)
             return true;
 
         PVector relativeOutNode = new PVector(currentX - outputElement.currentX, currentY - outputElement.currentY);

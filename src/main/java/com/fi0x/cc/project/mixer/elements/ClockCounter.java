@@ -10,15 +10,17 @@ import java.util.ArrayList;
 public class ClockCounter extends AbstractElement implements INumberProvider, ISecondaryValues
 {
     private int notesBetweenUpdates = 1;
-    private int minNumber;
-    private int maxNumber;
-    private int stepIncrease;
+    private int minNumber = 0;
+    private int maxNumber = 7;
+    private int stepIncrease = 1;
 
     private int currentNumber;
 
     public ClockCounter(MainMixerWindow parentScreen, int x, int y)
     {
         super(parentScreen, x, y);
+
+        startColorAnimation();
     }
 
     @Override
@@ -56,7 +58,7 @@ public class ClockCounter extends AbstractElement implements INumberProvider, IS
 
         currentNumber += stepIncrease;
         if(currentNumber > maxNumber)
-            currentNumber = minNumber + (currentNumber - maxNumber);
+            currentNumber = minNumber + (currentNumber - maxNumber) - 1;
         else if(currentNumber < minNumber)
             currentNumber = maxNumber - (minNumber - currentNumber);
     }
