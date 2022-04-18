@@ -77,12 +77,4 @@ public class MidiSignalHelper
             Logger.log("Could not change both data fields of a midi message", String.valueOf(LoggerManager.Template.DEBUG_WARNING));
         }
     }
-
-    public enum MidiSignalParts
-    {
-        Channel,
-        Note,
-        Volume,
-        CombinedData
-    }
 }

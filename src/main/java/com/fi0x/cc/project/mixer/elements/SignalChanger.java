@@ -3,13 +3,15 @@ package com.fi0x.cc.project.mixer.elements;
 import com.fi0x.cc.project.gui.mixer.MainMixerWindow;
 import com.fi0x.cc.project.midi.MidiSignalHelper;
 import com.fi0x.cc.project.midi.MidiSignalInfo;
+import com.fi0x.cc.project.mixer.TimeCalculator;
 
 import javax.sound.midi.ShortMessage;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class SignalChanger extends AbstractElement implements ISignalModifier, ISecondaryValues
 {
-    private MidiSignalHelper.MidiSignalParts valueToChange = MidiSignalHelper.MidiSignalParts.Channel;
+    private MidiSignalParts valueToChange = MidiSignalParts.Channel;
     private boolean increment = false;
     private int changeAmount = 0;
 
@@ -25,12 +27,28 @@ public class SignalChanger extends AbstractElement implements ISignalModifier, I
         if(nextLink == null)
             return;
 
-        nextLink.receiveMidi(changeMidiMessage(msg));
+        new Thread(() ->
+        {
+            ShortMessage updatedMessage = changeMidiMessage(msg);
+            if(valueToChange == MidiSignalParts.Length)
+            {
+                if(Objects.requireNonNull(MidiSignalInfo.getSignalType(msg.getStatus())).NAME == MidiSignalInfo.MidiSignalName.NoteOff)
+                {
+                    try
+                    {
+                        Thread.sleep(TimeCalculator.getMillisFromBeat(changeAmount));
+                    } catch(InterruptedException ignored)
+                    {
+                    }
+                }
+            }
+            nextLink.receiveMidi(updatedMessage);
+        }).start();
     }
     @Override
     public void changeMainValue(int valueChange)
     {
-        MidiSignalHelper.MidiSignalParts[] partValues = MidiSignalHelper.MidiSignalParts.values();
+        MidiSignalParts[] partValues = MidiSignalParts.values();
         int newPartIdx = valueToChange.ordinal() + valueChange;
         if(newPartIdx < 0)
             newPartIdx = 0;
@@ -115,5 +133,14 @@ public class SignalChanger extends AbstractElement implements ISignalModifier, I
                 return String.valueOf(changeAmount);
         }
         return "";
+    }
+
+    public enum MidiSignalParts
+    {
+        Channel,
+        Note,
+        Volume,
+        CombinedData,
+        Length
     }
 }
