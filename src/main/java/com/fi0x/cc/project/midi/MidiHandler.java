@@ -1,4 +1,4 @@
-package com.fi0x.cc.project.synth.midi;
+package com.fi0x.cc.project.midi;
 
 import com.fi0x.cc.project.LoggerManager;
 import com.fi0x.cc.project.mixer.elements.Input;
@@ -14,7 +14,7 @@ public class MidiHandler
     public final static ArrayList<MidiDevice> devices = new ArrayList<>();
     public final static ArrayList<Input> inputElements = new ArrayList<>();
 
-    public MidiHandler()
+    public void initialize()
     {
         Logger.log("Loading MIDI-Devices", String.valueOf(LoggerManager.Template.DEBUG_INFO));
         MidiDevice.Info[] infos = MidiSystem.getMidiDeviceInfo();

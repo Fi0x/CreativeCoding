@@ -2,7 +2,7 @@ package com.fi0x.cc.project.mixer.elements;
 
 import com.fi0x.cc.project.gui.mixer.MainMixerWindow;
 import com.fi0x.cc.project.synth.SynthManager;
-import com.fi0x.cc.project.synth.midi.MidiHandler;
+import com.fi0x.cc.project.midi.MidiHandler;
 
 import javax.sound.midi.MidiDevice;
 import javax.sound.midi.ShortMessage;

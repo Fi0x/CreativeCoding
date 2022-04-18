@@ -4,7 +4,7 @@ import com.fi0x.cc.project.mixer.MixerManager;
 import com.fi0x.cc.project.mixer.elements.AbstractElement;
 import com.fi0x.cc.project.mixer.elements.ISignalCreator;
 import com.fi0x.cc.project.mixer.elements.Input;
-import com.fi0x.cc.project.synth.midi.MidiHandler;
+import com.fi0x.cc.project.midi.MidiHandler;
 import controlP5.ControlEvent;
 import processing.awt.PSurfaceAWT;
 import processing.core.PApplet;

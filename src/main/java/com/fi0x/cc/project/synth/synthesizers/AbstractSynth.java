@@ -3,10 +3,13 @@ package com.fi0x.cc.project.synth.synthesizers;
 import com.fi0x.cc.project.LoggerManager;
 import com.fi0x.cc.project.gui.synth.AbstractSoundVisualizer;
 import com.fi0x.cc.project.gui.synth.SynthUI;
+import com.fi0x.cc.project.midi.MidiSignalHelper;
+import com.fi0x.cc.project.midi.MidiSignalInfo;
 import com.fi0x.cc.project.synth.SynthManager;
 import io.fi0x.javalogger.logging.Logger;
 
 import javax.sound.midi.*;
+import java.util.Objects;
 
 public abstract class AbstractSynth implements ISynthesizer
 {
@@ -36,38 +39,38 @@ public abstract class AbstractSynth implements ISynthesizer
     @Override
     public void sendMidiCommand(MidiMessage message)
     {
-        String status = Integer.toBinaryString(message.getStatus());
+        MidiSignalInfo type = MidiSignalInfo.getSignalType(message.getStatus());
         byte[] data = message.getMessage();
 
-        switch(status.substring(0, 4))
+        switch(Objects.requireNonNull(type).NAME)
         {
-            case "1000":
+            case NoteOff:
                 channel.noteOff(data[1], data[2]);
                 linkedUI.noteTriggered(false);
                 soundVisualizer.activeNotes.remove((int) data[1]);
                 break;
-            case "1001":
+            case NoteOn:
                 channel.noteOn(data[1], data[2]);
                 linkedUI.noteTriggered(true);
                 soundVisualizer.activeNotes.put((int) data[1], (int) data[2]);
                 soundVisualizer.lastActivity = 0;
                 break;
-            case "1010":
+            case PolyPressure:
                 channel.setPolyPressure(data[1], data[2]);
                 break;
-            case "1011":
+            case ControlChange:
                 channel.controlChange(data[1], data[2]);
                 break;
-            case "1100":
+            case ProgramChange:
                 channel.programChange(data[1]);
                 break;
-            case "1101":
+            case ChannelPressure:
                 channel.setChannelPressure(data[1]);
                 break;
-            case "1110":
-                String binary = expandSmallBytes(data[1]) + expandSmallBytes(data[2]);
-                channel.setPitchBend(Integer.parseInt(binary, 2));
-                soundVisualizer.pitchBendPercent = ((float) Integer.parseInt(binary, 2)) / 16383;
+            case PitchBend:
+                int combinedData = Integer.parseInt(MidiSignalHelper.getCombinedData(data[1], data[2]), 2);
+                channel.setPitchBend(combinedData);
+                soundVisualizer.pitchBendPercent = combinedData / 16383f;
                 break;
         }
     }
@@ -135,14 +138,5 @@ public abstract class AbstractSynth implements ISynthesizer
     public void linkVisualizer(AbstractSoundVisualizer visualizer)
     {
         soundVisualizer = visualizer;
-    }
-
-    private static String expandSmallBytes(int originalByte)
-    {
-        StringBuilder originalByteRepresentation = new StringBuilder(Integer.toBinaryString(originalByte));
-        while(originalByteRepresentation.length() < 7)
-            originalByteRepresentation.insert(0, "0");
-
-        return originalByteRepresentation.toString();
     }
 }
