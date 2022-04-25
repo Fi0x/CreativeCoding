@@ -34,7 +34,10 @@ public class SynthUI
             throw new IllegalStateException("No Synths loaded that could be linked.");
 
         linkedSynth.linkUI(this);
-        visualizer = new SoundVisualizer2(parent, linkedSynth, w / 2, h / 2);
+        if(Math.random() > 0.5)
+            visualizer = new SoundVisualizer2(parent, linkedSynth, w / 2, h / 2);
+        else
+            visualizer = new SoundVisualizer(parent, linkedSynth, w / 2, h / 2);
 
         if(((AbstractSynth) linkedSynth).channelNumber == 9)
         {

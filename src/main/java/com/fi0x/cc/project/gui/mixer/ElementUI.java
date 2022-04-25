@@ -11,6 +11,8 @@ import processing.core.PVector;
 
 public class ElementUI
 {
+    //TODO: BeginShape / EndShape für spikes checken
+    //TODO: Farbanimation rausnehmen; klare Farbunterschiede zwischen typen
     private final MainMixerWindow parent;
     protected int currentX;
     protected int currentY;
