@@ -1,9 +1,8 @@
 package com.fi0x.cc.exercises.week3;
 
 import processing.core.PApplet;
-import processing.core.PVector;
 
-public class Exercise2 extends PApplet
+public class Exercise2WithoutScale extends PApplet
 {
     @Override
     public void settings()
@@ -26,12 +25,16 @@ public class Exercise2 extends PApplet
 
         for(int i = 0; i < rectCount; i++)
         {
-            rect(0, 0, width, height);
-            scale(0.9f);
+            float locationMultiplier = rectCount / (float) i * 0.01f;
+            float sizeMultiplier = 1f / i * rectCount * 0.01f;
+            rect(width / 2f - width / 2f * locationMultiplier, height / 2f - height / 2f * locationMultiplier, width * sizeMultiplier, height * sizeMultiplier);
             doRotation(rectRot);
         }
     }
 
+    private void drawRect(int number)
+    {
+    }
     private void doRotation(float rot)
     {
         translate(width / 2f, height / 2f);
