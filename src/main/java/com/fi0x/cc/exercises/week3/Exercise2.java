@@ -9,12 +9,12 @@ public class Exercise2 extends PApplet
     public void settings()
     {
         size(500, 500);
-        noFill();
     }
     @Override
     public void setup()
     {
         frameRate(60);
+        noFill();
     }
 
     @Override
@@ -22,15 +22,24 @@ public class Exercise2 extends PApplet
     {
         background(255);
         int rectCount = mouseX + 5;
-        int rectRot = mouseY;
+        float rectRot = mouseY / (float) height;
 
         for(int i = 0; i < rectCount; i++)
         {
-            rect(width/2f, height/2f, width/2f, height/2f);
+            float locationMultiplier = rectCount / (float) i * 0.01f;
+            float sizeMultiplier = 1f / i * rectCount * 0.01f;
+            rect(width / 2f - width / 2f * locationMultiplier, height / 2f - height / 2f * locationMultiplier, width * sizeMultiplier, height * sizeMultiplier);
+            doRotation(rectRot);
         }
     }
 
     private void drawRect(int number)
     {
+    }
+    private void doRotation(float rot)
+    {
+        translate(width / 2f, height / 2f);
+        rotate(rot);
+        translate(-width / 2f, -height / 2f);
     }
 }

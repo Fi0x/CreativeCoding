@@ -24,6 +24,7 @@ public class Startup
         put("2.4", "com.fi0x.cc.exercises.week2.Exercise4");
         put("3.1", "com.fi0x.cc.exercises.week3.Exercise1");
         put("3.2", "com.fi0x.cc.exercises.week3.Exercise2");
+        put("3.2b", "com.fi0x.cc.exercises.week3.Exercise2Variant");
     }};
 
     public static void main(String[] args)
