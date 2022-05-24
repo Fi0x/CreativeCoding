@@ -2,12 +2,16 @@ package com.fi0x.cc.exercises.week4;
 
 import processing.core.PApplet;
 import processing.core.PImage;
+import processing.event.MouseEvent;
 
 import java.util.ArrayList;
 
 public class Exercise2 extends PApplet
 {
-    private final int INVADER_SIZE = 7;
+    private final int INVADER_PIXELS = 7;
+    private final int INVADER_SIZE = 20;
+
+    private final ArrayList<Invader> invaders = new ArrayList<>();
 
     @Override
     public void settings()
@@ -18,25 +22,58 @@ public class Exercise2 extends PApplet
     public void setup()
     {
         frameRate(60);
-        background(0);
         fill(255);
     }
 
     @Override
     public void draw()
     {
-        Invader i = new Invader();
+        background(0);
 
-        image(i.image, 0, 0, INVADER_SIZE, INVADER_SIZE);
+        if(frameCount % 60 == 0)
+            invaders.add(new Invader());
+
+        for(Invader i : invaders)
+            i.drawInvader();
+    }
+
+    @Override
+    public void mousePressed(MouseEvent event)
+    {
+        for(Invader i : invaders)
+        {
+            if(i.isMouseAbove())
+            {
+                invaders.remove(i);
+                break;
+            }
+        }
     }
 
     private class Invader
     {
-        private final PImage image;
+        private final PImage icon;
+        private float x;
+        private float y;
+        private float speed;
 
         private Invader()
         {
-            image = generateInvader();
+            icon = generateInvader();
+            y = 0;
+            x = random(width - INVADER_PIXELS);
+            speed = random(0.5f, 2);
+        }
+
+        private void drawInvader()
+        {
+            y += speed;
+            image(icon, x, y, INVADER_SIZE, INVADER_SIZE);
+        }
+
+        private boolean isMouseAbove()
+        {
+            return mouseX >= x && mouseX <= x + INVADER_SIZE && mouseY >= y && mouseY <= y + INVADER_SIZE;
         }
 
         private PImage generateInvader()
@@ -46,12 +83,12 @@ public class Exercise2 extends PApplet
             int secondary = color(random(255), random(255), random(255));
             int accent = color(random(255), random(255), random(255));
 
-            PImage img = createImage(INVADER_SIZE, INVADER_SIZE, RGB);
+            PImage img = createImage(INVADER_PIXELS, INVADER_PIXELS, RGB);
             img.loadPixels();
 
-            for(int x = 0; x <= (INVADER_SIZE + 1) / 2; x++)
+            for(int x = 0; x <= (INVADER_PIXELS + 1) / 2; x++)
             {
-                for(int y = 0; y < INVADER_SIZE; y++)
+                for(int y = 0; y < INVADER_PIXELS; y++)
                 {
                     float colorChance = random(100);
                     int choosenColor = background;
@@ -62,8 +99,8 @@ public class Exercise2 extends PApplet
                     else if(choosenColor < 60)
                         choosenColor = primary;
 
-                    img.pixels[y * INVADER_SIZE + x] = choosenColor;
-                    img.pixels[y * INVADER_SIZE + INVADER_SIZE - x - 1] = choosenColor;
+                    img.pixels[y * INVADER_PIXELS + x] = choosenColor;
+                    img.pixels[y * INVADER_PIXELS + INVADER_PIXELS - x - 1] = choosenColor;
                 }
             }
             img.updatePixels();
