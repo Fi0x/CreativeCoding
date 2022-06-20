@@ -2,11 +2,8 @@ package com.fi0x.cc.exercises.week5;
 
 import processing.core.PApplet;
 
-import java.util.ArrayList;
-
 public class Exercise1 extends PApplet
 {
-    private float circleSizeModifier = 0.8f;
     private int rotation = 0;
     private int subCircles = 1;
 
@@ -40,6 +37,7 @@ public class Exercise1 extends PApplet
         }
 
         rotate(radians(rotation));
+        float circleSizeModifier = 0.8f;
         drawSubCircle(width / 2f, height / 2f, subCircles, circleSizeModifier);
     }
 
