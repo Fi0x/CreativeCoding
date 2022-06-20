@@ -31,6 +31,7 @@ public class Startup
         put("4.2", "com.fi0x.cc.exercises.week4.Exercise2");
         put("5.1", "com.fi0x.cc.exercises.week5.Exercise1");
         put("5.1b", "com.fi0x.cc.exercises.week5.Exercise1Test");
+        put("5.1c", "com.fi0x.cc.exercises.week5.Exercise1FractalTree");
         put("5.2", "com.fi0x.cc.exercises.week5.Exercise2");
         put("5.2b", "com.fi0x.cc.exercises.week5.Exercise2MinDistance");
         put("5.2c", "com.fi0x.cc.exercises.week5.Exercise2Lines");
