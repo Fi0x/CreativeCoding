@@ -26,6 +26,10 @@ public class Exercise3Different extends PApplet
         frameRate(500);
     }
     @Override
+    public void exitActual()
+    {
+    }
+    @Override
     public void settings()
     {
         size(sizeX, sizeY);

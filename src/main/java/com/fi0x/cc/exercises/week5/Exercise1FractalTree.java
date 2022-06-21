@@ -21,6 +21,10 @@ public class Exercise1FractalTree extends PApplet
         size(1000, 500);
     }
     @Override
+    public void exitActual()
+    {
+    }
+    @Override
     public void setup()
     {
         frameRate(1);

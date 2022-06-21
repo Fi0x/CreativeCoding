@@ -1,5 +1,6 @@
 package com.fi0x.cc.exercises;
 
+import controlP5.ControlP5;
 import io.fi0x.javalogger.logging.Logger;
 import processing.core.PApplet;
 
@@ -8,7 +9,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Scanner;
 
-public class Startup
+public class Startup extends PApplet
 {
     private static final Map<String, String> exerciseMap = new HashMap<>()
     {{
@@ -57,7 +58,9 @@ public class Startup
 
         Scanner sc = new Scanner(System.in);
         Logger.log("Welcome to my Creative Coding Lecture Project!", String.valueOf(LogTemplate.INFO_WHITE));
-        showMainMenu(sc);
+
+        PApplet.main("com.fi0x.cc.exercises.MenuScreen");
+//        showMainMenu(sc);
     }
 
     private static void showMainMenu(Scanner sc)

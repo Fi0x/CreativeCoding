@@ -25,6 +25,10 @@ public class Exercise3 extends PApplet
         stroke(0, 0);
     }
     @Override
+    public void exitActual()
+    {
+    }
+    @Override
     public void settings()
     {
         size(sizeX, sizeY);

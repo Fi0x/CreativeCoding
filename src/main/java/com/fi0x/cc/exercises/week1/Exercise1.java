@@ -14,6 +14,10 @@ public class Exercise1 extends PApplet
         background(0, 0, 255);
     }
     @Override
+    public void exitActual()
+    {
+    }
+    @Override
     public void settings()
     {
         size(500, 400);

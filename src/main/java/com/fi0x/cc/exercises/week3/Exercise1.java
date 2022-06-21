@@ -18,6 +18,10 @@ public class Exercise1 extends PApplet
         size((int) ((RECTS.x + 2) * RECT_SIZE), (int) ((RECTS.y + 2) * RECT_SIZE));
     }
     @Override
+    public void exitActual()
+    {
+    }
+    @Override
     public void setup()
     {
         frameRate(60);

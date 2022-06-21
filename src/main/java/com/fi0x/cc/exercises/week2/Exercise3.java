@@ -15,6 +15,10 @@ public class Exercise3 extends PApplet
         size(COLUMNS * CIRCLE_SIZE, ROWS * CIRCLE_SIZE);
     }
     @Override
+    public void exitActual()
+    {
+    }
+    @Override
     public void setup()
     {
         frameRate(1);

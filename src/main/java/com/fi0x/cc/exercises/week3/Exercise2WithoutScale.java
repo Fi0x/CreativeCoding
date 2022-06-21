@@ -10,6 +10,10 @@ public class Exercise2WithoutScale extends PApplet
         size(500, 500);
     }
     @Override
+    public void exitActual()
+    {
+    }
+    @Override
     public void setup()
     {
         frameRate(60);

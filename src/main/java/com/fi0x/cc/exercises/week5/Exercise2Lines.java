@@ -15,6 +15,10 @@ public class Exercise2Lines extends PApplet
         size(500, 500);
     }
     @Override
+    public void exitActual()
+    {
+    }
+    @Override
     public void setup()
     {
         background(0);

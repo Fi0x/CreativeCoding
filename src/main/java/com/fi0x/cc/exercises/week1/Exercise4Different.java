@@ -20,6 +20,10 @@ public class Exercise4Different extends PApplet
         noStroke();
     }
     @Override
+    public void exitActual()
+    {
+    }
+    @Override
     public void settings()
     {
         img = loadImage("images/bridge.jpg");

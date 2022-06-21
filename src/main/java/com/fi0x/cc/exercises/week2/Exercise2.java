@@ -19,6 +19,10 @@ public class Exercise2 extends PApplet
         smooth(0);
     }
     @Override
+    public void exitActual()
+    {
+    }
+    @Override
     public void setup()
     {
         frameRate(20);

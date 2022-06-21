@@ -15,6 +15,10 @@ public class Exercise4 extends PApplet
         size(s, s);
     }
     @Override
+    public void exitActual()
+    {
+    }
+    @Override
     public void setup()
     {
         frameRate(60);
