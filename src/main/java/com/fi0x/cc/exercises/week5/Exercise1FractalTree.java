@@ -1,20 +1,24 @@
 package com.fi0x.cc.exercises.week5;
 
 import processing.core.PApplet;
-import processing.core.PVector;
 
 import java.util.ArrayList;
 
 public class Exercise1FractalTree extends PApplet
 {
-    private int maxLevel = 10;
-    private int currentLevel = 0;
-    private final ArrayList<Branch> endBranches = new ArrayList<>();
+    private final int maxLevel = 8;
+    private final int averageSubBranches = 3;
+    private final float rootLength = 70;
+    private final float rootThickness = 5;
+    private final float lengthMultiplier = 0.9f;
+    private final float thicknessMultiplier = 0.8f;
+
+    private Branch rootBranch;
 
     @Override
     public void settings()
     {
-        size(500, 500);
+        size(1000, 500);
     }
     @Override
     public void setup()
@@ -22,41 +26,59 @@ public class Exercise1FractalTree extends PApplet
         frameRate(1);
         fill(255);
         stroke(255);
-        background(0);
 
-        PVector start = new PVector(0, 0);
-        PVector end = new PVector(0, -50);
-        endBranches.add(new Branch(start, end));
     }
 
     @Override
     public void draw()
     {
+        background(0);
         translate(width / 2f, height);
+        scale(1, -1);
 
-        for(int i = endBranches.size() - 1; i >= 0; i--)
-        {
-            Branch b = endBranches.get(i);
-            line(b.start.x, b.start.y, b.end.x, b.end.y);
-
-            for(int j = 0; j < random(2) + 1; j++)
-            {
-
-            }
-
-            endBranches.remove(b);
-        }
+        rootBranch = new Branch(rootLength, rootThickness, 0);
+        rootBranch.createSubBranches((int) (random(2) + averageSubBranches - 1));
+        rootBranch.drawBranchWithSubBranches();
     }
 
     private class Branch
     {
-        private final PVector start;
-        private final PVector end;
+        private final float length;
+        private final float thickness;
+        private final int treeLevel;
+        private final ArrayList<Branch> childBranches = new ArrayList<>();
 
-        private Branch(PVector from, PVector to)
+        private Branch(float branchLength, float branchThickness, int level)
         {
-            start = from;
-            end = to;
+            length = branchLength;
+            treeLevel = level;
+            thickness = branchThickness;
+        }
+        private void createSubBranches(int count)
+        {
+            if(treeLevel < maxLevel)
+            {
+                for(int i = 0; i < count; i++)
+                {
+                    Branch b = new Branch(length * lengthMultiplier, thickness * thicknessMultiplier, treeLevel + 1);
+                    b.createSubBranches((int) (random(2) + averageSubBranches - 1));
+                    childBranches.add(b);
+                }
+            }
+        }
+
+        private void drawBranchWithSubBranches()
+        {
+            pushMatrix();
+            rotate(radians(random(40) - 20));
+            strokeWeight(thickness);
+            line(0, 0, 0, length);
+
+            translate(0, length);
+            for(Branch b : childBranches)
+                b.drawBranchWithSubBranches();
+
+            popMatrix();
         }
     }
 }
