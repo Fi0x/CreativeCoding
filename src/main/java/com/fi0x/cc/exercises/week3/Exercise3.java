@@ -38,7 +38,7 @@ public class Exercise3 extends PApplet
         float pmY = pmouseY - centerY;
 
         translate(centerX, centerY);
-        for (float i = 0; i < 6; i++) {
+        for (int i = 0; i < 6; i++) {
             rotate(radians(360 / 6f));
             line(mX, mY, pmX, pmY);
             pushMatrix();

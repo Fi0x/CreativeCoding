@@ -41,6 +41,7 @@ public class MenuScreen extends PApplet
         exercises.add(new Entry("5.2", "com.fi0x.cc.exercises.week5.Exercise2"));
         exercises.add(new Entry("5.2b", "com.fi0x.cc.exercises.week5.Exercise2MinDistance"));
         exercises.add(new Entry("5.2c", "com.fi0x.cc.exercises.week5.Exercise2Lines"));
+        exercises.add(new Entry("5.3", "com.fi0x.cc.exercises.week5.Exercise3"));
     }
 
     @Override

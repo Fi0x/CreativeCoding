@@ -11,33 +11,6 @@ import java.util.Scanner;
 
 public class Startup extends PApplet
 {
-    private static final Map<String, String> exerciseMap = new HashMap<>()
-    {{
-        put("1.1", "com.fi0x.cc.exercises.week1.Exercise1");
-        put("1.3", "com.fi0x.cc.exercises.week1.Exercise3");
-        put("1.3b", "com.fi0x.cc.exercises.week1.Exercise3Different");
-        put("1.4", "com.fi0x.cc.exercises.week1.Exercise4");
-        put("1.4b", "com.fi0x.cc.exercises.week1.Exercise4Different");
-        put("1.4c", "com.fi0x.cc.exercises.week1.Exercise4Pointillism");
-        put("2.1", "com.fi0x.cc.exercises.week2.Exercise1");
-        put("2.2", "com.fi0x.cc.exercises.week2.Exercise2");
-        put("2.3", "com.fi0x.cc.exercises.week2.Exercise3");
-        put("2.4", "com.fi0x.cc.exercises.week2.Exercise4");
-        put("3.1", "com.fi0x.cc.exercises.week3.Exercise1");
-        put("3.2", "com.fi0x.cc.exercises.week3.Exercise2");
-        put("3.2b", "com.fi0x.cc.exercises.week3.Exercise2Variant");
-        put("3.2c", "com.fi0x.cc.exercises.week3.Exercise2WithoutScale");
-        put("3.3", "com.fi0x.cc.exercises.week3.Exercise3");
-        put("4.1", "com.fi0x.cc.exercises.week4.Exercise1");
-        put("4.2", "com.fi0x.cc.exercises.week4.Exercise2");
-        put("5.1", "com.fi0x.cc.exercises.week5.Exercise1");
-        put("5.1b", "com.fi0x.cc.exercises.week5.Exercise1Test");
-        put("5.1c", "com.fi0x.cc.exercises.week5.Exercise1FractalTree");
-        put("5.2", "com.fi0x.cc.exercises.week5.Exercise2");
-        put("5.2b", "com.fi0x.cc.exercises.week5.Exercise2MinDistance");
-        put("5.2c", "com.fi0x.cc.exercises.week5.Exercise2Lines");
-    }};
-
     public static void main(String[] args)
     {
         for(String arg : args)
@@ -60,30 +33,6 @@ public class Startup extends PApplet
         Logger.log("Welcome to my Creative Coding Lecture Project!", String.valueOf(LogTemplate.INFO_WHITE));
 
         PApplet.main("com.fi0x.cc.exercises.MenuScreen");
-//        showMainMenu(sc);
-    }
-
-    private static void showMainMenu(Scanner sc)
-    {
-        StringBuilder exerciseIDs = new StringBuilder();
-        for(String id : exerciseMap.keySet())
-        {
-            if(exerciseIDs.length() > 0)
-                exerciseIDs.append(", ");
-            exerciseIDs.append(id);
-        }
-        Logger.log("Please type in the number of the exercise you would like to see (" + exerciseIDs + "): ", String.valueOf(LogTemplate.INFO_BLUE));
-        String input = sc.next().toLowerCase(Locale.ROOT).replace("a", "");
-
-        if(exerciseMap.containsKey(input))
-        {
-            Logger.log("Starting exercise...", String.valueOf(LogTemplate.INFO_GREEN));
-            PApplet.main(exerciseMap.get(input));
-        } else
-        {
-            Logger.log("No valid input, please try a valid exercise id.", String.valueOf(LogTemplate.INFO_RED));
-            showMainMenu(sc);
-        }
     }
 
     public enum LogTemplate
