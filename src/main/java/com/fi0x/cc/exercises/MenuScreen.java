@@ -13,7 +13,7 @@ public class MenuScreen extends PApplet
     private final int buttonHeight = 30;
     private final int buttonDistance = 20;
     private final int buttonColumns = 6;
-    private final int buttonRows = 4;
+    private final int buttonRows = 5;
     private static final ArrayList<Entry> exercises = new ArrayList<>();
 
     public void fillExerciseList()
@@ -42,6 +42,9 @@ public class MenuScreen extends PApplet
         exercises.add(new Entry("5.2b", "com.fi0x.cc.exercises.week5.Exercise2MinDistance"));
         exercises.add(new Entry("5.2c", "com.fi0x.cc.exercises.week5.Exercise2Lines"));
         exercises.add(new Entry("5.3", "com.fi0x.cc.exercises.week5.Exercise3"));
+        exercises.add(new Entry("6.1", "com.fi0x.cc.exercises.week6.Exercise1"));
+        exercises.add(new Entry("6.1b", "com.fi0x.cc.exercises.week6.Exercise1Spikes"));
+        exercises.add(new Entry("6.1c", "com.fi0x.cc.exercises.week6.Exercise1Stars"));
     }
 
     @Override

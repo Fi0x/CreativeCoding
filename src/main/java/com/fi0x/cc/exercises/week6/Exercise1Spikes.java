@@ -1,9 +1,8 @@
 package com.fi0x.cc.exercises.week6;
 
 import processing.core.PApplet;
-import processing.core.PVector;
 
-public class Exercise1 extends PApplet
+public class Exercise1Spikes extends PApplet
 {
     private final int columns = 5;
     private final int rows = 5;
@@ -53,16 +52,12 @@ public class Exercise1 extends PApplet
     private void drawDesign()
     {
         stroke(random(255), random(255), random(255));
-        float a = random(0.1f, 10);
-        PVector first = new PVector(sin(0) * designSize * 0.5f * cos(0), cos(0) * designSize * 0.5f * cos(0));
         beginShape();
-        float x = 1000;
-        float y = 1000;
-        for(float deg = 0.1f; abs(min(x - first.x, first.x - x)) > 3 || abs(min(y - first.y, first.y - y)) > 3; deg += 0.1)
+        for(float deg = 0; deg < TWO_PI; deg += 0.1)
         {
-            float r = designSize * 0.5f * cos(deg * a);
-            x = sin(deg) * r;
-            y = cos (deg) * r;
+            float r = designSize * 0.5f * random(0, 1);
+            float x = sin(deg) * r;
+            float y = cos (deg) * r;
             vertex(x, y);
         }
         endShape();
