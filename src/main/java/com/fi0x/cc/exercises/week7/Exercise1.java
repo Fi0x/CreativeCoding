@@ -30,7 +30,7 @@ public class Exercise1 extends PApplet
         frameRate(60f);
         noFill();
         randomSeed(90284570918234345L);
-        colorMode(HSB, 360, 100, 100);
+        colorMode(HSB);
     }
 
     @Override
@@ -44,17 +44,16 @@ public class Exercise1 extends PApplet
         if(particles.size() < maxParticles)
             particles.add(new Particle(mouseX, mouseY));
 
-        for(int i = 0; i < particles.size(); i++)
+        for(int i = particles.size() - 1; i > 0; i--)
         {
             Particle p = particles.get(i);
             p.update();
+            p.display();
             if(p.alpha < 0)
             {
                 particles.remove(p);
                 i--;
             }
-            else
-                p.display();
         }
     }
 
@@ -63,13 +62,14 @@ public class Exercise1 extends PApplet
         private final PImage img = loadImage("images/blackSmokeParticle.png");
         private float x;
         private float y;
-        private float alpha = 100;
+        private float alpha;
         private final PVector motion;
 
         private Particle(float x, float y)
         {
-            this.x = x;
-            this.y = y;
+            this.x = x + random(-10, 10);
+            this.y = y + random(-10, 10);
+            alpha = 255;
             motion = new PVector(random(-maxSpeed, maxSpeed), -random(maxSpeed / 2f, maxSpeed));
         }
 
