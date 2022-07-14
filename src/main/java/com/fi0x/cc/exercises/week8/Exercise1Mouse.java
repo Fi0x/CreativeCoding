@@ -5,7 +5,7 @@ import processing.core.PVector;
 
 import java.util.ArrayList;
 
-public class Exercise1 extends PApplet
+public class Exercise1Mouse extends PApplet
 {
     private final int maxBoids = 100;
     private final float maxSpeed = 3;
@@ -74,6 +74,7 @@ public class Exercise1 extends PApplet
             PVector newAcceleration = separate();
             newAcceleration.add(align());
             newAcceleration.add(cohesion());
+            newAcceleration.add(fleeMouse());
             newAcceleration.limit(maxSpeed / 2);
 
             acceleration.add(newAcceleration);
@@ -98,6 +99,7 @@ public class Exercise1 extends PApplet
         private PVector separate()
         {
             PVector steer = new PVector();
+
             for(Boid other : flock)
             {
                 if(other == this)
@@ -114,7 +116,6 @@ public class Exercise1 extends PApplet
             }
 
             steer.limit(maxSpeed);
-
             return steer;
         }
         private PVector align()
@@ -139,12 +140,12 @@ public class Exercise1 extends PApplet
             }
 
             steer.limit(maxSpeed);
-
             return steer;
         }
         private PVector cohesion()
         {
             PVector steer = new PVector();
+
             for(Boid other : flock)
             {
                 if(other == this)
@@ -161,7 +162,22 @@ public class Exercise1 extends PApplet
             }
 
             steer.limit(maxSpeed * cohesionMultiplier);
+            return steer;
+        }
+        private PVector fleeMouse()
+        {
+            PVector steer = new PVector();
 
+            PVector mouseVector = new PVector(mouseX, mouseY);
+            float distMouse = getDistanceTo(mouseVector);
+            if(distMouse < minDistance)
+            {
+                PVector diff = PVector.sub(position, mouseVector);
+                diff.normalize();
+                steer.add(diff);
+            }
+
+            steer.limit(maxSpeed * cohesionMultiplier);
             return steer;
         }
 
