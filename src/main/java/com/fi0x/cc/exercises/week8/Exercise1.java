@@ -7,8 +7,10 @@ import java.util.ArrayList;
 
 public class Exercise1 extends PApplet
 {
-    private final int maxBoids = 300;
-    private final float maxSpeed = 3;
+    private final int maxBoids = 100;
+    private final float maxSpeed = 1;
+    private final float minDistance = 50;
+    private final float cohesionDistance = 100;
     private final ArrayList<Boid> flock = new ArrayList<>();
     @Override
     public void settings()
@@ -78,33 +80,84 @@ public class Exercise1 extends PApplet
             velocity.limit(maxSpeed);
             position.add(velocity);
 
-            position.x %= width;
-            position.y %= height;
+            if(position.x < 0)
+                position.x = width;
+            else if(position.x > width)
+                position.x = 0;
+            if(position.y < 0)
+                position.y = height;
+            else if(position.y > height)
+                position.y = 0;
         }
 
         private PVector separate()
         {
-            PVector result = new PVector();
+            PVector steer = new PVector();
+            for(Boid other : flock)
+            {
+                if(other == this)
+                    continue;
 
-            //TODO
+                float d = PVector.dist(position, other.position);
+                if(d < minDistance)
+                {
+                    PVector diff = PVector.sub(position, other.position);
+                    diff.normalize();
+                    diff.div(d);
+                    steer.add(diff);
+                }
+            }
 
-            return result;
+            steer.limit(maxSpeed);
+
+            return steer;
         }
         private PVector align()
         {
-            PVector result = new PVector();
+            PVector steer = new PVector();
 
-            //TODO
+            for(Boid other : flock)
+            {
+                if(other == this)
+                    continue;
 
-            return result;
+                float d = PVector.dist(position, other.position);
+                if(d > cohesionDistance)
+                    continue;
+
+                PVector direction = other.velocity;
+
+                direction.normalize();
+                direction.div(d);
+
+                steer.add(direction);
+            }
+
+            steer.limit(maxSpeed);
+
+            return steer;
         }
         private PVector cohesion()
         {
-            PVector result = new PVector();
+            PVector steer = new PVector();
+            for(Boid other : flock)
+            {
+                if(other == this)
+                    continue;
 
-            //TODO
+                float d = PVector.dist(position, other.position);
+                if(d < cohesionDistance && d > minDistance)
+                {
+                    PVector diff = PVector.sub(other.position, position);
+                    diff.normalize();
+                    diff.div(d);
+                    steer.add(diff);
+                }
+            }
 
-            return result;
+            steer.limit(maxSpeed);
+
+            return steer;
         }
     }
 }
