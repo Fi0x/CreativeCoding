@@ -1,6 +1,6 @@
 package com.fi0x.cc.project.gui.synth;
 
-import com.fi0x.cc.project.LoggerManager;
+import com.fi0x.cc.Main;
 import com.fi0x.cc.project.synth.SynthManager;
 import com.fi0x.cc.project.udp.UDPProcessor;
 import com.fi0x.cc.project.midi.MidiHandler;
@@ -95,19 +95,19 @@ public class MainSynthWindow extends PApplet
                 new ProcessBuilder("E:\\Users\\Fi0x\\Documents\\Programmieren\\ORCA\\Orca Tool\\Orca.exe").start();
             } catch(IOException e)
             {
-                Logger.log(new LogEntry("Could not open ORCA in Windows location, trying Linux instead", String.valueOf(LoggerManager.Template.DEBUG_WARNING)).EXCEPTION(e));
+                Logger.log(new LogEntry("Could not open ORCA in Windows location, trying Linux instead", String.valueOf(Main.Template.DEBUG_WARNING)).EXCEPTION(e));
                 try
                 {
                     Runtime.getRuntime().exec("/home/fi0x/Documents/ORCA/Orca");
                 } catch(IOException e1)
                 {
-                    Logger.log(new LogEntry("Could not open ORCA in Linux location, trying browser instead", String.valueOf(LoggerManager.Template.DEBUG_WARNING)).EXCEPTION(e1));
+                    Logger.log(new LogEntry("Could not open ORCA in Linux location, trying browser instead", String.valueOf(Main.Template.DEBUG_WARNING)).EXCEPTION(e1));
                     try
                     {
                         Desktop.getDesktop().browse(new URI("https://hundredrabbits.github.io/Orca/"));
                     } catch(IOException | URISyntaxException e2)
                     {
-                        Logger.log(new LogEntry("Could not open ORCA", String.valueOf(LoggerManager.Template.DEBUG_WARNING)).EXCEPTION(e2));
+                        Logger.log(new LogEntry("Could not open ORCA", String.valueOf(Main.Template.DEBUG_WARNING)).EXCEPTION(e2));
                     }
                 }
             }
@@ -144,7 +144,7 @@ public class MainSynthWindow extends PApplet
                     synths[x * ySynths + y] = new SynthUI(this, x * width / xSynths, y * (height - 40) / ySynths, width / xSynths, (height - 40) / ySynths);
                 } catch(IllegalStateException ignored)
                 {
-                    Logger.log("Could not initialize synth-UI for synth " + x + ", " + y, String.valueOf(LoggerManager.Template.DEBUG_WARNING));
+                    Logger.log("Could not initialize synth-UI for synth " + x + ", " + y, String.valueOf(Main.Template.DEBUG_WARNING));
                     return;
                 }
             }

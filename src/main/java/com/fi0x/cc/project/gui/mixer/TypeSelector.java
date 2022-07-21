@@ -1,6 +1,6 @@
 package com.fi0x.cc.project.gui.mixer;
 
-import com.fi0x.cc.project.LoggerManager;
+import com.fi0x.cc.Main;
 import com.fi0x.cc.project.mixer.MixerManager;
 import com.fi0x.cc.project.mixer.abstractinterfaces.AbstractElement;
 import com.fi0x.cc.project.mixer.abstractinterfaces.ISignalCreator;
@@ -59,7 +59,7 @@ public class TypeSelector
                     inst.updateConnections();
                 } catch(NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e)
                 {
-                    Logger.log("Could not create element from type-selector", String.valueOf(LoggerManager.Template.DEBUG_WARNING));
+                    Logger.log("Could not create element from type-selector", String.valueOf(Main.Template.DEBUG_WARNING));
                 }
                 return true;
             }

@@ -1,6 +1,6 @@
 package com.fi0x.cc.project.mixer.elements;
 
-import com.fi0x.cc.project.LoggerManager;
+import com.fi0x.cc.Main;
 import com.fi0x.cc.project.gui.mixer.MainMixerWindow;
 import com.fi0x.cc.project.mixer.MixerSignal;
 import com.fi0x.cc.project.mixer.abstractinterfaces.AbstractElement;
@@ -31,7 +31,7 @@ public class ClockCounter extends AbstractElement implements INumberProvider, IS
     @Override
     public void receiveMidi(MixerSignal msg)
     {
-        Logger.log("A Clock counter should not receive midi signals", String.valueOf(LoggerManager.Template.DEBUG_WARNING));
+        Logger.log("A Clock counter should not receive midi signals", String.valueOf(Main.Template.DEBUG_WARNING));
     }
     @Override
     public void changeMainValue(int valueChange)

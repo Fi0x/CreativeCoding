@@ -1,6 +1,6 @@
 package com.fi0x.cc.project.mixer.elements;
 
-import com.fi0x.cc.project.LoggerManager;
+import com.fi0x.cc.Main;
 import com.fi0x.cc.project.gui.mixer.MainMixerWindow;
 import com.fi0x.cc.project.midi.MidiHandler;
 import com.fi0x.cc.project.mixer.MixerSignal;
@@ -62,7 +62,7 @@ public class Input extends AbstractElement implements IMidiConnection, ISignalCr
     @Override
     public void noteUpdate(long frame)
     {
-        Logger.log("Input should not send beat signals and wait instead for midi-inputs from other devices", String.valueOf(LoggerManager.Template.DEBUG_WARNING));
+        Logger.log("Input should not send beat signals and wait instead for midi-inputs from other devices", String.valueOf(Main.Template.DEBUG_WARNING));
     }
 
     @Override

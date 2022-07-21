@@ -1,6 +1,6 @@
 package com.fi0x.cc.project.synth;
 
-import com.fi0x.cc.project.LoggerManager;
+import com.fi0x.cc.Main;
 import com.fi0x.cc.project.synth.synthesizers.*;
 import io.fi0x.javalogger.logging.Logger;
 
@@ -45,7 +45,7 @@ public class SynthManager
         synths.add(new ViolinSynth(14));
         synths.add(new PlaceholderSynth(15));
 
-        Logger.log("Loaded synths", String.valueOf(LoggerManager.Template.DEBUG_INFO));
+        Logger.log("Loaded synths", String.valueOf(Main.Template.DEBUG_INFO));
     }
 
     public static ISynthesizer getNextSynth()
@@ -57,7 +57,7 @@ public class SynthManager
                 registerSynths();
             } catch(MidiUnavailableException e)
             {
-                Logger.log("Could not load midi-devices", String.valueOf(LoggerManager.Template.DEBUG_WARNING));
+                Logger.log("Could not load midi-devices", String.valueOf(Main.Template.DEBUG_WARNING));
                 return null;
             }
         }

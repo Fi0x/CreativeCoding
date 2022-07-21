@@ -1,6 +1,6 @@
 package com.fi0x.cc.project.mixer.elements;
 
-import com.fi0x.cc.project.LoggerManager;
+import com.fi0x.cc.Main;
 import com.fi0x.cc.project.gui.mixer.MainMixerWindow;
 import com.fi0x.cc.project.mixer.MixerManager;
 import com.fi0x.cc.project.mixer.MixerSignal;
@@ -34,7 +34,7 @@ public class Ticker extends AbstractElement implements ISignalCreator, ISecondar
     @Override
     public void receiveMidi(MixerSignal msg)
     {
-        Logger.log("Ticker received a midi message, but should not have any input connections", String.valueOf(LoggerManager.Template.DEBUG_WARNING));
+        Logger.log("Ticker received a midi message, but should not have any input connections", String.valueOf(Main.Template.DEBUG_WARNING));
     }
     @Override
     public void changeMainValue(int valueChange)
@@ -207,7 +207,7 @@ public class Ticker extends AbstractElement implements ISignalCreator, ISecondar
                 currentNext.receiveMidi(signal);
             } catch(InvalidMidiDataException e)
             {
-                Logger.log("Could not stop midi note", String.valueOf(LoggerManager.Template.DEBUG_WARNING));
+                Logger.log("Could not stop midi note", String.valueOf(Main.Template.DEBUG_WARNING));
             }
         }).start();
     }

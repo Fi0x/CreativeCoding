@@ -1,6 +1,6 @@
 package com.fi0x.cc.project.udp;
 
-import com.fi0x.cc.exercises.Startup;
+import com.fi0x.cc.Main;
 import com.fi0x.cc.project.synth.SynthManager;
 import io.fi0x.javalogger.logging.Logger;
 
@@ -57,7 +57,7 @@ public class UDPProcessor
             }
             catch(Exception ignored)
             {
-                Logger.log("Could not decode a UDP note", String.valueOf(Startup.LogTemplate.DEBUG_WARNING));
+                Logger.log("Could not decode a UDP note", String.valueOf(Main.Template.DEBUG_WARNING));
             }
         }
     }

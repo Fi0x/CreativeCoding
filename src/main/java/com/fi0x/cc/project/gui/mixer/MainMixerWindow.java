@@ -7,10 +7,7 @@ import com.fi0x.cc.project.mixer.elements.Input;
 import com.fi0x.cc.project.midi.MidiHandler;
 import controlP5.ControlEvent;
 import processing.awt.PSurfaceAWT;
-import processing.core.PApplet;
-import processing.core.PConstants;
-import processing.core.PImage;
-import processing.core.PSurface;
+import processing.core.*;
 import processing.event.MouseEvent;
 
 import javax.swing.*;
@@ -28,6 +25,8 @@ public class MainMixerWindow extends PApplet
     private GlobalController controller;
     private static final ArrayList<AbstractElement> uiElements = new ArrayList<>();
     private final ArrayList<UISignal> uiSignals = new ArrayList<>();
+    private float currentScale = 1;
+    private PVector currentTranslation = new PVector(0, 0);
 
     private TypeSelector typeSelector;
     private ElementSettings elementSettings;
@@ -72,8 +71,12 @@ public class MainMixerWindow extends PApplet
     @Override
     public void draw()
     {
-        background(backgroundColor);
+        translate(width / 2f, height / 2f);
+        pushMatrix();
+        scale(currentScale);
+        translate(currentTranslation.x, currentTranslation.y);
 
+        background(backgroundColor);
         controller.draw();
 
         for(ElementUI mixerElement : uiElements)
@@ -90,6 +93,7 @@ public class MainMixerWindow extends PApplet
         for(ElementUI element : uiElements)
             element.draw();
 
+        popMatrix();
         if(elementSettings != null)
             elementSettings.draw();
     }
@@ -196,8 +200,14 @@ public class MainMixerWindow extends PApplet
             if(e.isAbove(mouseX, mouseY))
             {
                 e.updateValue(-event.getCount());
-                break;
+                return;
             }
+        }
+
+        loadPixels();
+        if(pixels[mouseY * width + mouseX] == backgroundColor)
+        {
+            currentScale *= event.getCount() > 0 ? 0.5 : 2;
         }
     }
     @Override

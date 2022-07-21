@@ -1,6 +1,6 @@
 package com.fi0x.cc.project.synth.synthesizers;
 
-import com.fi0x.cc.project.LoggerManager;
+import com.fi0x.cc.Main;
 import com.fi0x.cc.project.gui.synth.AbstractSoundVisualizer;
 import com.fi0x.cc.project.gui.synth.SynthUI;
 import com.fi0x.cc.project.midi.MidiSignalHelper;
@@ -103,7 +103,7 @@ public abstract class AbstractSynth implements ISynthesizer
             programNumber = 0;
 
         channel.programChange(programNumber);
-        Logger.log("Changed synth to " + SynthManager.getInstrumentName(channel.getProgram()), String.valueOf(LoggerManager.Template.DEBUG_INFO));
+        Logger.log("Changed synth to " + SynthManager.getInstrumentName(channel.getProgram()), String.valueOf(Main.Template.DEBUG_INFO));
     }
     @Override
     public void previousInstrument()
@@ -113,7 +113,7 @@ public abstract class AbstractSynth implements ISynthesizer
             programNumber = 127;
 
         channel.programChange(programNumber);
-        Logger.log("Changed synth to " + SynthManager.getInstrumentName(channel.getProgram()), String.valueOf(LoggerManager.Template.DEBUG_INFO));
+        Logger.log("Changed synth to " + SynthManager.getInstrumentName(channel.getProgram()), String.valueOf(Main.Template.DEBUG_INFO));
     }
     @Override
     public void setInstrument(String instrumentName)
@@ -121,12 +121,12 @@ public abstract class AbstractSynth implements ISynthesizer
         int programNumber = SynthManager.getProgramNumber(instrumentName);
         if(programNumber < 0)
         {
-            Logger.log("Could not load a new instrument", String.valueOf(LoggerManager.Template.DEBUG_WARNING));
+            Logger.log("Could not load a new instrument", String.valueOf(Main.Template.DEBUG_WARNING));
             return;
         }
 
         channel.programChange(programNumber);
-        Logger.log("Changed synth to " + SynthManager.getInstrumentName(channel.getProgram()), String.valueOf(LoggerManager.Template.DEBUG_INFO));
+        Logger.log("Changed synth to " + SynthManager.getInstrumentName(channel.getProgram()), String.valueOf(Main.Template.DEBUG_INFO));
     }
 
     @Override

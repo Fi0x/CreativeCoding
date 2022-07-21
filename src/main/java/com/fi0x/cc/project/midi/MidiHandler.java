@@ -1,6 +1,6 @@
 package com.fi0x.cc.project.midi;
 
-import com.fi0x.cc.project.LoggerManager;
+import com.fi0x.cc.Main;
 import com.fi0x.cc.project.mixer.MixerSignal;
 import com.fi0x.cc.project.mixer.elements.Input;
 import com.fi0x.cc.project.synth.SynthManager;
@@ -17,7 +17,7 @@ public class MidiHandler
 
     public void initialize()
     {
-        Logger.log("Loading MIDI-Devices", String.valueOf(LoggerManager.Template.DEBUG_INFO));
+        Logger.log("Loading MIDI-Devices", String.valueOf(Main.Template.DEBUG_INFO));
         MidiDevice.Info[] infos = MidiSystem.getMidiDeviceInfo();
         for(MidiDevice.Info info : infos)
         {
@@ -34,10 +34,10 @@ public class MidiHandler
 
                 device.open();
                 devices.add(device);
-                Logger.log("\tFound device: " + info, String.valueOf(LoggerManager.Template.DEBUG_INFO));
+                Logger.log("\tFound device: " + info, String.valueOf(Main.Template.DEBUG_INFO));
             } catch(MidiUnavailableException e)
             {
-                Logger.log("\tCould not load device: " + info, String.valueOf(LoggerManager.Template.DEBUG_WARNING));
+                Logger.log("\tCould not load device: " + info, String.valueOf(Main.Template.DEBUG_WARNING));
             }
         }
     }

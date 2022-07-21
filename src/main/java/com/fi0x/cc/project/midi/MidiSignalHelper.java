@@ -1,6 +1,6 @@
 package com.fi0x.cc.project.midi;
 
-import com.fi0x.cc.project.LoggerManager;
+import com.fi0x.cc.Main;
 import io.fi0x.javalogger.logging.Logger;
 
 import javax.sound.midi.InvalidMidiDataException;
@@ -32,7 +32,7 @@ public class MidiSignalHelper
             originalMsg.setMessage(info.getStatusByte(), originalMsg.getData1(), originalMsg.getData2());
         } catch(InvalidMidiDataException ignored)
         {
-            Logger.log("Could not change the channel of a midi message", String.valueOf(LoggerManager.Template.DEBUG_WARNING));
+            Logger.log("Could not change the channel of a midi message", String.valueOf(Main.Template.DEBUG_WARNING));
         }
     }
     public static void changeNote(ShortMessage originalMsg, int newNote, boolean isIncrement)
@@ -43,7 +43,7 @@ public class MidiSignalHelper
             originalMsg.setMessage(originalMsg.getStatus(), updatedNote, originalMsg.getData2());
         } catch(InvalidMidiDataException ignored)
         {
-            Logger.log("Could not change the note of a midi message", String.valueOf(LoggerManager.Template.DEBUG_WARNING));
+            Logger.log("Could not change the note of a midi message", String.valueOf(Main.Template.DEBUG_WARNING));
         }
     }
     public static void changeVolume(ShortMessage originalMsg, int newVolume, boolean isIncrement)
@@ -54,7 +54,7 @@ public class MidiSignalHelper
             originalMsg.setMessage(originalMsg.getStatus(), originalMsg.getData1(), updatedVolume);
         } catch(InvalidMidiDataException ignored)
         {
-            Logger.log("Could not change the volume of a midi message", String.valueOf(LoggerManager.Template.DEBUG_WARNING));
+            Logger.log("Could not change the volume of a midi message", String.valueOf(Main.Template.DEBUG_WARNING));
         }
     }
     public static void changeAllData(ShortMessage originalMsg, int newData, boolean isIncrement)
@@ -74,7 +74,7 @@ public class MidiSignalHelper
             originalMsg.setMessage(originalMsg.getStatus(), firstData, secondData);
         } catch(InvalidMidiDataException ignored)
         {
-            Logger.log("Could not change both data fields of a midi message", String.valueOf(LoggerManager.Template.DEBUG_WARNING));
+            Logger.log("Could not change both data fields of a midi message", String.valueOf(Main.Template.DEBUG_WARNING));
         }
     }
 }
