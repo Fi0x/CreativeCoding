@@ -1,6 +1,7 @@
 package com.fi0x.cc;
 
 import com.fi0x.cc.project.mixer.gui.MainMixerWindow;
+import com.fi0x.cc.project.randomstuff.ColorPicker;
 import com.fi0x.cc.project.synth.gui.MainSynthWindow;
 import io.fi0x.javaguimenu.GUIWindow;
 import io.fi0x.javaguimenu.elements.AbstractElement;
@@ -85,6 +86,11 @@ public class Main
         btnSynth.setText("Projekt\nSynthesizer");
         btnSynth.addListener(sender -> PApplet.main(MainSynthWindow.class.getName()));
         GUIWindow.addElement(btnSynth);
+
+        PriorityButton btnColorPick = new PriorityButton();
+        btnColorPick.setText("Projekt\nColor Picker");
+        btnColorPick.addListener(sender -> PApplet.main(ColorPicker.class.getName()));
+        GUIWindow.addElement(btnColorPick);
 
         for(Map.Entry<String, String> e : exercises.entrySet())
         {
