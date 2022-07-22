@@ -1,7 +1,7 @@
 package com.fi0x.cc.exercises.week1;
 
 import com.fi0x.cc.Main;
-import com.fi0x.cc.exercises.CustomMath;
+import com.fi0x.cc.helper.CustomMath;
 import io.fi0x.javalogger.logging.Logger;
 import processing.core.PApplet;
 

@@ -1,5 +1,7 @@
 package com.fi0x.cc;
 
+import com.fi0x.cc.project.gui.mixer.MainMixerWindow;
+import com.fi0x.cc.project.gui.synth.MainSynthWindow;
 import io.fi0x.javaguimenu.GUIWindow;
 import io.fi0x.javaguimenu.elements.AbstractElement;
 import io.fi0x.javaguimenu.elements.Listener;
@@ -8,11 +10,18 @@ import io.fi0x.javaguimenu.layouts.LayoutTypes;
 import io.fi0x.javalogger.logging.Logger;
 import processing.core.PApplet;
 
-import java.util.ArrayList;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.Map;
+import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 public class Main
 {
-    private static final ArrayList<Entry> exercises = new ArrayList<>();
+    private static final SortedMap<String, String> exercises = new TreeMap<>();
 
     private static final int COLS = 5;
     private static final int ROWS = 7;
@@ -54,10 +63,10 @@ public class Main
 
         GUIWindow.setColumns(COLS);
         GUIWindow.setRows(ROWS);
-        GUIWindow.setElementSpacing(false);
+        GUIWindow.setElementSpacing(true);
         GUIWindow.setLayout(LayoutTypes.Grid);
 
-        new Main().fillExerciseList();
+        loadClasses("com/fi0x/cc/exercises");
         createButtons();
 
         GUIWindow.start(args);
@@ -65,77 +74,54 @@ public class Main
     }
     private static void createButtons()
     {
-        RegularButton btnMixer = RegularButton.create(0, 0);
-        btnMixer.setText("Mixer");
-        btnMixer.addListener(sender -> PApplet.main("com.fi0x.cc.project.gui.mixer.MainMixerWindow"));
+        RegularButton btnMixer = new RegularButton();
+        btnMixer.setText("Projekt\nMixer");
+        btnMixer.addListener(sender -> PApplet.main(MainMixerWindow.class.getName()));
         GUIWindow.addElement(btnMixer);
 
-        RegularButton btnSynth = RegularButton.create(1, 0);
-        btnSynth.setText("Synthesizer");
-        btnSynth.addListener(sender -> PApplet.main("com.fi0x.cc.project.gui.synth.MainSynthWindow"));
+        RegularButton btnSynth = new RegularButton();
+        btnSynth.setText("Projekt\nSynthesizer");
+        btnSynth.addListener(sender -> PApplet.main(MainSynthWindow.class.getName()));
         GUIWindow.addElement(btnSynth);
 
-        int existingButtons = 2;
-
-        for(int x = existingButtons, y = 0; y < ROWS && x + y * COLS < exercises.size() + existingButtons; y++)
+        for(Map.Entry<String, String> e : exercises.entrySet())
         {
-            for(; x < COLS && x + y * COLS < exercises.size() + existingButtons; x++)
+            RegularButton btn = new RegularButton();
+            btn.setText(e.getKey());
+            btn.addListener(new Listener()
             {
-                final Entry e = exercises.get(x + y * COLS - existingButtons);
-
-                System.out.println(e.name + ":\tat: " + x + ", " + y);
-
-                RegularButton btn = RegularButton.create(x, y);
-                btn.setText(e.name);
-                btn.addListener(new Listener()
+                final String link = e.getValue();
+                @Override
+                public void trigger(AbstractElement sender)
                 {
-                    final String link = e.classLink;
-                    @Override
-                    public void trigger(AbstractElement sender)
-                    {
-                        PApplet.main(link);
-                    }
-                });
-                GUIWindow.addElement(btn);
-            }
-            x = 0;
+                    PApplet.main(link);
+                }
+            });
+            GUIWindow.addElement(btn);
         }
     }
-
-    public void fillExerciseList()
+    private static void loadClasses(String packageName)
     {
-        exercises.add(new Entry("1.1", "com.fi0x.cc.exercises.week1.Exercise1"));
-        exercises.add(new Entry("1.3", "com.fi0x.cc.exercises.week1.Exercise3"));
-        exercises.add(new Entry("1.3b", "com.fi0x.cc.exercises.week1.Exercise3Different"));
-        exercises.add(new Entry("1.4", "com.fi0x.cc.exercises.week1.Exercise4"));
-        exercises.add(new Entry("1.4b", "com.fi0x.cc.exercises.week1.Exercise4Different"));
-        exercises.add(new Entry("1.4c", "com.fi0x.cc.exercises.week1.Exercise4Pointillism"));
-        exercises.add(new Entry("2.1", "com.fi0x.cc.exercises.week2.Exercise1"));
-        exercises.add(new Entry("2.2", "com.fi0x.cc.exercises.week2.Exercise2"));
-        exercises.add(new Entry("2.3", "com.fi0x.cc.exercises.week2.Exercise3"));
-        exercises.add(new Entry("2.4", "com.fi0x.cc.exercises.week2.Exercise4"));
-        exercises.add(new Entry("3.1", "com.fi0x.cc.exercises.week3.Exercise1"));
-        exercises.add(new Entry("3.2", "com.fi0x.cc.exercises.week3.Exercise2"));
-        exercises.add(new Entry("3.2b", "com.fi0x.cc.exercises.week3.Exercise2Variant"));
-        exercises.add(new Entry("3.2c", "com.fi0x.cc.exercises.week3.Exercise2WithoutScale"));
-        exercises.add(new Entry("3.3", "com.fi0x.cc.exercises.week3.Exercise3"));
-        exercises.add(new Entry("4.1", "com.fi0x.cc.exercises.week4.Exercise1"));
-        exercises.add(new Entry("4.2", "com.fi0x.cc.exercises.week4.Exercise2"));
-        exercises.add(new Entry("5.1", "com.fi0x.cc.exercises.week5.Exercise1"));
-        exercises.add(new Entry("5.1b", "com.fi0x.cc.exercises.week5.Exercise1Test"));
-        exercises.add(new Entry("5.1c", "com.fi0x.cc.exercises.week5.Exercise1FractalTree"));
-        exercises.add(new Entry("5.2", "com.fi0x.cc.exercises.week5.Exercise2"));
-        exercises.add(new Entry("5.2b", "com.fi0x.cc.exercises.week5.Exercise2MinDistance"));
-        exercises.add(new Entry("5.2c", "com.fi0x.cc.exercises.week5.Exercise2Lines"));
-        exercises.add(new Entry("5.3", "com.fi0x.cc.exercises.week5.Exercise3"));
-        exercises.add(new Entry("6.1", "com.fi0x.cc.exercises.week6.Exercise1"));
-        exercises.add(new Entry("6.1b", "com.fi0x.cc.exercises.week6.Exercise1Spikes"));
-        exercises.add(new Entry("6.1c", "com.fi0x.cc.exercises.week6.Exercise1Stars"));
-        exercises.add(new Entry("7.1", "com.fi0x.cc.exercises.week7.Exercise1"));
-        exercises.add(new Entry("7.1b", "com.fi0x.cc.exercises.week7.Exercise1Wind"));
-        exercises.add(new Entry("8.1", "com.fi0x.cc.exercises.week8.Exercise1"));
-        exercises.add(new Entry("8.1b", "com.fi0x.cc.exercises.week8.Exercise1Mouse"));
-        exercises.add(new Entry("8.1c", "com.fi0x.cc.exercises.week8.Exercise1Lines"));
+        InputStream input = ClassLoader.getSystemClassLoader().getResourceAsStream(packageName);
+        assert input != null;
+        BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+        Set<String> entries = reader.lines().collect(Collectors.toSet());
+
+        for(String e : entries)
+        {
+            if(e.contains("$"))
+                continue;
+
+            if(e.endsWith(".class"))
+            {
+                String[] path = packageName.split("/");
+                String labelName = path[path.length - 1] + "\n" + e;
+                String classPath = packageName + "/" + e.replace(".class", "");
+                exercises.put(labelName, classPath.replace("/", "."));
+            }
+            else
+                loadClasses(packageName + "/" + e);
+        }
     }
 
     public enum Template
@@ -149,17 +135,5 @@ public class Main
         DEBUG_INFO,
         DEBUG_WARNING,
         DEBUG_ERROR
-    }
-
-    private class Entry
-    {
-        private final String name;
-        private final String classLink;
-
-        private Entry(String labeledName, String link)
-        {
-            name = labeledName;
-            classLink = link;
-        }
     }
 }
