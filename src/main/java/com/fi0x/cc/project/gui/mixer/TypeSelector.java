@@ -16,6 +16,8 @@ import java.util.Map;
 
 public class TypeSelector
 {
+    //FIXME: Translation is currently not working for P5Controls
+    //TODO: Remake to use custom UI elements that can be translated correctly
     private final MainMixerWindow parent;
     private int originalX;
     private int originalY;

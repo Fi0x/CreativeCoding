@@ -8,6 +8,8 @@ import processing.core.PConstants;
 
 public class GlobalController
 {
+    //FIXME: Translation is currently not working for P5Controls
+    //TODO: Remake to use custom UI elements that can be translated correctly
     private final PApplet parent;
     private final ControlP5 control;
 

@@ -26,7 +26,7 @@ public class MainMixerWindow extends PApplet
     private static final ArrayList<AbstractElement> uiElements = new ArrayList<>();
     private final ArrayList<UISignal> uiSignals = new ArrayList<>();
     private float currentScale = 1;
-    private PVector currentTranslation = new PVector(0, 0);
+    public final PVector currentTranslation = new PVector(0, 0);
     private PVector mouseDragStart;
 
     private TypeSelector typeSelector;
@@ -153,7 +153,7 @@ public class MainMixerWindow extends PApplet
             {
                 for(AbstractElement e : uiElements)
                 {
-                    if(!e.isAbove(mouseX, mouseY))
+                    if(!e.isAbove(mouseX - currentTranslation.x, mouseY - currentTranslation.y))
                         continue;
 
                     selectElement(e);
@@ -164,7 +164,7 @@ public class MainMixerWindow extends PApplet
         {
             for(AbstractElement e : uiElements)
             {
-                if(e.isAbove(mouseX, mouseY))
+                if(e.isAbove(mouseX - currentTranslation.x, mouseY - currentTranslation.y))
                 {
                     boolean same = false;
                     if(elementSettings != null)
@@ -185,8 +185,8 @@ public class MainMixerWindow extends PApplet
                 }
             }
             
-            typeSelector = new TypeSelector(this, mouseX, mouseY);
-            typeSelector.show(mouseX, mouseY);
+            typeSelector = new TypeSelector(this, (int) (mouseX - currentTranslation.x), (int) (mouseY - currentTranslation.y));
+            typeSelector.show((int) (mouseX - currentTranslation.x), (int) (mouseY - currentTranslation.y));
         }
     }
     @Override
@@ -213,7 +213,7 @@ public class MainMixerWindow extends PApplet
     {
         for(AbstractElement e : uiElements)
         {
-            if(e.isAbove(mouseX, mouseY))
+            if(e.isAbove(mouseX - currentTranslation.x, mouseY - currentTranslation.y))
             {
                 e.updateValue(-event.getCount());
                 return;
