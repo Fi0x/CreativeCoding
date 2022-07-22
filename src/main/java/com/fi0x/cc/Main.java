@@ -5,6 +5,7 @@ import com.fi0x.cc.project.gui.synth.MainSynthWindow;
 import io.fi0x.javaguimenu.GUIWindow;
 import io.fi0x.javaguimenu.elements.AbstractElement;
 import io.fi0x.javaguimenu.elements.Listener;
+import io.fi0x.javaguimenu.elements.PriorityButton;
 import io.fi0x.javaguimenu.elements.RegularButton;
 import io.fi0x.javaguimenu.layouts.LayoutTypes;
 import io.fi0x.javalogger.logging.Logger;
@@ -54,32 +55,33 @@ public class Main
         Logger.createNewTemplate(String.valueOf(Template.DEBUG_WARNING), Logger.YELLOW, "WRN", false, false, true, false);
         Logger.createNewTemplate(String.valueOf(Template.DEBUG_ERROR), Logger.RED, "ERR", false, false, true, false);
 
-
         Logger.log("Welcome to my Creative Coding Lecture Project!", String.valueOf(Template.INFO_WHITE));
     }
     private static void createMenuWindow(String[] args)
     {
         GUIWindow.setTitle("Creative Coding Menu");
 
+        GUIWindow.setWindowIcon("images/logo.png");
+        GUIWindow.setCssFile("css/menu_layout.css");
         GUIWindow.setColumns(COLS);
         GUIWindow.setRows(ROWS);
         GUIWindow.setElementSpacing(true);
         GUIWindow.setLayout(LayoutTypes.Grid);
+        GUIWindow.showGridLanes(true);
 
         loadClasses("com/fi0x/cc/exercises");
         createButtons();
 
         GUIWindow.start(args);
-
     }
     private static void createButtons()
     {
-        RegularButton btnMixer = new RegularButton();
+        PriorityButton btnMixer = new PriorityButton();
         btnMixer.setText("Projekt\nMixer");
         btnMixer.addListener(sender -> PApplet.main(MainMixerWindow.class.getName()));
         GUIWindow.addElement(btnMixer);
 
-        RegularButton btnSynth = new RegularButton();
+        PriorityButton btnSynth = new PriorityButton();
         btnSynth.setText("Projekt\nSynthesizer");
         btnSynth.addListener(sender -> PApplet.main(MainSynthWindow.class.getName()));
         GUIWindow.addElement(btnSynth);
@@ -115,7 +117,7 @@ public class Main
             if(e.endsWith(".class"))
             {
                 String[] path = packageName.split("/");
-                String labelName = path[path.length - 1] + "\n" + e;
+                String labelName = path[path.length - 1] + "\n" + e.replace(".class", "");
                 String classPath = packageName + "/" + e.replace(".class", "");
                 exercises.put(labelName, classPath.replace("/", "."));
             }
