@@ -73,11 +73,8 @@ public class ColorPicker extends PApplet
         if(selectorDragStart != null)
         {
             PVector translation = calculateSelectorTrans();
-            SELECTOR_TRANSLATION.add(translation);
-            SELECTOR_TRANSLATION.x += SELECTOR_SIZE.x;
-            SELECTOR_TRANSLATION.x %= SELECTOR_SIZE.x;
-            SELECTOR_TRANSLATION.y += SELECTOR_SIZE.y;
-            SELECTOR_TRANSLATION.y %= SELECTOR_SIZE.y;
+            SELECTOR_TRANSLATION.x = (translation.x + SELECTOR_SIZE.x) % SELECTOR_SIZE.x;
+            SELECTOR_TRANSLATION.y = (translation.y + SELECTOR_SIZE.y) % SELECTOR_SIZE.y;
             selectorDragStart = null;
         }
         else if(shifterDragStart != null)
