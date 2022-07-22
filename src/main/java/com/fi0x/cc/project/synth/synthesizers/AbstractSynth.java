@@ -1,8 +1,8 @@
 package com.fi0x.cc.project.synth.synthesizers;
 
 import com.fi0x.cc.Main;
-import com.fi0x.cc.project.gui.synth.AbstractSoundVisualizer;
-import com.fi0x.cc.project.gui.synth.SynthUI;
+import com.fi0x.cc.project.synth.gui.AbstractSoundVisualizer;
+import com.fi0x.cc.project.synth.gui.SynthUI;
 import com.fi0x.cc.project.midi.MidiSignalHelper;
 import com.fi0x.cc.project.midi.MidiSignalInfo;
 import com.fi0x.cc.project.synth.SynthManager;

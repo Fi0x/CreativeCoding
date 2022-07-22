@@ -1,7 +1,7 @@
 package com.fi0x.cc.project.synth.synthesizers;
 
-import com.fi0x.cc.project.gui.synth.AbstractSoundVisualizer;
-import com.fi0x.cc.project.gui.synth.SynthUI;
+import com.fi0x.cc.project.synth.gui.AbstractSoundVisualizer;
+import com.fi0x.cc.project.synth.gui.SynthUI;
 
 import javax.sound.midi.MidiMessage;
 

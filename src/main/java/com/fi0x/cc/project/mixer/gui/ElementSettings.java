@@ -1,4 +1,4 @@
-package com.fi0x.cc.project.gui.mixer;
+package com.fi0x.cc.project.mixer.gui;
 
 import com.fi0x.cc.project.mixer.abstractinterfaces.AbstractElement;
 import com.fi0x.cc.project.mixer.abstractinterfaces.ISecondaryValues;

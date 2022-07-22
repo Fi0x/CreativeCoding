@@ -1,7 +1,7 @@
 package com.fi0x.cc;
 
-import com.fi0x.cc.project.gui.mixer.MainMixerWindow;
-import com.fi0x.cc.project.gui.synth.MainSynthWindow;
+import com.fi0x.cc.project.mixer.gui.MainMixerWindow;
+import com.fi0x.cc.project.synth.gui.MainSynthWindow;
 import io.fi0x.javaguimenu.GUIWindow;
 import io.fi0x.javaguimenu.elements.AbstractElement;
 import io.fi0x.javaguimenu.elements.Listener;

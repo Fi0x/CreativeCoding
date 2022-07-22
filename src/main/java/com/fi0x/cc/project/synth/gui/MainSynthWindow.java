@@ -1,8 +1,8 @@
-package com.fi0x.cc.project.gui.synth;
+package com.fi0x.cc.project.synth.gui;
 
 import com.fi0x.cc.Main;
 import com.fi0x.cc.project.synth.SynthManager;
-import com.fi0x.cc.project.udp.UDPProcessor;
+import com.fi0x.cc.project.synth.udp.UDPProcessor;
 import com.fi0x.cc.project.midi.MidiHandler;
 import controlP5.ControlEvent;
 import controlP5.ControlP5;

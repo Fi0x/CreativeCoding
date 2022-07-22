@@ -1,4 +1,4 @@
-package com.fi0x.cc.project.gui.synth;
+package com.fi0x.cc.project.synth.gui;
 
 import com.fi0x.cc.project.synth.synthesizers.ISynthesizer;
 import processing.core.PApplet;

@@ -1,8 +1,6 @@
-package com.fi0x.cc.project.gui.mixer;
+package com.fi0x.cc.project.mixer.gui;
 
 import processing.core.PVector;
-
-import java.util.Vector;
 
 public class UISignal
 {

@@ -1,4 +1,4 @@
-package com.fi0x.cc.project.udp;
+package com.fi0x.cc.project.synth.udp;
 
 import com.fi0x.cc.Main;
 import com.fi0x.cc.project.synth.SynthManager;

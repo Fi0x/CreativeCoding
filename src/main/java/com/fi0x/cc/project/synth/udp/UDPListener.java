@@ -1,4 +1,4 @@
-package com.fi0x.cc.project.udp;
+package com.fi0x.cc.project.synth.udp;
 
 import com.fi0x.cc.Main;
 import io.fi0x.javalogger.logging.Logger;

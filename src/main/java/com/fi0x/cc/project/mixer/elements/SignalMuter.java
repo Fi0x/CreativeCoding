@@ -1,6 +1,6 @@
 package com.fi0x.cc.project.mixer.elements;
 
-import com.fi0x.cc.project.gui.mixer.MainMixerWindow;
+import com.fi0x.cc.project.mixer.gui.MainMixerWindow;
 import com.fi0x.cc.project.mixer.MixerSignal;
 import com.fi0x.cc.project.mixer.abstractinterfaces.AbstractElement;
 import com.fi0x.cc.project.mixer.abstractinterfaces.INumberProvider;

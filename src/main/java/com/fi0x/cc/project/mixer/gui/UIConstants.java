@@ -1,4 +1,4 @@
-package com.fi0x.cc.project.gui.mixer;
+package com.fi0x.cc.project.mixer.gui;
 
 public class UIConstants
 {
