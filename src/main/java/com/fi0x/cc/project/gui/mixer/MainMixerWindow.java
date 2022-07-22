@@ -27,6 +27,7 @@ public class MainMixerWindow extends PApplet
     private final ArrayList<UISignal> uiSignals = new ArrayList<>();
     private float currentScale = 1;
     private PVector currentTranslation = new PVector(0, 0);
+    private PVector mouseDragStart;
 
     private TypeSelector typeSelector;
     private ElementSettings elementSettings;
@@ -72,8 +73,8 @@ public class MainMixerWindow extends PApplet
     public void draw()
     {
         translate(width / 2f, height / 2f);
-        pushMatrix();
         scale(currentScale);
+        translate(-width / 2f, -height / 2f);
         translate(currentTranslation.x, currentTranslation.y);
 
         background(backgroundColor);
@@ -93,7 +94,6 @@ public class MainMixerWindow extends PApplet
         for(ElementUI element : uiElements)
             element.draw();
 
-        popMatrix();
         if(elementSettings != null)
             elementSettings.draw();
     }
@@ -103,20 +103,26 @@ public class MainMixerWindow extends PApplet
     {
         if(mouseButton == LEFT)
         {
-            for(AbstractElement e : uiElements)
+            loadPixels();
+            if(pixels[mouseY * width + mouseX] == backgroundColor)
+                mouseDragStart = new PVector(mouseX, mouseY);
+            else
             {
-                if(!e.pickUp())
-                    continue;
-
-                if(elementSettings != null)
+                for(AbstractElement e : uiElements)
                 {
-                    elementSettings.hide();
-                    elementSettings = null;
-                }
-                draggingElement = e;
+                    if(!e.pickUp())
+                        continue;
 
-                selectElement(e);
-                break;
+                    if(elementSettings != null)
+                    {
+                        elementSettings.hide();
+                        elementSettings = null;
+                    }
+                    draggingElement = e;
+
+                    selectElement(e);
+                    break;
+                }
             }
         }
     }
@@ -186,10 +192,20 @@ public class MainMixerWindow extends PApplet
     @Override
     public void mouseReleased()
     {
-        if(mouseButton == LEFT && draggingElement != null)
+        if(mouseButton == LEFT)
         {
-            draggingElement.drop();
-            draggingElement = null;
+            if(mouseDragStart != null)
+            {
+                PVector dist = new PVector(mouseX, mouseY);
+                dist.add(mouseDragStart.mult(-1));
+                currentTranslation.add(dist);
+                mouseDragStart = null;
+            }
+            else if(draggingElement != null)
+            {
+                draggingElement.drop();
+                draggingElement = null;
+            }
         }
     }
     @Override
