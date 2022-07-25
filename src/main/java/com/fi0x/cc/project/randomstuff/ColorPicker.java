@@ -73,8 +73,8 @@ public class ColorPicker extends PApplet
         if(selectorDragStart != null)
         {
             PVector translation = calculateSelectorTrans();
-            SELECTOR_TRANSLATION.x = (translation.x + SELECTOR_SIZE.x) % SELECTOR_SIZE.x;
-            SELECTOR_TRANSLATION.y = (translation.y + SELECTOR_SIZE.y) % SELECTOR_SIZE.y;
+            SELECTOR_TRANSLATION.x = (translation.x + SELECTOR_SIZE.x * 2) % (SELECTOR_SIZE.x * 2);
+            SELECTOR_TRANSLATION.y = (translation.y + SELECTOR_SIZE.y * 2) % (SELECTOR_SIZE.y * 2);
             selectorDragStart = null;
         }
         else if(shifterDragStart != null)
@@ -86,13 +86,12 @@ public class ColorPicker extends PApplet
 
     private void drawSelector()
     {
-        //TODO: Translate colors according to transformation AND current mouseDrag
         for(int x = 0; x < SELECTOR_SIZE.x; x++)
         {
             for(int y = 0; y < SELECTOR_SIZE.y; y++)
             {
-                PVector translation = calculateSelectorTrans();
-                stroke(calculateHue(), (x + translation.x) % SELECTOR_SIZE.x, (SELECTOR_SIZE.y - y - translation.y + SELECTOR_SIZE.y) % SELECTOR_SIZE.y);
+                PVector values = calculateSelectorValue(new PVector(x, y));
+                stroke(calculateHue(), values.x, values.y);
                 point(x, y);
             }
         }
@@ -144,6 +143,21 @@ public class ColorPicker extends PApplet
         while(yTranslated < 0)
             yTranslated += SELECTOR_SIZE.y;
 
-        return new PVector(xTranslated % SELECTOR_SIZE.x, yTranslated % SELECTOR_SIZE.y);
+        return new PVector(xTranslated % (SELECTOR_SIZE.x * 2), yTranslated % (SELECTOR_SIZE.y * 2));
+    }
+    private PVector calculateSelectorValue(PVector coordinates)
+    {
+        //TODO: Fix inverting range
+        PVector translation = calculateSelectorTrans();
+        float xValue = coordinates.x + translation.x % SELECTOR_SIZE.x;
+        float yValue = (SELECTOR_SIZE.y - coordinates.y - translation.y + SELECTOR_SIZE.y) % (SELECTOR_SIZE.y * 2);
+
+        if(xValue >= SELECTOR_SIZE.x)
+            xValue = SELECTOR_SIZE.x - xValue % SELECTOR_SIZE.x;
+
+        if(yValue >= SELECTOR_SIZE.y)
+            yValue = SELECTOR_SIZE.y - yValue % SELECTOR_SIZE.y;
+
+        return new PVector(xValue, yValue);
     }
 }
