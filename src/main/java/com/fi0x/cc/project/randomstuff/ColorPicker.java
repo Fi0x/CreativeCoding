@@ -136,27 +136,26 @@ public class ColorPicker extends PApplet
         float translatedXDistance = selectorDragStart == null ? 0 : selectorDragStart.x - mouseX;
         float xTranslated = SELECTOR_TRANSLATION.x + translatedXDistance;
         while(xTranslated < 0)
-            xTranslated += SELECTOR_SIZE.x;
+            xTranslated += SELECTOR_SIZE.x * 2;
 
         float translatedYDistance = selectorDragStart == null ? 0 : selectorDragStart.y - mouseY;
         float yTranslated = SELECTOR_TRANSLATION.y + translatedYDistance;
         while(yTranslated < 0)
-            yTranslated += SELECTOR_SIZE.y;
+            yTranslated += SELECTOR_SIZE.y * 2;
 
         return new PVector(xTranslated % (SELECTOR_SIZE.x * 2), yTranslated % (SELECTOR_SIZE.y * 2));
     }
     private PVector calculateSelectorValue(PVector coordinates)
     {
-        //TODO: Fix inverting range
         PVector translation = calculateSelectorTrans();
-        float xValue = coordinates.x + translation.x % SELECTOR_SIZE.x;
-        float yValue = (SELECTOR_SIZE.y - coordinates.y - translation.y + SELECTOR_SIZE.y) % (SELECTOR_SIZE.y * 2);
+        float xValue = (coordinates.x + translation.x) % (SELECTOR_SIZE.x * 2);
+        float yValue = (coordinates.y + translation.y) % (SELECTOR_SIZE.y * 2);
 
         if(xValue >= SELECTOR_SIZE.x)
-            xValue = SELECTOR_SIZE.x - xValue % SELECTOR_SIZE.x;
+            xValue = (2 * SELECTOR_SIZE.x) - xValue;
 
         if(yValue >= SELECTOR_SIZE.y)
-            yValue = SELECTOR_SIZE.y - yValue % SELECTOR_SIZE.y;
+            yValue = (2 * SELECTOR_SIZE.y) - yValue;
 
         return new PVector(xValue, yValue);
     }
