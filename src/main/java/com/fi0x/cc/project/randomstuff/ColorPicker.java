@@ -120,7 +120,7 @@ public class ColorPicker extends PApplet
         fill(calculateHue(), selectedValues.x, selectedValues.y);
         rect(0, 0, HEX_DISPLAY_SIZE.x, HEX_DISPLAY_SIZE.y);
 
-        fill(SHIFTER_SIZE.x / 2 - calculateHue(), SELECTOR_SIZE.x - selectedValues.x, SELECTOR_SIZE.y - selectedValues.y);
+        fill(0, 0, SELECTOR_SIZE.y - selectedValues.y);
         textAlign(PConstants.CENTER, PConstants.CENTER);
         text(hex(selectedColor), HEX_DISPLAY_SIZE.x / 2, HEX_DISPLAY_SIZE.y / 2);
 

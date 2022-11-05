@@ -11,8 +11,6 @@ import processing.core.PVector;
 
 public class ElementUI
 {
-    //TODO: BeginShape / EndShape für spikes checken
-    //TODO: Farbanimation rausnehmen; klare Farbunterschiede zwischen typen
     private final MainMixerWindow parent;
     protected int currentX;
     protected int currentY;
@@ -69,7 +67,7 @@ public class ElementUI
             else
             {
                 currentHueShift ++;
-                if(currentHueShift >= 200)
+                if(currentHueShift >= 100)
                     reverseColor = true;
             }
         }
