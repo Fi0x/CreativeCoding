@@ -17,19 +17,20 @@ import java.util.ConcurrentModificationException;
 
 public class MainMixerWindow extends PApplet
 {
+    //TODO: Maybe all mouse coordinates need to be translated before they can be used
     private PImage icon;
     private final int backgroundColor = color(0);
     private final int lineColor = color(255);
 
     private Thread handler;
-    private GlobalController controller;
+    private GlobalControllerAlt controller;
     private static final ArrayList<AbstractElement> uiElements = new ArrayList<>();
     private final ArrayList<UISignal> uiSignals = new ArrayList<>();
     private float currentScale = 1;
     public final PVector currentTranslation = new PVector(0, 0);
     private PVector mouseDragStart;
 
-    private TypeSelector typeSelector;
+    private TypeSelectorAlt typeSelector;
     private ElementSettings elementSettings;
     private AbstractElement draggingElement = null;
     private AbstractElement selectedElement = null;
@@ -53,7 +54,7 @@ public class MainMixerWindow extends PApplet
         textSize(14);
         textAlign(PConstants.CENTER, PConstants.CENTER);
 
-        controller = new GlobalController(this);
+        controller = new GlobalControllerAlt(this);
 
         UIConstants.DEFAULT_ELEMENT_BACKGROUND = color(181, 25, 25);
         UIConstants.SETTINGS_ELEMENT_BACKGROUND = color(219, 141, 46);
@@ -185,7 +186,7 @@ public class MainMixerWindow extends PApplet
                 }
             }
             
-            typeSelector = new TypeSelector(this, (int) (mouseX - currentTranslation.x), (int) (mouseY - currentTranslation.y));
+            typeSelector = new TypeSelectorAlt(this, (int) (mouseX - currentTranslation.x), (int) (mouseY - currentTranslation.y));
             typeSelector.show((int) (mouseX - currentTranslation.x), (int) (mouseY - currentTranslation.y));
         }
     }

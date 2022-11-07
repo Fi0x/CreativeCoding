@@ -6,14 +6,14 @@ import controlP5.ControlP5;
 import processing.core.PApplet;
 import processing.core.PConstants;
 
-public class GlobalController
+public class GlobalControllerAlt
 {
     //FIXME: Translation is currently not working for P5Controls
     //TODO: Remake to use custom UI elements that can be translated correctly
     private final PApplet parent;
     private final ControlP5 control;
 
-    public GlobalController(PApplet parentScreen)
+    public GlobalControllerAlt(PApplet parentScreen)
     {
         parent = parentScreen;
         control = new ControlP5(parent);

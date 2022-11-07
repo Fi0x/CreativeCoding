@@ -14,7 +14,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TypeSelector
+public class TypeSelectorAlt
 {
     //FIXME: Translation is currently not working for P5Controls
     //TODO: Remake to use custom UI elements that can be translated correctly
@@ -32,7 +32,7 @@ public class TypeSelector
         put("SignalMuter", SignalMuter.class);
     }};
 
-    public TypeSelector(MainMixerWindow parentScreen, int x, int y)
+    public TypeSelectorAlt(MainMixerWindow parentScreen, int x, int y)
     {
         parent = parentScreen;
         originalX = x;
