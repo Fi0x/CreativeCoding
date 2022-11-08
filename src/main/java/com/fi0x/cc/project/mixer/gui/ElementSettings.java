@@ -44,12 +44,13 @@ public class ElementSettings
     }
     public void draw()
     {
+        parent.pushMatrix();
         parent.translate(originalX, originalY);
 
         for(SettingsCircle c : circles)
             c.drawCircle();
 
-        parent.translate(-originalX, -originalY);
+        parent.popMatrix();
     }
 
     public int getUpdatedSize()

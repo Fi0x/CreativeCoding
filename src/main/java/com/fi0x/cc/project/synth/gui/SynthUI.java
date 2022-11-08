@@ -57,6 +57,7 @@ public class SynthUI
 
     public void display()
     {
+        parentScreen.pushMatrix();
         parentScreen.translate(x, y);
 
         parentScreen.fill(100);
@@ -70,12 +71,12 @@ public class SynthUI
 
         parentScreen.translate((float) xSize / 2 - 10, (float) ySize / 2 - 10);
         visualizer.display();
-        parentScreen.translate((float) -xSize / 2 + 10, (float) -ySize / 2 + 10);
 
-        parentScreen.translate(-x, -y);
+        parentScreen.popMatrix();
     }
     public void updateDisplay()
     {
+        parentScreen.pushMatrix();
         parentScreen.translate(x, y);
 
         parentScreen.textSize(14);
@@ -95,9 +96,8 @@ public class SynthUI
 
         parentScreen.translate((float) xSize / 2 - 10, (float) ySize / 2 - 10);
         visualizer.display();
-        parentScreen.translate((float) -xSize / 2 + 10, (float) -ySize / 2 + 10);
 
-        parentScreen.translate(-x, -y);
+        parentScreen.popMatrix();
     }
     public void updateSize(int posX, int posY, int width, int height)
     {
