@@ -5,7 +5,6 @@ import com.fi0x.cc.project.mixer.abstractinterfaces.AbstractElement;
 import com.fi0x.cc.project.mixer.abstractinterfaces.ISignalCreator;
 import com.fi0x.cc.project.mixer.elements.Input;
 import com.fi0x.cc.project.midi.MidiHandler;
-import controlP5.ControlEvent;
 import processing.awt.PSurfaceAWT;
 import processing.core.*;
 import processing.event.MouseEvent;
@@ -18,12 +17,13 @@ import java.util.ConcurrentModificationException;
 public class MainMixerWindow extends PApplet
 {
     //TODO: Maybe all mouse coordinates need to be translated before they can be used
+    //TODO: They are only translated, when scale is not 1, the coordinates need to be doubled
     private PImage icon;
     private final int backgroundColor = color(0);
     private final int lineColor = color(255);
 
     private Thread handler;
-    private GlobalControllerAlt controller;
+    private BeatController beatController;
     private static final ArrayList<AbstractElement> uiElements = new ArrayList<>();
     private final ArrayList<UISignal> uiSignals = new ArrayList<>();
     private float currentScale = 1;
@@ -54,7 +54,7 @@ public class MainMixerWindow extends PApplet
         textSize(14);
         textAlign(PConstants.CENTER, PConstants.CENTER);
 
-        controller = new GlobalControllerAlt(this);
+        beatController = new BeatController(this);
 
         UIConstants.DEFAULT_ELEMENT_BACKGROUND = color(181, 25, 25);
         UIConstants.SETTINGS_ELEMENT_BACKGROUND = color(219, 141, 46);
@@ -79,7 +79,7 @@ public class MainMixerWindow extends PApplet
         translate(currentTranslation.x, currentTranslation.y);
 
         background(backgroundColor);
-        controller.draw();
+        beatController.draw();
 
         for(ElementUI mixerElement : uiElements)
             mixerElement.drawConnectionLines(lineColor);
@@ -157,6 +157,12 @@ public class MainMixerWindow extends PApplet
                         return;
                     }
                     newTypeSelector = null;
+                }
+
+                if(beatController != null)
+                {
+                    if(beatController.interact((int) (mouseX - currentTranslation.x), (int) (mouseY - currentTranslation.y)))
+                        return;
                 }
 
                 for(AbstractElement e : uiElements)
@@ -249,14 +255,6 @@ public class MainMixerWindow extends PApplet
                 MidiHandler.inputElements.remove(selectedElement);
             selectedElement = null;
         }
-    }
-
-    public void controlEvent(ControlEvent event)
-    {
-        if(!event.isController() || controller == null)
-            return;
-
-        controller.buttonClicked(event);
     }
 
     @Override
