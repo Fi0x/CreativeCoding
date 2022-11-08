@@ -88,16 +88,16 @@ public class BeatController
 
         private void draw()
         {
-            parent.translate(controlX, controlY);
             parent.pushMatrix();
+            parent.translate(posX, posY);
 
             parent.fill(255, 0, 0);
-            parent.ellipse(posX, posY, 50, 50);
+            parent.ellipse(0, 0, 50, 50);
 
             parent.fill(255);
             parent.textSize(12);
             parent.textAlign(PConstants.CENTER, PConstants.CENTER);
-            parent.text(text, posX, posY);
+            parent.text(text, 0, 0);
 
             parent.popMatrix();
         }

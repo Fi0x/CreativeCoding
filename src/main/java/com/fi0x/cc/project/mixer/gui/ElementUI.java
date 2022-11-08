@@ -45,8 +45,8 @@ public class ElementUI
     {
         if(pickedUp)
         {
-            currentX = (int) (parent.mouseX - parent.currentTranslation.x);
-            currentY = (int) (parent.mouseY - parent.currentTranslation.y);
+            currentX = (int) (parent.transMouse().x);
+            currentY = (int) (parent.transMouse().y);
         }
 
         parent.stroke(isSelected ? UIConstants.SELECTED_STROKE_COLOR : currentStrokeColor);
@@ -107,7 +107,7 @@ public class ElementUI
         if(settings == null)
             ((AbstractElement) this).changeMainValue(increment);
         else
-            settings.updateSetting((int) (parent.mouseX - parent.currentTranslation.x), (int) (parent.mouseY - parent.currentTranslation.y), increment);
+            settings.updateSetting((int) (parent.transMouse().x), (int) (parent.transMouse().y), increment);
     }
 
     public boolean isAbove(float x, float y)
@@ -124,7 +124,7 @@ public class ElementUI
     }
     public boolean pickUp()
     {
-        float distance = PApplet.dist(parent.mouseX - parent.currentTranslation.x, parent.mouseY - parent.currentTranslation.y, currentX, currentY);
+        float distance = PApplet.dist(parent.transMouse().x, parent.transMouse().y, currentX, currentY);
         if(distance > UIConstants.ELEMENT_SIZE / 2f)
             return false;
 

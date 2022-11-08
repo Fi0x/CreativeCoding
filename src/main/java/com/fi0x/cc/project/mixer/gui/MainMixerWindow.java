@@ -55,6 +55,7 @@ public class MainMixerWindow extends PApplet
         textAlign(PConstants.CENTER, PConstants.CENTER);
 
         beatController = new BeatController(this);
+        beatController.changeLocation(-width / 2, -height / 2);
 
         UIConstants.DEFAULT_ELEMENT_BACKGROUND = color(181, 25, 25);
         UIConstants.SETTINGS_ELEMENT_BACKGROUND = color(219, 141, 46);
@@ -75,7 +76,6 @@ public class MainMixerWindow extends PApplet
     {
         translate(width / 2f, height / 2f);
         scale(currentScale);
-        translate(-width / 2f, -height / 2f);
         translate(currentTranslation.x, currentTranslation.y);
 
         background(backgroundColor);
@@ -151,7 +151,7 @@ public class MainMixerWindow extends PApplet
             {
                 if(newTypeSelector != null)
                 {
-                    if(newTypeSelector.selectElement((int) (mouseX - currentTranslation.x), (int) (mouseY - currentTranslation.y)))
+                    if(newTypeSelector.selectElement((int) (transMouse().x), (int) (transMouse().y)))
                     {
                         newTypeSelector = null;
                         return;
@@ -161,13 +161,13 @@ public class MainMixerWindow extends PApplet
 
                 if(beatController != null)
                 {
-                    if(beatController.interact((int) (mouseX - currentTranslation.x), (int) (mouseY - currentTranslation.y)))
+                    if(beatController.interact((int) (transMouse().x), (int) (transMouse().y)))
                         return;
                 }
 
                 for(AbstractElement e : uiElements)
                 {
-                    if(!e.isAbove(mouseX - currentTranslation.x, mouseY - currentTranslation.y))
+                    if(!e.isAbove(transMouse().x, transMouse().y))
                         continue;
 
                     selectElement(e);
@@ -178,7 +178,7 @@ public class MainMixerWindow extends PApplet
         {
             for(AbstractElement e : uiElements)
             {
-                if(e.isAbove(mouseX - currentTranslation.x, mouseY - currentTranslation.y))
+                if(e.isAbove(transMouse().x, transMouse().y))
                 {
                     boolean same = false;
                     if(elementSettings != null)
@@ -199,7 +199,7 @@ public class MainMixerWindow extends PApplet
                 }
             }
             
-            newTypeSelector = new TypeSelector(this, (int) (mouseX - currentTranslation.x), (int) (mouseY - currentTranslation.y));
+            newTypeSelector = new TypeSelector(this, (int) (transMouse().x), (int) (transMouse().y));
         }
     }
     @Override
@@ -226,7 +226,7 @@ public class MainMixerWindow extends PApplet
     {
         for(AbstractElement e : uiElements)
         {
-            if(e.isAbove(mouseX - currentTranslation.x, mouseY - currentTranslation.y))
+            if(e.isAbove(transMouse().x, transMouse().y))
             {
                 e.updateValue(-event.getCount());
                 return;
@@ -297,5 +297,13 @@ public class MainMixerWindow extends PApplet
 
         selectedElement = element;
         selectedElement.select(true);
+    }
+
+    public PVector transMouse()
+    {
+        //TODO: Use correct translation
+        int correctMouseX = (int) ((mouseX - width / 2) / currentScale - currentTranslation.x);
+        int correctMouseY = (int) ((mouseY - height / 2) / currentScale - currentTranslation.y);
+        return new PVector(correctMouseX, correctMouseY);
     }
 }
