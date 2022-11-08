@@ -6,6 +6,7 @@ import controlP5.ControlP5;
 import processing.core.PApplet;
 import processing.core.PConstants;
 
+@Deprecated
 public class GlobalControllerAlt
 {
     //FIXME: Translation is currently not working for P5Controls

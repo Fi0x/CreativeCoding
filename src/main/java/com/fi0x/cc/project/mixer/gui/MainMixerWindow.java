@@ -30,7 +30,7 @@ public class MainMixerWindow extends PApplet
     public final PVector currentTranslation = new PVector(0, 0);
     private PVector mouseDragStart;
 
-    private TypeSelectorAlt typeSelector;
+    private TypeSelector newTypeSelector;
     private ElementSettings elementSettings;
     private AbstractElement draggingElement = null;
     private AbstractElement selectedElement = null;
@@ -97,6 +97,9 @@ public class MainMixerWindow extends PApplet
 
         if(elementSettings != null)
             elementSettings.draw();
+
+        if(newTypeSelector != null)
+            newTypeSelector.draw();
     }
 
     @Override
@@ -130,12 +133,6 @@ public class MainMixerWindow extends PApplet
     @Override
     public void mouseClicked()
     {
-        if(typeSelector != null)
-        {
-            typeSelector.hide();
-            typeSelector = null;
-        }
-
         if(mouseButton == LEFT)
         {
             if(elementSettings != null)
@@ -152,6 +149,16 @@ public class MainMixerWindow extends PApplet
                 selectedElement = null;
             } else
             {
+                if(newTypeSelector != null)
+                {
+                    if(newTypeSelector.selectElement((int) (mouseX - currentTranslation.x), (int) (mouseY - currentTranslation.y)))
+                    {
+                        newTypeSelector = null;
+                        return;
+                    }
+                    newTypeSelector = null;
+                }
+
                 for(AbstractElement e : uiElements)
                 {
                     if(!e.isAbove(mouseX - currentTranslation.x, mouseY - currentTranslation.y))
@@ -186,8 +193,7 @@ public class MainMixerWindow extends PApplet
                 }
             }
             
-            typeSelector = new TypeSelectorAlt(this, (int) (mouseX - currentTranslation.x), (int) (mouseY - currentTranslation.y));
-            typeSelector.show((int) (mouseX - currentTranslation.x), (int) (mouseY - currentTranslation.y));
+            newTypeSelector = new TypeSelector(this, (int) (mouseX - currentTranslation.x), (int) (mouseY - currentTranslation.y));
         }
     }
     @Override
@@ -251,14 +257,6 @@ public class MainMixerWindow extends PApplet
             return;
 
         controller.buttonClicked(event);
-        if(typeSelector != null)
-        {
-            if(typeSelector.selectElement(event))
-            {
-                typeSelector.hide();
-                typeSelector = null;
-            }
-        }
     }
 
     @Override
