@@ -16,8 +16,6 @@ import java.util.ConcurrentModificationException;
 
 public class MainMixerWindow extends PApplet
 {
-    //TODO: Maybe all mouse coordinates need to be translated before they can be used
-    //TODO: They are only translated, when scale is not 1, the coordinates need to be doubled
     private PImage icon;
     private final int backgroundColor = color(0);
     private final int lineColor = color(255);
@@ -212,6 +210,7 @@ public class MainMixerWindow extends PApplet
                 PVector dist = new PVector(mouseX, mouseY);
                 dist.add(mouseDragStart.mult(-1));
                 currentTranslation.add(dist);
+                beatController.changeLocation((int) -dist.x, (int) -dist.y);
                 mouseDragStart = null;
             }
             else if(draggingElement != null)
@@ -301,7 +300,6 @@ public class MainMixerWindow extends PApplet
 
     public PVector transMouse()
     {
-        //TODO: Use correct translation
         int correctMouseX = (int) ((mouseX - width / 2) / currentScale - currentTranslation.x);
         int correctMouseY = (int) ((mouseY - height / 2) / currentScale - currentTranslation.y);
         return new PVector(correctMouseX, correctMouseY);
