@@ -24,7 +24,7 @@ public class MainMixerWindow extends PApplet
     private BeatController beatController;
     private static final ArrayList<AbstractElement> uiElements = new ArrayList<>();
     private final ArrayList<UISignal> uiSignals = new ArrayList<>();
-    private float currentScale = 1;
+    public float currentScale = 1;
     public final PVector currentTranslation = new PVector(0, 0);
     private PVector mouseDragStart;
 
@@ -53,7 +53,7 @@ public class MainMixerWindow extends PApplet
         textAlign(PConstants.CENTER, PConstants.CENTER);
 
         beatController = new BeatController(this);
-        beatController.setNewLocation(-width / 2, -height / 2);
+        beatController.updateLocation(-width / 2, -height / 2);
 
         UIConstants.DEFAULT_ELEMENT_BACKGROUND = color(181, 25, 25);
         UIConstants.SETTINGS_ELEMENT_BACKGROUND = color(219, 141, 46);
@@ -210,7 +210,7 @@ public class MainMixerWindow extends PApplet
                 PVector dist = new PVector(mouseX, mouseY);
                 dist.add(mouseDragStart.mult(-1));
                 currentTranslation.add(dist);
-                beatController.setNewLocation((int) -currentTranslation.x, (int) -currentTranslation.y);//TODO: Fix this
+                beatController.updateLocation((int) -dist.x, (int) -dist.y);
                 mouseDragStart = null;
             }
             else if(draggingElement != null)
@@ -236,6 +236,10 @@ public class MainMixerWindow extends PApplet
         if(pixels[mouseY * width + mouseX] == backgroundColor)
         {
             currentScale *= event.getCount() > 0 ? 0.5 : 2;
+            float bCTransMulti = event.getCount() > 0 ? -0.5f : 0.5f;
+            bCTransMulti /= currentScale;
+            System.out.println(currentScale);
+            beatController.updateLocation((int) (width * bCTransMulti), (int) (height * bCTransMulti));//FIXME
         }
     }
     @Override
