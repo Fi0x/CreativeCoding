@@ -62,10 +62,10 @@ public class BeatController
         return false;
     }
 
-    public void changeLocation(int addedX, int addedY)
+    public void setNewLocation(int newX, int newY)
     {
-        controlX += addedX;
-        controlY += addedY;
+        controlX = newX;
+        controlY = newY;
     }
 
     private class CustomButton

@@ -53,7 +53,7 @@ public class MainMixerWindow extends PApplet
         textAlign(PConstants.CENTER, PConstants.CENTER);
 
         beatController = new BeatController(this);
-        beatController.changeLocation(-width / 2, -height / 2);
+        beatController.setNewLocation(-width / 2, -height / 2);
 
         UIConstants.DEFAULT_ELEMENT_BACKGROUND = color(181, 25, 25);
         UIConstants.SETTINGS_ELEMENT_BACKGROUND = color(219, 141, 46);
@@ -210,7 +210,7 @@ public class MainMixerWindow extends PApplet
                 PVector dist = new PVector(mouseX, mouseY);
                 dist.add(mouseDragStart.mult(-1));
                 currentTranslation.add(dist);
-                beatController.changeLocation((int) -dist.x, (int) -dist.y);
+                beatController.setNewLocation((int) -currentTranslation.x, (int) -currentTranslation.y);//TODO: Fix this
                 mouseDragStart = null;
             }
             else if(draggingElement != null)
