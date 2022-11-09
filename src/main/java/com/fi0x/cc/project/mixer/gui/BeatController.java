@@ -9,42 +9,47 @@ import java.util.function.Function;
 
 public class BeatController
 {
-    private final PApplet parent;
-    private int controlX;
-    private int controlY;
+    private final MainMixerWindow parent;
+    private float controlX;
+    private float controlY;
+    private float offsetX;
+    private float offsetY;
 
     private final ArrayList<CustomButton> buttons = new ArrayList<>();
 
-    public BeatController(PApplet parentScreen)
+    public BeatController(MainMixerWindow parentScreen, int x, int y)
     {
         parent = parentScreen;
+        controlX = x;
+        controlY = y;
 
         Function<Integer, Boolean> changeBPM = v ->
         {
             MixerManager.changeBPM(v);
             return true;
         };
-        buttons.add(new CustomButton(30, 30, "BPM-", changeBPM, -1));
-        buttons.add(new CustomButton(110, 30, "BPM+", changeBPM, 1));
+        buttons.add(new CustomButton((int) (30 * parent.currentScale), (int) (30 * parent.currentScale), "BPM-", changeBPM, -1));
+        buttons.add(new CustomButton((int) (110 * parent.currentScale), (int) (30 * parent.currentScale), "BPM+", changeBPM, 1));
 
         Function<Integer, Boolean> changeNotes = v ->
         {
             MixerManager.changeNPB(v);
             return true;
         };
-        buttons.add(new CustomButton(30, 85, "Notes-", changeNotes, -1));
-        buttons.add(new CustomButton(110, 85, "Notes+", changeNotes, 1));
+        buttons.add(new CustomButton((int) (30 * parent.currentScale), (int) (85 * parent.currentScale), "Notes-", changeNotes, -1));
+        buttons.add(new CustomButton((int) (110 * parent.currentScale), (int) (85 * parent.currentScale), "Notes+", changeNotes, 1));
     }
 
     public void draw()
     {
         parent.pushMatrix();
-        parent.translate(controlX, controlY);
+        parent.translate(controlX + offsetX, controlY + offsetY);
+
         parent.fill(255);
-        parent.textSize(12);
+        parent.textSize(12 / parent.currentScale);
         parent.textAlign(PConstants.CENTER, PConstants.CENTER);
-        parent.text(MixerManager.getBPM(), 70, 30);
-        parent.text(MixerManager.getNotesPerBeat(), 70, 85);
+        parent.text(MixerManager.getBPM(), 70 / parent.currentScale, 30 / parent.currentScale);
+        parent.text(MixerManager.getNotesPerBeat(), 70 / parent.currentScale, 85 / parent.currentScale);
 
         for(CustomButton button : buttons)
             button.draw();
@@ -62,10 +67,15 @@ public class BeatController
         return false;
     }
 
-    public void changeLocation(int addedX, int addedY)
+    public void updateLocation(int addedX, int addedY)
     {
-        controlX += addedX;
-        controlY += addedY;
+        offsetX += addedX;
+        offsetY += addedY;
+    }
+    public void updateScale(float scaleMultiplier)
+    {
+        controlX /= scaleMultiplier;
+        controlY /= scaleMultiplier;
     }
 
     private class CustomButton
@@ -89,13 +99,13 @@ public class BeatController
         private void draw()
         {
             parent.pushMatrix();
-            parent.translate(posX, posY);
+            parent.translate(posX / parent.currentScale, posY / parent.currentScale);
 
             parent.fill(255, 0, 0);
-            parent.ellipse(0, 0, 50, 50);
+            parent.ellipse(0, 0, 50 / parent.currentScale, 50 / parent.currentScale);
 
             parent.fill(255);
-            parent.textSize(12);
+            parent.textSize(12 / parent.currentScale);
             parent.textAlign(PConstants.CENTER, PConstants.CENTER);
             parent.text(text, 0, 0);
 
