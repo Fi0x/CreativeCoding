@@ -115,7 +115,7 @@ public class MainSynthWindow extends PApplet
         }
         if(event.getController() == control.getController("Open Mixer"))
         {
-            PApplet.main("com.fi0x.cc.project.gui.mixer.MainMixerWindow");
+            PApplet.main("com.fi0x.cc.project.mixer.gui.MainMixerWindow");
             return;
         }
         if(event.getController() == control.getController("Midi Device"))
