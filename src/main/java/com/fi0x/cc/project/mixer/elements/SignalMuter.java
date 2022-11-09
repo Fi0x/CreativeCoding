@@ -81,6 +81,6 @@ public class SignalMuter extends AbstractElement implements ISignalModifier
     @Override
     public String getDisplayImageName()
     {
-        return super.getDisplayImageName();//TODO: Return a useful image
+        return allowPass ? "images/full-volume.png" : "images/mute.png";
     }
 }

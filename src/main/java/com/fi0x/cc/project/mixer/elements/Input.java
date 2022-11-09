@@ -79,6 +79,6 @@ public class Input extends AbstractElement implements IMidiConnection, ISignalCr
     @Override
     public String getDisplayImageName()
     {
-        return super.getDisplayImageName();//TODO: Return a useful image
+        return "images/input.png";
     }
 }

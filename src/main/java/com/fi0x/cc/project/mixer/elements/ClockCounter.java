@@ -129,6 +129,6 @@ public class ClockCounter extends AbstractElement implements INumberProvider, IS
     @Override
     public String getDisplayImageName()
     {
-        return super.getDisplayImageName();//TODO: Return a useful image
+        return "images/clock.png";
     }
 }

@@ -150,7 +150,7 @@ public class Ticker extends AbstractElement implements ISignalCreator, ISecondar
     @Override
     public String getDisplayImageName()
     {
-        return super.getDisplayImageName();//TODO: Return a useful image
+        return "images/timer.png";
     }
 
     private void generateAndSendOnOffSignal()

@@ -82,7 +82,7 @@ public class Output extends AbstractElement implements IMidiConnection
     @Override
     public String getDisplayImageName()
     {
-        return super.getDisplayImageName();//TODO: Return a useful image
+        return "images/output.png";
     }
 
     private String getConnectedMidiName()

@@ -140,7 +140,7 @@ public class SignalChanger extends AbstractElement implements ISignalModifier, I
     @Override
     public String getDisplayImageName()
     {
-        return super.getDisplayImageName();//TODO: Return a useful image
+        return "images/signal-changer.png";
     }
 
     private ShortMessage changeMidiMessage(MixerSignal originalMsg)
