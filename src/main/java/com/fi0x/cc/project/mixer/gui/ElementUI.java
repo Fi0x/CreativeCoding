@@ -57,7 +57,7 @@ public class ElementUI
         if(shouldUseHSB)
         {
             parent.colorMode(PConstants.HSB, 1000);
-            bgc = parent.color(currentHueShift + hueOffset, 1000, 1000);
+            bgc = parent.color(currentHueShift + hueOffset, 1000, 800);
             parent.colorMode(PConstants.RGB, 255);
             if(reverseColor)
             {
@@ -173,7 +173,7 @@ public class ElementUI
     public void startColorAnimation()
     {
         shouldUseHSB = true;
-        hueOffset = this instanceof ISignalModifier || this instanceof INumberProvider ? 700 : 200;
+        hueOffset = this instanceof ISignalModifier || this instanceof INumberProvider ? 666 : 333;
     }
 
     private ElementUI getClosestNode(Output desiredOutput, boolean outputRequired)
