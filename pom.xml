@@ -13,8 +13,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>10</source>
-                    <target>10</target>
+                    <source>13</source>
+                    <target>13</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -33,8 +33,8 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-<!--                TODO: Check why this line has problems-->
                 <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.1.0</version>
                 <executions>
                     <execution>
                         <id>copy-dependencies</id>
@@ -52,8 +52,9 @@
                 </executions>
             </plugin>
             <plugin>
-<!--                TODO: Check why this line has problems-->
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.4.2</version>
                 <configuration>
                     <archive>
                         <manifest>
@@ -91,7 +92,7 @@
                             <jar>target/CreativeCoding-${project.version}-jar-with-dependencies.jar</jar>
                             <downloadUrl>https://jdk.java.net/archive/</downloadUrl>
                             <stayAlive>true</stayAlive>
-<!--                            <icon>src\main\resources\images\logo.jpg</icon>-->
+                            <icon>src\main\resources\images\logo.ico</icon>
                             <classPath>
                                 <mainClass>com.fi0x.cc.Main</mainClass>
                             </classPath>
@@ -100,9 +101,8 @@
                                 <windowTitle>Creative Coding</windowTitle>
                             </singleInstance>
                             <jre>
-                                <!-- TODO: Also change type in Main class -->
-<!--                                <path>jre</path>-->
-                                                                <minVersion>13.0.1</minVersion>
+<!--                                TODO: Always make sure that there is a jre folder inside the "target" folder that holds a bin, conf and lib folder-->
+                                <path>jre</path>
                             </jre>
                             <versionInfo>
                                 <fileVersion>${project.version}</fileVersion>

@@ -71,6 +71,7 @@ public class Main
         GUIWindow.showGridLanes(true);
 
         loadClasses("com/fi0x/cc/exercises");
+        Logger.log(exercises.size() + " Exercise-Classes loaded.", String.valueOf(Template.INFO_GREEN));
         createButtons();
 
         GUIWindow.start(args);
