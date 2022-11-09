@@ -61,8 +61,14 @@ public abstract class AbstractElement extends ElementUI
         return outputNode;
     }
 
+    @Deprecated
     public String getDisplayString()
     {
         return "Not \n finished";
+    }
+
+    public String getDisplayImageName()
+    {
+        return "images/placeholder.png";
     }
 }

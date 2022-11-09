@@ -147,6 +147,11 @@ public class Ticker extends AbstractElement implements ISignalCreator, ISecondar
     {
         return "Ticker\n" + notesPerBeat + (notesPerBeat > 1 ? "Notes" : "Note") + "/Beat";
     }
+    @Override
+    public String getDisplayImageName()
+    {
+        return "images/timer.png";
+    }
 
     private void generateAndSendOnOffSignal()
     {

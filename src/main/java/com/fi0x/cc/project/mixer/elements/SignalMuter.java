@@ -78,4 +78,9 @@ public class SignalMuter extends AbstractElement implements ISignalModifier
     {
         return "Signal Muter\n" + (allowPass ? "Open" : "Muted");
     }
+    @Override
+    public String getDisplayImageName()
+    {
+        return allowPass ? "images/full-volume.png" : "images/mute.png";
+    }
 }

@@ -7,6 +7,7 @@ import com.fi0x.cc.project.mixer.abstractinterfaces.ISignalModifier;
 import com.fi0x.cc.project.mixer.elements.*;
 import processing.core.PApplet;
 import processing.core.PConstants;
+import processing.core.PImage;
 import processing.core.PVector;
 
 public class ElementUI
@@ -56,7 +57,7 @@ public class ElementUI
         if(shouldUseHSB)
         {
             parent.colorMode(PConstants.HSB, 1000);
-            bgc = parent.color(currentHueShift + hueOffset, 1000, 1000);
+            bgc = parent.color(currentHueShift + hueOffset, 1000, 800);
             parent.colorMode(PConstants.RGB, 255);
             if(reverseColor)
             {
@@ -76,8 +77,8 @@ public class ElementUI
         parent.ellipse(currentX, currentY, size, size);
         parent.noStroke();
 
-        parent.fill(UIConstants.DEFAULT_TEXT);
-        parent.text(((AbstractElement) this).getDisplayString(), currentX, currentY);
+        PImage img = parent.loadImage(((AbstractElement) (this)).getDisplayImageName());
+        parent.image(img, currentX - size / 4f, currentY - size / 4f, size / 2f, size / 2f);
 
         currentStrokeColor = parent.lerpColor(currentStrokeColor, UIConstants.DEFAULT_STROKE, colorReverseRate);
         currentBackgroundColor = parent.lerpColor(currentBackgroundColor, UIConstants.DEFAULT_ELEMENT_BACKGROUND, colorReverseRate);
@@ -172,7 +173,7 @@ public class ElementUI
     public void startColorAnimation()
     {
         shouldUseHSB = true;
-        hueOffset = this instanceof ISignalModifier || this instanceof INumberProvider ? 700 : 200;
+        hueOffset = this instanceof ISignalModifier || this instanceof INumberProvider ? 666 : 333;
     }
 
     private ElementUI getClosestNode(Output desiredOutput, boolean outputRequired)

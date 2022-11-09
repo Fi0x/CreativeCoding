@@ -137,6 +137,11 @@ public class SignalChanger extends AbstractElement implements ISignalModifier, I
     {
         connectedNumberProviders.remove(provider);
     }
+    @Override
+    public String getDisplayImageName()
+    {
+        return "images/signal-changer.png";
+    }
 
     private ShortMessage changeMidiMessage(MixerSignal originalMsg)
     {
