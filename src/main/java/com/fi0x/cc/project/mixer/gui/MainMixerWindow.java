@@ -52,8 +52,7 @@ public class MainMixerWindow extends PApplet
         textSize(14);
         textAlign(PConstants.CENTER, PConstants.CENTER);
 
-        beatController = new BeatController(this);
-        beatController.updateLocation(-width / 2, -height / 2);
+        beatController = new BeatController(this, -width / 2, -height / 2);
 
         UIConstants.DEFAULT_ELEMENT_BACKGROUND = color(181, 25, 25);
         UIConstants.SETTINGS_ELEMENT_BACKGROUND = color(219, 141, 46);
@@ -235,11 +234,10 @@ public class MainMixerWindow extends PApplet
         loadPixels();
         if(pixels[mouseY * width + mouseX] == backgroundColor)
         {
-            currentScale *= event.getCount() > 0 ? 0.5 : 2;
-            float bCTransMulti = event.getCount() > 0 ? -0.5f : 0.5f;
-            bCTransMulti /= currentScale;
-            System.out.println(currentScale);
-            beatController.updateLocation((int) (width * bCTransMulti), (int) (height * bCTransMulti));//FIXME
+            float scaleMultiplier = event.getCount() > 0 ? 0.5f : 2f;
+            currentScale *= scaleMultiplier;
+
+            beatController.updateScale(scaleMultiplier);
         }
     }
     @Override

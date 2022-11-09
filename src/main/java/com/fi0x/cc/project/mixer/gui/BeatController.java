@@ -10,14 +10,18 @@ import java.util.function.Function;
 public class BeatController
 {
     private final MainMixerWindow parent;
-    private int controlX;
-    private int controlY;
+    private float controlX;
+    private float controlY;
+    private float offsetX;
+    private float offsetY;
 
     private final ArrayList<CustomButton> buttons = new ArrayList<>();
 
-    public BeatController(MainMixerWindow parentScreen)
+    public BeatController(MainMixerWindow parentScreen, int x, int y)
     {
         parent = parentScreen;
+        controlX = x;
+        controlY = y;
 
         Function<Integer, Boolean> changeBPM = v ->
         {
@@ -39,7 +43,7 @@ public class BeatController
     public void draw()
     {
         parent.pushMatrix();
-        parent.translate(controlX, controlY);
+        parent.translate(controlX + offsetX, controlY + offsetY);
 
         parent.fill(255);
         parent.textSize(12 / parent.currentScale);
@@ -65,8 +69,13 @@ public class BeatController
 
     public void updateLocation(int addedX, int addedY)
     {
-        controlX += addedX;
-        controlY += addedY;
+        offsetX += addedX;
+        offsetY += addedY;
+    }
+    public void updateScale(float scaleMultiplier)
+    {
+        controlX /= scaleMultiplier;
+        controlY /= scaleMultiplier;
     }
 
     private class CustomButton
