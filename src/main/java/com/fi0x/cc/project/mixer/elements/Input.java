@@ -76,4 +76,9 @@ public class Input extends AbstractElement implements IMidiConnection, ISignalCr
     {
         return MidiHandler.devices.get(inputMidiDevice).getDeviceInfo().toString();
     }
+    @Override
+    public String getDisplayImageName()
+    {
+        return super.getDisplayImageName();//TODO: Return a useful image
+    }
 }
