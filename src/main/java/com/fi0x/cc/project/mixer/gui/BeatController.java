@@ -59,6 +59,9 @@ public class BeatController
 
     public boolean interact(int x, int y)
     {
+        System.out.println("");
+//        x /= parent.currentScale;
+//        y /= parent.currentScale;
         for(CustomButton button : buttons)
         {
             if(button.press(x, y))
@@ -127,7 +130,12 @@ public class BeatController
         {
             float distance = PApplet.dist(x, y, controlX + posX, controlY + posY);
 
-            return !(distance > UIConstants.SETTINGS_ELEMENT_SIZE / 2f);
+            System.out.println("X: " + x + ", Y: " + y);
+            System.out.println("Distance is: " + distance / parent.currentScale);
+            System.out.println("Scale is: " + parent.currentScale);
+            System.out.println("Threshold is: " + 50 / parent.currentScale / 2);
+
+            return !(distance / parent.currentScale > 50 / parent.currentScale / 2);
         }
     }
 }
