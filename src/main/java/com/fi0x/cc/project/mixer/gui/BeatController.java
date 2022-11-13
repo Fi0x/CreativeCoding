@@ -125,9 +125,8 @@ public class BeatController
 
         private boolean isAbove(int x, int y)
         {
-            float distance = PApplet.dist(x, y, controlX + posX, controlY + posY);
-
-            return !(distance > UIConstants.SETTINGS_ELEMENT_SIZE / 2f);
+            float distance = PApplet.dist(x, y, posX, posY);
+            return !(distance / parent.currentScale > 50 / parent.currentScale / 2);
         }
     }
 }

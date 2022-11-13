@@ -158,7 +158,7 @@ public class MainMixerWindow extends PApplet
 
                 if(beatController != null)
                 {
-                    if(beatController.interact((int) (transMouse().x), (int) (transMouse().y)))
+                    if(beatController.interact(mouseX, mouseY))
                         return;
                 }
 
