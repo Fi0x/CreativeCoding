@@ -4,9 +4,6 @@ import com.fi0x.cc.Main;
 import com.fi0x.cc.project.synth.SynthManager;
 import com.fi0x.cc.project.synth.udp.UDPProcessor;
 import com.fi0x.cc.project.midi.MidiHandler;
-import controlP5.ControlEvent;
-import controlP5.ControlP5;
-import controlP5.DropdownList;
 import io.fi0x.javalogger.logging.LogEntry;
 import io.fi0x.javalogger.logging.Logger;
 import processing.core.PApplet;
@@ -16,16 +13,19 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.function.Function;
 
 public class MainSynthWindow extends PApplet
 {
     private PImage icon;
-    private ControlP5 control;
     private String[] midiEntries;
+    private int currentMidi;
 
     private final int xSynths = 4;
     private final int ySynths = 4;
     private final SynthUI[] synths = new SynthUI[xSynths * ySynths];
+    private final ArrayList<CustomButton> buttons = new ArrayList<>();
 
     private int initialized = 0;
 
@@ -42,8 +42,6 @@ public class MainSynthWindow extends PApplet
         background(0);
         noStroke();
 
-        control = new ControlP5(this);
-
         initializeSynths();
 
         new MidiHandler().initialize();
@@ -51,6 +49,10 @@ public class MainSynthWindow extends PApplet
         fillControlBar();
 
         new Thread(() -> UDPProcessor.getInstance().run()).start();
+    }
+    @Override
+    public void exitActual()
+    {
     }
     @Override
     public void settings()
@@ -76,6 +78,9 @@ public class MainSynthWindow extends PApplet
 
         adjustControlBarPositions();
 
+        for(CustomButton button : buttons)
+            button.draw();
+
         if(initialized < 100)
         {
             surface.setSize(displayWidth / 4 * 3, displayHeight / 4 * 3);
@@ -83,52 +88,23 @@ public class MainSynthWindow extends PApplet
         }
     }
 
-    public void controlEvent(ControlEvent event)
+    @Override
+    public void mouseClicked()
     {
-        if(!event.isController() || initialized < 100)
-            return;
-
-        if(event.getController() == control.getController("Open Orca"))
+        for(CustomButton button : buttons)
         {
-            try
+            if(button.interact(mouseX, mouseY))
             {
-                new ProcessBuilder("E:\\Users\\Fi0x\\Documents\\Programmieren\\ORCA\\Orca Tool\\Orca.exe").start();
-            } catch(IOException e)
-            {
-                Logger.log(new LogEntry("Could not open ORCA in Windows location, trying Linux instead", String.valueOf(Main.Template.DEBUG_WARNING)).EXCEPTION(e));
-                try
-                {
-                    Runtime.getRuntime().exec("/home/fi0x/Documents/ORCA/Orca");
-                } catch(IOException e1)
-                {
-                    Logger.log(new LogEntry("Could not open ORCA in Linux location, trying browser instead", String.valueOf(Main.Template.DEBUG_WARNING)).EXCEPTION(e1));
-                    try
-                    {
-                        Desktop.getDesktop().browse(new URI("https://hundredrabbits.github.io/Orca/"));
-                    } catch(IOException | URISyntaxException e2)
-                    {
-                        Logger.log(new LogEntry("Could not open ORCA", String.valueOf(Main.Template.DEBUG_WARNING)).EXCEPTION(e2));
-                    }
-                }
+                buttons.get(2).updateText(midiEntries[currentMidi]);
+                return;
             }
-            return;
-        }
-        if(event.getController() == control.getController("Open Mixer"))
-        {
-            PApplet.main("com.fi0x.cc.project.mixer.gui.MainMixerWindow");
-            return;
-        }
-        if(event.getController() == control.getController("Midi Device"))
-        {
-            SynthManager.setAcceptedMidi(midiEntries[(int) event.getValue()]);
-            return;
         }
 
         for(SynthUI s : synths)
         {
             if(s == null)
                 continue;
-            if(s.buttonClicked(event))
+            if(s.buttonClicked())
                 return;
         }
     }
@@ -152,39 +128,58 @@ public class MainSynthWindow extends PApplet
     }
     private void fillControlBar()
     {
-        control.addButton("Open Orca")
-                .setSize(100, 30)
-                .setValue(0)
-                .setColorBackground(color(200, 0, 0));
-        control.addButton("Open Mixer")
-                .setSize(100, 30)
-                .setValue(0)
-                .setColorBackground(color(200, 0, 0));
+        Function<Integer, Boolean> openOrca = v ->
+        {
+            try
+            {
+                new ProcessBuilder("E:\\Users\\Fi0x\\Documents\\Programmieren\\ORCA\\Orca Tool\\Orca.exe").start();
+            } catch(IOException e)
+            {
+                Logger.log(new LogEntry("Could not open ORCA in Windows location, trying Linux instead", String.valueOf(Main.Template.DEBUG_WARNING)).EXCEPTION(e));
+                try
+                {
+                    Runtime.getRuntime().exec("/home/fi0x/Documents/ORCA/Orca");
+                } catch(IOException e1)
+                {
+                    Logger.log(new LogEntry("Could not open ORCA in Linux location, trying browser instead", String.valueOf(Main.Template.DEBUG_WARNING)).EXCEPTION(e1));
+                    try
+                    {
+                        Desktop.getDesktop().browse(new URI("https://hundredrabbits.github.io/Orca/"));
+                    } catch(IOException | URISyntaxException e2)
+                    {
+                        Logger.log(new LogEntry("Could not open ORCA", String.valueOf(Main.Template.DEBUG_WARNING)).EXCEPTION(e2));
+                    }
+                }
+            }
+            return true;
+        };
+        buttons.add(new CustomButton("Open Orca", 5, height - 35, 100, 30, openOrca, this));
+
+        Function<Integer, Boolean> openMixer = v ->
+        {
+            PApplet.main("com.fi0x.cc.project.mixer.gui.MainMixerWindow");
+            return true;
+        };
+        buttons.add(new CustomButton("Open Mixer", 110, height - 35, 100, 30, openMixer, this));
 
         midiEntries = MidiHandler.getDeviceNames();
-        control.addDropdownList("Midi Device")
-                .setSize(200, height / 2)
-                .setValue(0)
-                .setItemHeight(30)
-                .setBarHeight(30)
-                .setCaptionLabel("Select a Midi Device")
-                .addItems(MidiHandler.getDeviceNames())
-                .setDirection(40);
+        Function<Integer, Boolean> nextMidiDevice = v ->
+        {
+            currentMidi++;
+            if(currentMidi >= midiEntries.length)
+                currentMidi = 0;
+
+            SynthManager.setAcceptedMidi(midiEntries[currentMidi]);
+            return true;
+        };
+        buttons.add(new CustomButton("Midi Device", 215, height - 35, 200, 30, nextMidiDevice, this));
 
         adjustControlBarPositions();
     }
     private void adjustControlBarPositions()
     {
-        control.getController("Open Orca")
-                .setPosition(5, height - 35);
-        control.getController("Open Mixer")
-                .setPosition(110, height - 35);
-
-        DropdownList ddl = (DropdownList) control.getController("Midi Device");
-        if(ddl.isOpen())
-            ddl.setPosition(215, height - 35 - midiEntries.length * ddl.getBarHeight());
-        else
-            ddl.setPosition(215, height - 35);
-        ddl.setSize(200, height / 2);
+        buttons.get(0).updatePosition(5, height - 35);
+        buttons.get(1).updatePosition(110, height - 35);
+        buttons.get(2).updatePosition(215, height - 35);
     }
 }
