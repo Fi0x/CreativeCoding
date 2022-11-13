@@ -4,11 +4,9 @@ import com.fi0x.cc.Main;
 import com.fi0x.cc.project.synth.SynthManager;
 import com.fi0x.cc.project.synth.udp.UDPProcessor;
 import com.fi0x.cc.project.midi.MidiHandler;
-import controlP5.ControlEvent;
 import io.fi0x.javalogger.logging.LogEntry;
 import io.fi0x.javalogger.logging.Logger;
 import processing.core.PApplet;
-import processing.core.PConstants;
 import processing.core.PImage;
 
 import java.awt.*;
@@ -53,6 +51,10 @@ public class MainSynthWindow extends PApplet
         new Thread(() -> UDPProcessor.getInstance().run()).start();
     }
     @Override
+    public void exitActual()
+    {
+    }
+    @Override
     public void settings()
     {
         icon = loadImage("images/logo.jpg");
@@ -91,25 +93,18 @@ public class MainSynthWindow extends PApplet
     {
         for(CustomButton button : buttons)
         {
-            if(button.isAbove(mouseX, mouseY))
+            if(button.interact(mouseX, mouseY))
             {
-                button.interact();
-                break;
+                buttons.get(2).updateText(midiEntries[currentMidi]);
+                return;
             }
         }
-
-        buttons.get(2).text = midiEntries[currentMidi];
-    }
-    public void controlEvent(ControlEvent event)
-    {
-        if(!event.isController() || initialized < 100)
-            return;
 
         for(SynthUI s : synths)
         {
             if(s == null)
                 continue;
-            if(s.buttonClicked(event))
+            if(s.buttonClicked())
                 return;
         }
     }
@@ -158,14 +153,14 @@ public class MainSynthWindow extends PApplet
             }
             return true;
         };
-        buttons.add(new CustomButton("Open Orca", 5, height - 35, 100, 30, openOrca));
+        buttons.add(new CustomButton("Open Orca", 5, height - 35, 100, 30, openOrca, this));
 
         Function<Integer, Boolean> openMixer = v ->
         {
             PApplet.main("com.fi0x.cc.project.mixer.gui.MainMixerWindow");
             return true;
         };
-        buttons.add(new CustomButton("Open Mixer", 110, height - 35, 100, 30, openMixer));
+        buttons.add(new CustomButton("Open Mixer", 110, height - 35, 100, 30, openMixer, this));
 
         midiEntries = MidiHandler.getDeviceNames();
         Function<Integer, Boolean> nextMidiDevice = v ->
@@ -177,7 +172,7 @@ public class MainSynthWindow extends PApplet
             SynthManager.setAcceptedMidi(midiEntries[currentMidi]);
             return true;
         };
-        buttons.add(new CustomButton("Midi Device", 215, height - 35, 200, 30, nextMidiDevice));
+        buttons.add(new CustomButton("Midi Device", 215, height - 35, 200, 30, nextMidiDevice, this));
 
         adjustControlBarPositions();
     }
@@ -186,53 +181,5 @@ public class MainSynthWindow extends PApplet
         buttons.get(0).updatePosition(5, height - 35);
         buttons.get(1).updatePosition(110, height - 35);
         buttons.get(2).updatePosition(215, height - 35);
-    }
-
-    private class CustomButton
-    {
-        private int x;
-        private int y;
-        private final int w;
-        private final int h;
-        private String text;
-        Function<Integer, Boolean> action;
-
-        private CustomButton(String buttonText, int xPos, int yPos, int width, int height, Function<Integer, Boolean> runnableAction)
-        {
-            text = buttonText;
-            x = xPos;
-            y = yPos;
-            w = width;
-            h = height;
-            action = runnableAction;
-        }
-
-        private void draw()
-        {
-            fill(200, 0, 0);
-            rect(x, y, w, h);
-            fill(255);
-            textSize(12);
-            textAlign(PConstants.CENTER, PConstants.CENTER);
-            text(text, x + w / 2f, y + h / 2f);
-        }
-
-        private boolean isAbove(int xCheck, int yCheck)
-        {
-            if(xCheck < x || xCheck > x + w)
-                return false;
-
-            return yCheck >= y && yCheck <= y + h;
-        }
-        private void interact()
-        {
-            action.apply(0);
-        }
-
-        private void updatePosition(int xPos, int yPos)
-        {
-            x = xPos;
-            y = yPos;
-        }
     }
 }

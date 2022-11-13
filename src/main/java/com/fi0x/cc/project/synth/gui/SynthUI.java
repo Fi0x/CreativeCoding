@@ -3,10 +3,9 @@ package com.fi0x.cc.project.synth.gui;
 import com.fi0x.cc.project.synth.SynthManager;
 import com.fi0x.cc.project.synth.synthesizers.AbstractSynth;
 import com.fi0x.cc.project.synth.synthesizers.ISynthesizer;
-import controlP5.ControlEvent;
-import controlP5.ControlP5;
-import controlP5.DropdownList;
 import processing.core.PApplet;
+
+import java.util.function.Function;
 
 public class SynthUI
 {
@@ -18,11 +17,10 @@ public class SynthUI
     private int xSize;
     private int ySize;
 
-    private boolean allowDropdownList = false;
-    private boolean allowInstrumentChanges = false;
+    private boolean allowInstrumentChanges = true;
+    private final CustomButton[] buttons = new CustomButton[2];
 
     private final PApplet parentScreen;
-    private final ControlP5 control;
 
     private boolean playStatus;
     private boolean muteStatus;
@@ -42,7 +40,6 @@ public class SynthUI
         if(((AbstractSynth) linkedSynth).channelNumber == 9)
         {
             allowInstrumentChanges = false;
-            allowDropdownList = false;
         }
 
         x = xPos;
@@ -51,7 +48,6 @@ public class SynthUI
         ySize = h;
 
         parentScreen = parent;
-        control = new ControlP5(parentScreen);
         addButtons();
     }
 
@@ -73,6 +69,12 @@ public class SynthUI
         visualizer.display();
 
         parentScreen.popMatrix();
+
+        if(allowInstrumentChanges)
+        {
+            for(CustomButton button : buttons)
+                button.draw();
+        }
     }
     public void updateDisplay()
     {
@@ -108,7 +110,8 @@ public class SynthUI
 
         visualizer.updateSize(width / 2, height / 2);
 
-        updateButtonPositions();
+        if(allowInstrumentChanges)
+            updateButtonPositions();
     }
     public void noteTriggered(boolean turnedOn)
     {
@@ -119,22 +122,15 @@ public class SynthUI
         muteStatus = isMuted;
     }
 
-    public boolean buttonClicked(ControlEvent event)
+    public boolean buttonClicked()
     {
-        if(event.getController() == control.getController("Previous Synth"))
+        if(allowInstrumentChanges)
         {
-            linkedSynth.previousInstrument();
-            return true;
-        }
-        if(event.getController() == control.getController("Next Synth"))
-        {
-            linkedSynth.nextInstrument();
-            return true;
-        }
-        if(event.getController() == control.getController("DDL"))
-        {
-            linkedSynth.setInstrument(SynthManager.getAllInstrumentNames()[(int) event.getValue()]);
-            return true;
+            for(CustomButton button : buttons)
+            {
+                if(button.interact(parentScreen.mouseX, parentScreen.mouseY))
+                    return true;
+            }
         }
 
         return false;
@@ -144,47 +140,26 @@ public class SynthUI
     {
         if(allowInstrumentChanges)
         {
-            control.addButton("Previous Synth")
-                    .setSize(100, 30)
-                    .setValue(0);
-            control.addButton("Next Synth")
-                    .setSize(100, 30)
-                    .setValue(0);
-        }
+            Function<Integer, Boolean> previousSynth = v ->
+            {
+                linkedSynth.previousInstrument();
+                return true;
+            };
+            buttons[0] = new CustomButton("Previous Synth", x + 10, y + 10, 100, 30, previousSynth, parentScreen);
 
-        if(allowDropdownList)
-        {
-            control.addDropdownList("DDL")
-                    .setSize(200, ySize - 10 - 10 - 35)
-                    .setValue(0)
-                    .setItemHeight(30)
-                    .setBarHeight(30)
-                    .setCaptionLabel("Select an instrument")
-                    .addItems(SynthManager.getAllInstrumentNames());
-        }
+            Function<Integer, Boolean> nextSynth = v ->
+            {
+                linkedSynth.nextInstrument();
+                return true;
+            };
+            buttons[1] = new CustomButton("Next Synth", x + xSize -110, y + 10, 100, 30, nextSynth, parentScreen);
 
-        updateButtonPositions();
+            updateButtonPositions();
+        }
     }
     private void updateButtonPositions()
     {
-        try
-        {
-            if(allowInstrumentChanges)
-            {
-                control.getController("Previous Synth")
-                        .setPosition(x + 10, y + 10);
-                control.getController("Next Synth")
-                        .setPosition(x + xSize - 100 - 10, y + 10);
-            }
-
-            if(allowDropdownList)
-            {
-                DropdownList ddl = (DropdownList) control.getController("DDL")
-                        .setPosition(x + (float) xSize / 2 - 100, y + 10 + 35);
-                ddl.setSize(200, ySize - 10 - 10 - 35);
-            }
-        } catch(Exception ignored)
-        {
-        }
+        buttons[0].updatePosition(x + 10,  y + 10);
+        buttons[1].updatePosition(x + xSize -110, y + 10);
     }
 }
