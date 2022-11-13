@@ -209,7 +209,7 @@ public class MainMixerWindow extends PApplet
                 PVector dist = new PVector(mouseX, mouseY);
                 dist.add(mouseDragStart.mult(-1));
                 currentTranslation.add(dist);
-                beatController.updateLocation((int) -dist.x, (int) -dist.y);
+                beatController.updateLocation(-width / 2, -height / 2, (int) -dist.x, (int) -dist.y);
                 mouseDragStart = null;
             }
             else if(draggingElement != null)

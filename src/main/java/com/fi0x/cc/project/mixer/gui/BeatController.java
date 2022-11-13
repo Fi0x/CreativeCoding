@@ -67,10 +67,13 @@ public class BeatController
         return false;
     }
 
-    public void updateLocation(int addedX, int addedY)
+    public void updateLocation(int xPos, int yPos, int xOffset, int yOffset)
     {
-        offsetX += addedX;
-        offsetY += addedY;
+        controlX = xPos;
+        controlY = yPos;
+
+        offsetX += xOffset;
+        offsetY += yOffset;
     }
     public void updateScale(float scaleMultiplier)
     {
