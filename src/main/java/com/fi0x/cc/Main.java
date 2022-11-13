@@ -1,5 +1,6 @@
 package com.fi0x.cc;
 
+import com.fi0x.cc.exercises.week1.*;
 import com.fi0x.cc.project.mixer.gui.MainMixerWindow;
 import com.fi0x.cc.project.randomstuff.ColorPicker;
 import com.fi0x.cc.project.synth.gui.MainSynthWindow;
@@ -111,6 +112,42 @@ public class Main
     }
     private static void loadClasses(String packageName)
     {
+        //TODO: Use for .exe version
+//        exercises.put("Week 1\nExercise1", Exercise1.class.getName());
+//        exercises.put("Week 1\nExercise3", Exercise3.class.getName());
+//        exercises.put("Week 1\nExercise3Different", Exercise3Different.class.getName());
+//        exercises.put("Week 1\nExercise4", Exercise4.class.getName());
+//        exercises.put("Week 1\nExercise4Different", Exercise4Different.class.getName());
+//        exercises.put("Week 1\nExercise4Pointillism", Exercise4Pointillism.class.getName());
+//        exercises.put("Week 2\nExercise1", com.fi0x.cc.exercises.week2.Exercise1.class.getName());
+//        exercises.put("Week 2\nExercise2", com.fi0x.cc.exercises.week2.Exercise2.class.getName());
+//        exercises.put("Week 2\nExercise3", com.fi0x.cc.exercises.week2.Exercise3.class.getName());
+//        exercises.put("Week 2\nExercise4", com.fi0x.cc.exercises.week2.Exercise4.class.getName());
+//        exercises.put("Week 3\nExercise1", com.fi0x.cc.exercises.week3.Exercise1.class.getName());
+//        exercises.put("Week 3\nExercise2", com.fi0x.cc.exercises.week3.Exercise2.class.getName());
+//        exercises.put("Week 3\nExercise2Variant", com.fi0x.cc.exercises.week3.Exercise2Variant.class.getName());
+//        exercises.put("Week 3\nExercise2WithoutScale", com.fi0x.cc.exercises.week3.Exercise2WithoutScale.class.getName());
+//        exercises.put("Week 3\nExercise3", com.fi0x.cc.exercises.week3.Exercise3.class.getName());
+//        exercises.put("Week 4\nExercise1", com.fi0x.cc.exercises.week4.Exercise1.class.getName());
+//        exercises.put("Week 4\nExercise2", com.fi0x.cc.exercises.week4.Exercise2.class.getName());
+//        exercises.put("Week 5\nExercise1", com.fi0x.cc.exercises.week5.Exercise1.class.getName());
+//        exercises.put("Week 5\nExercise1FractalTree", com.fi0x.cc.exercises.week5.Exercise1FractalTree.class.getName());
+//        exercises.put("Week 5\nExercise1Test", com.fi0x.cc.exercises.week5.Exercise1Test.class.getName());
+//        exercises.put("Week 5\nExercise2", com.fi0x.cc.exercises.week5.Exercise2.class.getName());
+//        exercises.put("Week 5\nExercise2Lines", com.fi0x.cc.exercises.week5.Exercise2Lines.class.getName());
+//        exercises.put("Week 5\nExercise2MinDistance", com.fi0x.cc.exercises.week5.Exercise2MinDistance.class.getName());
+//        exercises.put("Week 5\nExercise3", com.fi0x.cc.exercises.week5.Exercise3.class.getName());
+//        exercises.put("Week 6\nExercise1", com.fi0x.cc.exercises.week6.Exercise1.class.getName());
+//        exercises.put("Week 6\nExercise1Spikes", com.fi0x.cc.exercises.week6.Exercise1Spikes.class.getName());
+//        exercises.put("Week 6\nExercise1Stars", com.fi0x.cc.exercises.week6.Exercise1Stars.class.getName());
+//        exercises.put("Week 7\nExercise1", com.fi0x.cc.exercises.week7.Exercise1.class.getName());
+//        exercises.put("Week 7\nExercise1Wind", com.fi0x.cc.exercises.week7.Exercise1Wind.class.getName());
+//        exercises.put("Week 8\nExercise1", com.fi0x.cc.exercises.week8.Exercise1.class.getName());
+//        exercises.put("Week 8\nExercise1Lines", com.fi0x.cc.exercises.week8.Exercise1Lines.class.getName());
+//        exercises.put("Week 8\nExercise1Mouse", com.fi0x.cc.exercises.week8.Exercise1Mouse.class.getName());
+
+
+
         InputStream input = ClassLoader.getSystemClassLoader().getResourceAsStream(packageName);
         assert input != null;
         BufferedReader reader = new BufferedReader(new InputStreamReader(input));
