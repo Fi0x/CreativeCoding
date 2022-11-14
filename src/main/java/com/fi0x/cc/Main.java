@@ -70,6 +70,7 @@ public class Main
         GUIWindow.setElementSpacing(true);
         GUIWindow.setLayout(LayoutTypes.Grid);
         GUIWindow.showGridLanes(true);
+        GUIWindow.setStopAllOnExit(true);
 
         loadClasses("com/fi0x/cc/exercises");
         Logger.log(exercises.size() + " Exercise-Classes loaded.", String.valueOf(Template.INFO_GREEN));
