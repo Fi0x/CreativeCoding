@@ -46,19 +46,17 @@ public class Mandelbrot extends PApplet
 
         if(event.getCount() < 0)
         {
-            minX *= xMaxDistPercent;
-            maxX *= xMinDistPercent;
-
-            minY *= yMaxDistPercent;
-            maxY *= yMinDistPercent;
+            minX += xMinDistPercent;
+            maxX -= xMaxDistPercent;
+            minY += yMinDistPercent;
+            maxY -= yMaxDistPercent;
         }
         else
         {
-            minX /= xMaxDistPercent;
-            maxX /= xMinDistPercent;
-
-            minY /= yMaxDistPercent;
-            maxY /= yMinDistPercent;
+            minX -= xMinDistPercent;
+            maxX += xMaxDistPercent;
+            minY -= yMinDistPercent;
+            maxY += yMaxDistPercent;
         }
 
         updateImage();
