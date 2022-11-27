@@ -3,6 +3,7 @@ package com.fi0x.cc;
 import com.fi0x.cc.exercises.week1.*;
 import com.fi0x.cc.project.mixer.gui.MainMixerWindow;
 import com.fi0x.cc.project.randomstuff.ColorPicker;
+import com.fi0x.cc.project.randomstuff.JuliaSet;
 import com.fi0x.cc.project.randomstuff.Mandelbrot;
 import com.fi0x.cc.project.synth.gui.MainSynthWindow;
 import io.fi0x.javaguimenu.GUIWindow;
@@ -27,7 +28,7 @@ public class Main
 {
     private static final SortedMap<String, String> exercises = new TreeMap<>();
 
-    private static final int COLS = 5;
+    private static final int COLS = 6;
     private static final int ROWS = 7;
 
     public static void main(String[] args)
@@ -100,6 +101,11 @@ public class Main
         btnMandelbrot.setText("Projekt\nMandelbrot");
         btnMandelbrot.addListener(sender -> PApplet.main(Mandelbrot.class.getName()));
         GUIWindow.addElement(btnMandelbrot);
+
+        PriorityButton btnJuliaSet = new PriorityButton();
+        btnJuliaSet.setText("Projekt\nJuliaSet");
+        btnJuliaSet.addListener(sender -> PApplet.main(JuliaSet.class.getName()));
+        GUIWindow.addElement(btnJuliaSet);
 
         for(Map.Entry<String, String> e : exercises.entrySet())
         {
