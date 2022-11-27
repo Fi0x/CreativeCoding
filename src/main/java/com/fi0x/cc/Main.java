@@ -3,6 +3,7 @@ package com.fi0x.cc;
 import com.fi0x.cc.exercises.week1.*;
 import com.fi0x.cc.project.mixer.gui.MainMixerWindow;
 import com.fi0x.cc.project.randomstuff.ColorPicker;
+import com.fi0x.cc.project.randomstuff.Mandelbrot;
 import com.fi0x.cc.project.synth.gui.MainSynthWindow;
 import io.fi0x.javaguimenu.GUIWindow;
 import io.fi0x.javaguimenu.elements.AbstractElement;
@@ -94,6 +95,11 @@ public class Main
         btnColorPick.setText("Projekt\nColor Picker");
         btnColorPick.addListener(sender -> PApplet.main(ColorPicker.class.getName()));
         GUIWindow.addElement(btnColorPick);
+
+        PriorityButton btnMandelbrot = new PriorityButton();
+        btnMandelbrot.setText("Projekt\nMandelbrot");
+        btnMandelbrot.addListener(sender -> PApplet.main(Mandelbrot.class.getName()));
+        GUIWindow.addElement(btnMandelbrot);
 
         for(Map.Entry<String, String> e : exercises.entrySet())
         {
