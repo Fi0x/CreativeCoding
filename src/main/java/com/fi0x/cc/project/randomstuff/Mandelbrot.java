@@ -39,20 +39,26 @@ public class Mandelbrot extends PApplet
     @Override
     public void mouseWheel(MouseEvent event)
     {
+        float xMinDistPercent = (float) mouseX / width;
+        float xMaxDistPercent = ((float) width - mouseX) / width;
+        float yMinDistPercent = (float) mouseY / height;
+        float yMaxDistPercent = ((float) height - mouseY) / height;
+
         if(event.getCount() < 0)
         {
-            minX /= 2;
-            maxX /= 2;
+            minX *= xMaxDistPercent;
+            maxX *= xMinDistPercent;
 
-            minY /= 2;
-            maxY /= 2;
+            minY *= yMaxDistPercent;
+            maxY *= yMinDistPercent;
         }
         else
         {
-            minX *= 2;
-            maxX *= 2;
-            minY *= 2;
-            maxY *= 2;
+            minX /= xMaxDistPercent;
+            maxX /= xMinDistPercent;
+
+            minY /= yMaxDistPercent;
+            maxY /= yMinDistPercent;
         }
 
         updateImage();
