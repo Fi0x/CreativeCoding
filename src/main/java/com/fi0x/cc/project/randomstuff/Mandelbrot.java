@@ -16,6 +16,7 @@ public class Mandelbrot extends PApplet
     public void settings()
     {
         size(900, 900);
+        pixelDensity(1);
     }
     @Override
     public void exitActual()
@@ -27,7 +28,6 @@ public class Mandelbrot extends PApplet
         frameRate(120f);
         fill(0,0);
         background(255);
-        pixelDensity = 1;
         colorMode(HSB, MAX_ITERATIONS, 1, 1);
 
         updateImage();
@@ -39,26 +39,27 @@ public class Mandelbrot extends PApplet
     @Override
     public void mouseWheel(MouseEvent event)
     {
-        float xMinDistPercent = (float) mouseX / width;
-        float xMaxDistPercent = ((float) width - mouseX) / width;
-        float yMinDistPercent = (float) mouseY / height;
-        float yMaxDistPercent = ((float) height - mouseY) / height;
+        float mappedMouseX = map(mouseX, 0, width, minX, maxX);
+        float mappedMouseY = map(mouseY, 0, height, minY, maxY);
+        float xDistMin = mappedMouseX - minX;
+        float xDistMax = maxX - mappedMouseX;
+        float yDistMin = mappedMouseY - minY;
+        float yDistMax = maxY - mappedMouseY;
 
         if(event.getCount() < 0)
         {
-            minX += xMinDistPercent;
-            maxX -= xMaxDistPercent;
-            minY += yMinDistPercent;
-            maxY -= yMaxDistPercent;
+            minX += xDistMin / 2;
+            maxX -= xDistMax / 2;
+            minY += yDistMin / 2;
+            maxY -= yDistMax / 2;
         }
         else
         {
-            minX -= xMinDistPercent;
-            maxX += xMaxDistPercent;
-            minY -= yMinDistPercent;
-            maxY += yMaxDistPercent;
+            minX -= xDistMin * 2;
+            maxX += xDistMax * 2;
+            minY -= yDistMin * 2;
+            maxY += yDistMax * 2;
         }
-
         updateImage();
     }
 
