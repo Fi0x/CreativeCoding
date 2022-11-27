@@ -62,7 +62,13 @@ public class Mandelbrot extends PApplet
         }
         updateImage();
     }
-
+    @Override
+    public void mousePressed()
+    {
+        float mappedMouseX = map(mouseX, 0, width, minX, maxX);
+        float mappedMouseY = map(mouseY, 0, height, minY, maxY);
+        System.out.println(mappedMouseX + " " + mappedMouseY);
+    }
     private void updateImage()
     {
         loadPixels();
