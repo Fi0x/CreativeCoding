@@ -6,8 +6,11 @@ import processing.event.MouseEvent;
 public class Mandelbrot extends PApplet
 {
     private final int MAX_ITERATIONS = 100;
-    private float minValue = -2;
-    private float maxValue = 2;
+    private final float COLOR_SHIFT = 0.3f;
+    private float minX = -2;
+    private float minY = -2;
+    private float maxX = 2;
+    private float maxY = 2;
 
     @Override
     public void settings()
@@ -25,6 +28,8 @@ public class Mandelbrot extends PApplet
         fill(0,0);
         background(255);
         pixelDensity = 1;
+        colorMode(HSB, MAX_ITERATIONS, 1, 1);
+
         updateImage();
     }
     @Override
@@ -36,13 +41,18 @@ public class Mandelbrot extends PApplet
     {
         if(event.getCount() < 0)
         {
-            minValue /= 2;
-            maxValue /= 2;
+            minX /= 2;
+            maxX /= 2;
+
+            minY /= 2;
+            maxY /= 2;
         }
         else
         {
-            minValue *= 2;
-            maxValue *= 2;
+            minX *= 2;
+            maxX *= 2;
+            minY *= 2;
+            maxY *= 2;
         }
 
         updateImage();
@@ -55,8 +65,8 @@ public class Mandelbrot extends PApplet
         {
             for(int y = 0; y < height; y++)
             {
-                float bright = map(getIterations(x, y), 0, MAX_ITERATIONS, 255, 0);
-                pixels[x + y * width] = color(bright);
+                float hue = (getIterations(x, y) + (float) MAX_ITERATIONS * COLOR_SHIFT) % MAX_ITERATIONS;
+                pixels[x + y * width] = color(hue, 0.7f, 0.7f);
             }
         }
         updatePixels();
@@ -65,8 +75,8 @@ public class Mandelbrot extends PApplet
     {
         int n = 0;
 
-        float a = map(x, 0, width, minValue, maxValue);
-        float b = map(y, 0, height, minValue, maxValue);
+        float a = map(x, 0, width, minX, maxX);
+        float b = map(y, 0, height, minY, maxY);
         float ca = a;
         float cb = b;
 
