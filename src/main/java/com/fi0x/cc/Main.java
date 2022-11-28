@@ -116,7 +116,7 @@ public class Main
 
         PriorityButton btnMandelbrotMultiCore = new PriorityButton();
         btnMandelbrotMultiCore.setText("Projekt\nMandelbrotMultiCore");
-        btnMandelbrotMultiCore.addListener(sender -> PApplet.main(MandelbrotMultiCore.class.getName()));
+        btnMandelbrotMultiCore.addListener(sender -> MandelbrotMultiCore.main(null));
         GUIWindow.addElement(btnMandelbrotMultiCore);
 
         PriorityButton btnJuliaSet = new PriorityButton();

@@ -16,7 +16,7 @@ public class MandelbrotMultiCore extends JPanel implements MouseListener
     public static final int WIDTH = 1200;
     public static final int HEIGHT = 700;
 
-    public static int MAX_ITER = 50;
+    public static int MAX_ITER = 2000;
 
     public static double SCALE = HEIGHT / 4;
     public static double xMin = -WIDTH / SCALE / 2;
