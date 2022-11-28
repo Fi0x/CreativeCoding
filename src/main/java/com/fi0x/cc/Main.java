@@ -1,10 +1,12 @@
 package com.fi0x.cc;
 
 import com.fi0x.cc.project.mixer.gui.MainMixerWindow;
-import com.fi0x.cc.project.randomstuff.ColorPicker;
-import com.fi0x.cc.project.randomstuff.JuliaSet;
-import com.fi0x.cc.project.randomstuff.Mandelbrot;
-import com.fi0x.cc.project.randomstuff.MandelbrotBigDecimal;
+import com.fi0x.cc.project.randomstuff.*;
+import com.fi0x.cc.project.randomstuff.fractals.JuliaSet;
+import com.fi0x.cc.project.randomstuff.fractals.Mandelbrot;
+import com.fi0x.cc.project.randomstuff.fractals.MandelbrotBigDecimal;
+import com.fi0x.cc.project.randomstuff.fractals.MandelbrotDouble;
+import com.fi0x.cc.project.randomstuff.fractals.multicore.MandelbrotMultiCore;
 import com.fi0x.cc.project.synth.gui.MainSynthWindow;
 import io.fi0x.javaguimenu.GUIWindow;
 import io.fi0x.javaguimenu.elements.AbstractElement;
@@ -102,10 +104,20 @@ public class Main
         btnMandelbrot.addListener(sender -> PApplet.main(Mandelbrot.class.getName()));
         GUIWindow.addElement(btnMandelbrot);
 
+        PriorityButton btnMandelbrotDouble = new PriorityButton();
+        btnMandelbrotDouble.setText("Projekt\nMandelbrotDouble");
+        btnMandelbrotDouble.addListener(sender -> PApplet.main(MandelbrotDouble.class.getName()));
+        GUIWindow.addElement(btnMandelbrotDouble);
+
         PriorityButton btnMandelbrotBigDecimal = new PriorityButton();
         btnMandelbrotBigDecimal.setText("Projekt\nMandelbrotBigDecimal");
         btnMandelbrotBigDecimal.addListener(sender -> PApplet.main(MandelbrotBigDecimal.class.getName()));
         GUIWindow.addElement(btnMandelbrotBigDecimal);
+
+        PriorityButton btnMandelbrotMultiCore = new PriorityButton();
+        btnMandelbrotMultiCore.setText("Projekt\nMandelbrotMultiCore");
+        btnMandelbrotMultiCore.addListener(sender -> PApplet.main(MandelbrotMultiCore.class.getName()));
+        GUIWindow.addElement(btnMandelbrotMultiCore);
 
         PriorityButton btnJuliaSet = new PriorityButton();
         btnJuliaSet.setText("Projekt\nJuliaSet");

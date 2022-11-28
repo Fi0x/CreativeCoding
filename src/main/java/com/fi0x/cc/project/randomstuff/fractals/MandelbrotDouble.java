@@ -1,21 +1,16 @@
-package com.fi0x.cc.project.randomstuff;
+package com.fi0x.cc.project.randomstuff.fractals;
 
 import processing.core.PApplet;
-import processing.event.KeyEvent;
 import processing.event.MouseEvent;
 
-public class JuliaSet extends PApplet
+public class MandelbrotDouble extends PApplet
 {
     private final int MAX_ITERATIONS = 100;
     private final float COLOR_SHIFT = 0.3f;
-    private float ca = 0;
-    private float cb = 0;
-    private float angleA = 0;
-    private float angleB = 0;
-    private float minX = -2;
-    private float minY = -2;
-    private float maxX = 2;
-    private float maxY = 2;
+    private double minX = -2;
+    private double minY = -2;
+    private double maxX = 2;
+    private double maxY = 2;
 
     @Override
     public void settings()
@@ -30,7 +25,7 @@ public class JuliaSet extends PApplet
     @Override
     public void setup()
     {
-        frameRate(60f);
+        frameRate(120f);
         fill(0,0);
         background(255);
         colorMode(HSB, MAX_ITERATIONS, 1, 1);
@@ -44,12 +39,12 @@ public class JuliaSet extends PApplet
     @Override
     public void mouseWheel(MouseEvent event)
     {
-        float mappedMouseX = map(mouseX, 0, width, minX, maxX);
-        float mappedMouseY = map(mouseY, 0, height, minY, maxY);
-        float xDistMin = mappedMouseX - minX;
-        float xDistMax = maxX - mappedMouseX;
-        float yDistMin = mappedMouseY - minY;
-        float yDistMax = maxY - mappedMouseY;
+        double mappedMouseX = map(mouseX, 0, width, minX, maxX);
+        double mappedMouseY = map(mouseY, 0, height, minY, maxY);
+        double xDistMin = mappedMouseX - minX;
+        double xDistMax = maxX - mappedMouseX;
+        double yDistMin = mappedMouseY - minY;
+        double yDistMax = maxY - mappedMouseY;
 
         if(event.getCount() < 0)
         {
@@ -67,26 +62,15 @@ public class JuliaSet extends PApplet
         }
         updateImage();
     }
-
     @Override
-    public void keyPressed(KeyEvent event)
+    public void mousePressed()
     {
-        if(event.getKeyCode() == RIGHT)
-            angleA += 0.02f;
-        else if(event.getKeyCode() == LEFT)
-            angleA -= 0.02f;
-        else if(event.getKeyCode() == UP)
-            angleB += 0.02f;
-        else if(event.getKeyCode() == DOWN)
-            angleB -= 0.02f;
-
-        updateImage();
+        double mappedMouseX = map(mouseX, 0, width, minX, maxX);
+        double mappedMouseY = map(mouseY, 0, height, minY, maxY);
+        System.out.println(mappedMouseX + " " + mappedMouseY);
     }
     private void updateImage()
     {
-        ca = sin(angleA);
-        cb = cos(angleB);
-
         loadPixels();
         for(int x = 0; x < width; x++)
         {
@@ -102,13 +86,15 @@ public class JuliaSet extends PApplet
     {
         int n = 0;
 
-        float a = map(x, 0, width, minX, maxX);
-        float b = map(y, 0, height, minY, maxY);
+        double a = map(x, 0, width, minX, maxX);
+        double b = map(y, 0, height, minY, maxY);
+        double ca = a;
+        double cb = b;
 
         for(; n < MAX_ITERATIONS; n++)
         {
-            float aa = a * a - b * b;
-            float bb = 2 * a * b;
+            double aa = a * a - b * b;
+            double bb = 2 * a * b;
             a = aa + ca;
             b = bb + cb;
 
@@ -117,5 +103,11 @@ public class JuliaSet extends PApplet
         }
 
         return n;
+    }
+
+    private double map(double value, double originalStart, double originalEnd, double newStart, double newEnd)
+    {
+        double originalPercent = value / (originalEnd - originalStart);
+        return (newEnd - newStart) * originalPercent + newStart;
     }
 }

@@ -1,4 +1,4 @@
-package com.fi0x.cc.project.randomstuff;
+package com.fi0x.cc.project.randomstuff.fractals;
 
 import processing.core.PApplet;
 import processing.event.MouseEvent;
@@ -11,6 +11,7 @@ public class MandelbrotBigDecimal extends PApplet
     private final int MAX_ITERATIONS = 100;
     private final int PRECISION = 10;
     private final float COLOR_SHIFT = 0.3f;
+    private BigDecimal scale = BigDecimal.ONE;
     private BigDecimal minX = new BigDecimal(-2);
     private BigDecimal minY = new BigDecimal(-2);
     private BigDecimal maxX = new BigDecimal(2);
@@ -19,7 +20,7 @@ public class MandelbrotBigDecimal extends PApplet
     @Override
     public void settings()
     {
-        size(900, 900);
+        size(300, 300);
         pixelDensity(1);
     }
     @Override
@@ -43,8 +44,8 @@ public class MandelbrotBigDecimal extends PApplet
     @Override
     public void mouseWheel(MouseEvent event)
     {
-        BigDecimal mappedMouseX = map(new BigDecimal(mouseX), new BigDecimal(width), minX, maxX);
-        BigDecimal mappedMouseY = map(new BigDecimal(mouseY), new BigDecimal(height), minY, maxY);
+        BigDecimal mappedMouseX = map(mouseX, width, minX, maxX);
+        BigDecimal mappedMouseY = map(mouseY, height, minY, maxY);
         BigDecimal xDistMin = mappedMouseX.subtract(minX);
         BigDecimal xDistMax = maxX.subtract(mappedMouseX);
         BigDecimal yDistMin = mappedMouseY.subtract(minY);
@@ -56,22 +57,26 @@ public class MandelbrotBigDecimal extends PApplet
             maxX = maxX.subtract(xDistMax.divide(new BigDecimal(2), new MathContext(PRECISION)));
             minY = minY.add(yDistMin.divide(new BigDecimal(2), new MathContext(PRECISION)));
             maxY = maxY.subtract(yDistMax.divide(new BigDecimal(2), new MathContext(PRECISION)));
+            scale = scale.divide(new BigDecimal(2), new MathContext(PRECISION));
         }
         else
         {
-            minX = minX.subtract(xDistMin.multiply(new BigDecimal(2)));
-            maxX = maxX.add(xDistMax.multiply(new BigDecimal(2)));
-            minY = minY.subtract(yDistMin.multiply(new BigDecimal(2)));
-            maxY = maxY.add(yDistMax.multiply(new BigDecimal(2)));
+            minX = minX.subtract(xDistMin.multiply(new BigDecimal(2), new MathContext(PRECISION)));
+            maxX = maxX.add(xDistMax.multiply(new BigDecimal(2), new MathContext(PRECISION)));
+            minY = minY.subtract(yDistMin.multiply(new BigDecimal(2), new MathContext(PRECISION)));
+            maxY = maxY.add(yDistMax.multiply(new BigDecimal(2), new MathContext(PRECISION)));
+            scale = scale.multiply(new BigDecimal(2), new MathContext(PRECISION));
         }
         updateImage();
     }
 
     private void updateImage()
     {
+        System.out.println("Updating");
         loadPixels();
         for(int x = 0; x < width; x++)
         {
+            System.out.println("X: " + x);
             for(int y = 0; y < height; y++)
             {
                 float hue = (getIterations(x, y) + (float) MAX_ITERATIONS * COLOR_SHIFT) % MAX_ITERATIONS;
@@ -79,13 +84,14 @@ public class MandelbrotBigDecimal extends PApplet
             }
         }
         updatePixels();
+        System.out.println("Updated");
     }
     private int getIterations(int x, int y)
     {
         int n = 0;
 
-        BigDecimal a = map(new BigDecimal(x), new BigDecimal(width), minX, maxX);
-        BigDecimal b = map(new BigDecimal(y), new BigDecimal(height), minY, maxY);
+        BigDecimal a = map(x, width, minX, maxX);
+        BigDecimal b = map(y, height, minY, maxY);
         BigDecimal ca = a;
         BigDecimal cb = b;
 
@@ -103,10 +109,10 @@ public class MandelbrotBigDecimal extends PApplet
         return n;
     }
 
-    private BigDecimal map(BigDecimal value, BigDecimal originalEnd, BigDecimal newStart, BigDecimal newEnd)
+    private BigDecimal map(float value, float originalEnd, BigDecimal newStart, BigDecimal newEnd)
     {
         BigDecimal newDist = newEnd.subtract(newStart);
-        BigDecimal originalPercent = value.divide(originalEnd, new MathContext(PRECISION));
-        return originalPercent.multiply(newDist).add(newStart);
+        float originalPercent = value / originalEnd;
+        return newDist.multiply(new BigDecimal(originalPercent)).add(newStart);
     }
 }

@@ -1,12 +1,17 @@
-package com.fi0x.cc.project.randomstuff;
+package com.fi0x.cc.project.randomstuff.fractals;
 
 import processing.core.PApplet;
+import processing.event.KeyEvent;
 import processing.event.MouseEvent;
 
-public class Mandelbrot extends PApplet
+public class JuliaSet extends PApplet
 {
     private final int MAX_ITERATIONS = 100;
     private final float COLOR_SHIFT = 0.3f;
+    private float ca = 0;
+    private float cb = 0;
+    private float angleA = 0;
+    private float angleB = 0;
     private float minX = -2;
     private float minY = -2;
     private float maxX = 2;
@@ -25,7 +30,7 @@ public class Mandelbrot extends PApplet
     @Override
     public void setup()
     {
-        frameRate(120f);
+        frameRate(60f);
         fill(0,0);
         background(255);
         colorMode(HSB, MAX_ITERATIONS, 1, 1);
@@ -62,15 +67,26 @@ public class Mandelbrot extends PApplet
         }
         updateImage();
     }
+
     @Override
-    public void mousePressed()
+    public void keyPressed(KeyEvent event)
     {
-        float mappedMouseX = map(mouseX, 0, width, minX, maxX);
-        float mappedMouseY = map(mouseY, 0, height, minY, maxY);
-        System.out.println(mappedMouseX + " " + mappedMouseY);
+        if(event.getKeyCode() == RIGHT)
+            angleA += 0.02f;
+        else if(event.getKeyCode() == LEFT)
+            angleA -= 0.02f;
+        else if(event.getKeyCode() == UP)
+            angleB += 0.02f;
+        else if(event.getKeyCode() == DOWN)
+            angleB -= 0.02f;
+
+        updateImage();
     }
     private void updateImage()
     {
+        ca = sin(angleA);
+        cb = cos(angleB);
+
         loadPixels();
         for(int x = 0; x < width; x++)
         {
@@ -88,8 +104,6 @@ public class Mandelbrot extends PApplet
 
         float a = map(x, 0, width, minX, maxX);
         float b = map(y, 0, height, minY, maxY);
-        float ca = a;
-        float cb = b;
 
         for(; n < MAX_ITERATIONS; n++)
         {
